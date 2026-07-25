@@ -1,6 +1,6 @@
 # SPEC 01 — Firebase + subjects read-only
 
-> **Status:** Draft · **Depends on:** SPEC 00 · **Date:** 2026-07-25
+> **Status:** Implementado · **Depends on:** SPEC 00 · **Date:** 2026-07-25
 > **Objective:** Configurar Firebase Firestore, consumir subjects (materias) en solo lectura vía TanStack Query, y crear un script de seed con Admin SDK.
 
 ---
