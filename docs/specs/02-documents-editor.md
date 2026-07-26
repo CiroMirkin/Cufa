@@ -1,6 +1,6 @@
 # SPEC 02 — Documents con editor
 
-> **Status:** Draft · **Depends on:** SPEC 01 · **Date:** 2026-07-26
+> **Status:** Implementado · **Depends on:** SPEC 01 · **Date:** 2026-07-26
 > **Objective:** Permitir crear, ver, editar y eliminar documents en markdown dentro de cada materia, usando un editor rico abstraído cuya implementación puede cambiarse sin tocar Firebase.
 
 ---
