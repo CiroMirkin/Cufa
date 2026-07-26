@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet } from '@tanstack/react-router'
 import { ChevronLeft } from 'lucide-react'
+import { DocumentsList } from '@/components/DocumentsList'
 
 export const Route = createFileRoute('/subject/$subjectId')({
   component: Subject,
@@ -15,6 +16,7 @@ function Subject() {
         </Link>
       </header>
       <main className='pt-4'>
+        <DocumentsList subjectId={subjectId} />
         <Outlet />
       </main>
     </div>
