@@ -61,15 +61,17 @@ function DocumentForm({
   }
 
   return (
-    <form onSubmit={handleSave} className="max-w-3xl">
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="w-full px-4 py-2 mb-4 border rounded"
-        required
-      />
-      <div className="mb-4">
+    <form onSubmit={handleSave} className="w-full grid place-items-center">
+      <div className="w-full max-w-7xl">
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full px-4 py-2 mb-4 border"
+          required
+        />
+      </div>
+      <div className="mb-4 max-w-7xl">
         <MarkdownEditor value={content} onChange={setContent} />
       </div>
       <div className="flex gap-2">

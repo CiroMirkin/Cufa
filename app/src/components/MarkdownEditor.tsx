@@ -218,17 +218,19 @@ export function MarkdownEditor({
   }
 
   return (
-    <YooptaEditor
-      editor={editor}
-      onChange={handleChange}
-      placeholder={placeholder}
-      autoFocus={autoFocus}
-      className={className}
-      style={{ width: '100%', paddingBottom: 150 }}
-    >
-      <Toolbar />
-      <BlockActions />
-      <SlashCommandMenu />
-    </YooptaEditor>
+    <div className="w-full p-4 shadow-lg">
+      <YooptaEditor
+        editor={editor}
+        onChange={handleChange}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+        className={className}
+        style={{ width: '100%', paddingBottom: 150 }}
+      >
+        <Toolbar />
+        <BlockActions />
+        <SlashCommandMenu />
+      </YooptaEditor>
+    </div>
   )
 }

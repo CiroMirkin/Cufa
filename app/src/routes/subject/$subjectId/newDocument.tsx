@@ -27,26 +27,33 @@ function NewDocument() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl">
+    <form onSubmit={handleSubmit} className="w-full">
       <h2 className="text-xl font-semibold mb-4">Nuevo document</h2>
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        placeholder="Título del document"
-        className="w-full px-4 py-2 mb-4 border rounded"
-        required
-      />
-      <div className="mb-4">
-        <MarkdownEditor value={content} onChange={setContent} />
+      
+      <div className="w-full grid place-items-center">
+        <div className="w-full max-w-7xl">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Título del document"
+            className="w-full px-4 py-2 mb-4 border rounded"
+            required
+          />
+        </div>
+
+        <div className="mb-4 min-w-xl max-w-7xl">
+          <MarkdownEditor value={content} onChange={setContent} />
+        </div>
+
+        <button
+          type="submit"
+          disabled={createDocument.isPending}
+          className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded disabled:opacity-50"
+          >
+          {createDocument.isPending ? 'Guardando...' : 'Crear document'}
+        </button>
       </div>
-      <button
-        type="submit"
-        disabled={createDocument.isPending}
-        className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded disabled:opacity-50"
-      >
-        {createDocument.isPending ? 'Guardando...' : 'Crear document'}
-      </button>
     </form>
   )
 }
