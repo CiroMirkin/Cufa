@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useDocument, useUpdateDocument, useDeleteDocument } from '@/hooks/useDocuments'
-import { MarkdownEditor } from '@/components/editor/MarkdownEditor'
+import { MarkdownEditor } from '@/components/MarkdownEditor'
 
 export const Route = createFileRoute('/subject/$subjectId/$documentId')({
   component: DocumentDetail,
@@ -56,7 +56,7 @@ function DocumentDetail() {
           required
         />
         <div className="mb-4">
-          <MarkdownEditor key={documentId} content={content} onChange={setContent} />
+          <MarkdownEditor value={content} onChange={setContent} />
         </div>
         <div className="flex gap-2">
           <button

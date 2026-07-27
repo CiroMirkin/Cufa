@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useCreateDocument } from '@/hooks/useDocuments'
-import { MarkdownEditor } from '@/components/editor/MarkdownEditor'
+import { MarkdownEditor } from '@/components/MarkdownEditor'
 
 export const Route = createFileRoute('/subject/$subjectId/newDocument')({
   component: NewDocument,
@@ -14,7 +14,7 @@ function NewDocument() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
 
-  function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: any) {
     e.preventDefault()
     createDocument.mutate(
       { title, content },
@@ -38,7 +38,7 @@ function NewDocument() {
         required
       />
       <div className="mb-4">
-        <MarkdownEditor content={content} onChange={setContent} placeholder="Escribe el contenido..." />
+        <MarkdownEditor value={content} onChange={setContent} />
       </div>
       <button
         type="submit"
