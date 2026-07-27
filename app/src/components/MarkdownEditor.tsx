@@ -9,8 +9,10 @@ import {
   FloatingToolbar,
   FloatingBlockActions,
   BlockOptions,
+  ActionMenuList,
   SlashCommandMenu,
 } from '@yoopta/ui'
+import { ChevronDown } from 'lucide-react'
 import Paragraph from '@yoopta/paragraph'
 import Headings from '@yoopta/headings'
 import Blockquote from '@yoopta/blockquote'
@@ -34,100 +36,151 @@ const MARKS = [Bold, Italic, Underline, Strike, CodeMark, Highlight]
 
 function Toolbar() {
   const editor = useYooptaEditor()
+  const [turnIntoOpen, setTurnIntoOpen] = useState(false)
+  const turnIntoRef = useRef<HTMLButtonElement>(null)
 
   return (
-    <FloatingToolbar>
-      <FloatingToolbar.Content>
-        <FloatingToolbar.Group>
-          <FloatingToolbar.Button
-            onClick={() => Marks.toggle(editor, { type: 'bold' })}
-            active={Marks.isActive(editor, { type: 'bold' })}
-          >
-            B
-          </FloatingToolbar.Button>
-          <FloatingToolbar.Button
-            onClick={() => Marks.toggle(editor, { type: 'italic' })}
-            active={Marks.isActive(editor, { type: 'italic' })}
-          >
-            I
-          </FloatingToolbar.Button>
-          <FloatingToolbar.Button
-            onClick={() => Marks.toggle(editor, { type: 'underline' })}
-            active={Marks.isActive(editor, { type: 'underline' })}
-          >
-            U
-          </FloatingToolbar.Button>
-          <FloatingToolbar.Button
-            onClick={() => Marks.toggle(editor, { type: 'strike' })}
-            active={Marks.isActive(editor, { type: 'strike' })}
-          >
-            S
-          </FloatingToolbar.Button>
-          <FloatingToolbar.Button
-            onClick={() => Marks.toggle(editor, { type: 'code' })}
-            active={Marks.isActive(editor, { type: 'code' })}
-          >
-            {'</>'}
-          </FloatingToolbar.Button>
-        </FloatingToolbar.Group>
-      </FloatingToolbar.Content>
-    </FloatingToolbar>
+    <>
+      <FloatingToolbar frozen={turnIntoOpen}>
+        <FloatingToolbar.Content>
+          <FloatingToolbar.Group>
+            <FloatingToolbar.Button
+              ref={turnIntoRef}
+              onClick={() => setTurnIntoOpen(true)}
+            >
+              Convertir en
+              <ChevronDown size={14} />
+            </FloatingToolbar.Button>
+          </FloatingToolbar.Group>
+          <FloatingToolbar.Group>
+            <FloatingToolbar.Button
+              onClick={() => Marks.toggle(editor, { type: 'bold' })}
+              active={Marks.isActive(editor, { type: 'bold' })}
+            >
+              B
+            </FloatingToolbar.Button>
+            <FloatingToolbar.Button
+              onClick={() => Marks.toggle(editor, { type: 'italic' })}
+              active={Marks.isActive(editor, { type: 'italic' })}
+            >
+              I
+            </FloatingToolbar.Button>
+            <FloatingToolbar.Button
+              onClick={() => Marks.toggle(editor, { type: 'underline' })}
+              active={Marks.isActive(editor, { type: 'underline' })}
+            >
+              U
+            </FloatingToolbar.Button>
+            <FloatingToolbar.Button
+              onClick={() => Marks.toggle(editor, { type: 'strike' })}
+              active={Marks.isActive(editor, { type: 'strike' })}
+            >
+              S
+            </FloatingToolbar.Button>
+            <FloatingToolbar.Button
+              onClick={() => Marks.toggle(editor, { type: 'code' })}
+              active={Marks.isActive(editor, { type: 'code' })}
+            >
+              {'</>'}
+            </FloatingToolbar.Button>
+          </FloatingToolbar.Group>
+        </FloatingToolbar.Content>
+      </FloatingToolbar>
+
+      <ActionMenuList
+        open={turnIntoOpen}
+        onOpenChange={setTurnIntoOpen}
+        anchor={turnIntoRef.current}
+        view="small"
+      >
+        <ActionMenuList.Content />
+      </ActionMenuList>
+    </>
   )
 }
 
 function BlockActions() {
   const editor = useYooptaEditor()
   const [blockOptionsOpen, setBlockOptionsOpen] = useState(false)
+  const [actionMenuOpen, setActionMenuOpen] = useState(false)
   const dragHandleRef = useRef<HTMLButtonElement>(null)
+  const turnIntoRef = useRef<HTMLButtonElement>(null)
+  const currentBlockId = useRef<string | null>(null)
+
+  const onActionMenuClose = (open: boolean) => {
+    setActionMenuOpen(open)
+    if (!open) setBlockOptionsOpen(false)
+  }
 
   return (
     <FloatingBlockActions frozen={blockOptionsOpen}>
-      {({ blockId }: { blockId: string }) => (
-        <>
-          <FloatingBlockActions.Button
-            onClick={() => {
-              if (!blockId) return
-              const block = Blocks.getBlock(editor, { id: blockId })
-              if (block) {
-                editor.insertBlock('Paragraph', { at: block.meta.order + 1, focus: true })
-              }
-            }}
-          >
-            +
-          </FloatingBlockActions.Button>
-          <FloatingBlockActions.Button
-            ref={dragHandleRef}
-            onClick={() => setBlockOptionsOpen(true)}
-          >
-            ⋮⋮
-          </FloatingBlockActions.Button>
+      {({ blockId }: { blockId: string }) => {
+        currentBlockId.current = blockId
+        return (
+          <>
+            <FloatingBlockActions.Button
+              onClick={() => {
+                if (!blockId) return
+                const block = Blocks.getBlock(editor, { id: blockId })
+                if (block) {
+                  editor.insertBlock('Paragraph', { at: block.meta.order + 1, focus: true })
+                }
+              }}
+            >
+              +
+            </FloatingBlockActions.Button>
+            <FloatingBlockActions.Button
+              ref={dragHandleRef}
+              onClick={() => setBlockOptionsOpen(true)}
+            >
+              ⋮⋮
+            </FloatingBlockActions.Button>
 
-          <BlockOptions
-            open={blockOptionsOpen}
-            onOpenChange={setBlockOptionsOpen}
-            anchor={dragHandleRef.current}
-          >
-            <BlockOptions.Content>
-              <BlockOptions.Item
-                onClick={() => {
-                  if (blockId) Blocks.duplicateBlock(editor, { blockId })
-                  setBlockOptionsOpen(false)
-                }}
-              >
-                Duplicar
-              </BlockOptions.Item>
-              <BlockOptions.Item
-                onClick={() => {
-                  if (blockId) Blocks.deleteBlock(editor, { blockId })
-                  setBlockOptionsOpen(false)
-                }}
-              >
-                Eliminar
-              </BlockOptions.Item>
-            </BlockOptions.Content>
-          </BlockOptions>
-        </>
-      )}
+            <BlockOptions
+              open={blockOptionsOpen}
+              onOpenChange={setBlockOptionsOpen}
+              anchor={dragHandleRef.current}
+            >
+              <BlockOptions.Content>
+                <BlockOptions.Item
+                  ref={turnIntoRef}
+                  onSelect={() => setActionMenuOpen(true)}
+                  keepOpen
+                >
+                  Convertir en
+                </BlockOptions.Item>
+                <BlockOptions.Item
+                  onClick={() => {
+                    if (blockId) Blocks.duplicateBlock(editor, { blockId })
+                    setBlockOptionsOpen(false)
+                  }}
+                >
+                  Duplicar
+                </BlockOptions.Item>
+                <BlockOptions.Item
+                  onClick={() => {
+                    if (blockId) Blocks.deleteBlock(editor, { blockId })
+                    setBlockOptionsOpen(false)
+                  }}
+                >
+                  Eliminar
+                </BlockOptions.Item>
+              </BlockOptions.Content>
+            </BlockOptions>
+
+            <ActionMenuList
+              open={actionMenuOpen}
+              onOpenChange={onActionMenuClose}
+              anchor={turnIntoRef.current}
+              blockId={blockId}
+              view="small"
+              placement="right-start"
+            >
+              <ActionMenuList.Content />
+            </ActionMenuList>
+          </>
+        )
+      }}
     </FloatingBlockActions>
   )
 }
