@@ -1,6 +1,6 @@
 # SPEC 03 — Evaluations CRUD
 
-> **Status:** Draft · **Depends on:** SPEC 01 · **Date:** 2026-07-27
+> **Status:** Implementado · **Depends on:** SPEC 01 · **Date:** 2026-07-27
 > **Objective:** Permitir crear, ver, editar y eliminar evaluaciones (parcial, final, recuperatorio, TP, presentación) asociadas a un subject en Firestore.
 
 ---
