@@ -85,7 +85,7 @@ function DocumentForm({
           required
         />
       </div>
-      <div className="mb-4 max-w-7xl">
+      <div className="mb-4 min-w-xl max-w-7xl">
         <MarkdownEditor value={content} onChange={setContent} />
       </div>
       <div className="w-full max-w-7xl flex items-center gap-2">

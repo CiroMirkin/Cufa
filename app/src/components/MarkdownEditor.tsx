@@ -16,6 +16,7 @@ import { ChevronDown } from 'lucide-react'
 import Paragraph from '@yoopta/paragraph'
 import Headings from '@yoopta/headings'
 import Blockquote from '@yoopta/blockquote'
+import Table from '@yoopta/table'
 import Code from '@yoopta/code'
 import Lists from '@yoopta/lists'
 import { Bold, Italic, Underline, Strike, CodeMark, Highlight } from '@yoopta/marks'
@@ -32,6 +33,8 @@ const PLUGINS = applyTheme([
   Lists.NumberedList,
   Lists.TodoList,
   Code.Code,
+  Code.CodeGroup,
+  Table,
 ])
 
 const MARKS = [Bold, Italic, Underline, Strike, CodeMark, Highlight]
