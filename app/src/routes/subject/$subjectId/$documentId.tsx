@@ -1,8 +1,10 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDocument, useUpdateDocument, useDeleteDocument } from '@/hooks/useDocuments'
 import { MarkdownEditor } from '@/components/MarkdownEditor'
 import type { Document } from '@/types/document'
+
+const AUTOSAVE_DELAY = 500
 
 export const Route = createFileRoute('/subject/$subjectId/$documentId')({
   component: DocumentDetail,
@@ -54,6 +56,18 @@ function DocumentForm({
 }) {
   const [title, setTitle] = useState(document.title as string)
   const [content, setContent] = useState(document.content as string)
+  const isFirstRender = useRef(true)
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    const timeout = setTimeout(() => {
+      onSave({ title, content })
+    }, AUTOSAVE_DELAY)
+    return () => clearTimeout(timeout)
+  }, [title, content])
 
   function handleSave(e: React.FormEvent) {
     e.preventDefault()
@@ -74,7 +88,7 @@ function DocumentForm({
       <div className="mb-4 max-w-7xl">
         <MarkdownEditor value={content} onChange={setContent} />
       </div>
-      <div className="flex gap-2">
+      <div className="w-full max-w-7xl flex items-center gap-2">
         <button
           type="submit"
           disabled={isSaving}
@@ -90,6 +104,7 @@ function DocumentForm({
         >
           {isDeleting ? 'Eliminando...' : 'Eliminar'}
         </button>
+        {isSaving && <span className="text-sm text-gray-500">Guardado automático...</span>}
       </div>
     </form>
   )

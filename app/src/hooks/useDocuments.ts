@@ -46,8 +46,13 @@ export function useCreateDocument(subjectId: string) {
         ...data,
         createdAt: new Date().toISOString().split("T")[0],
       }),
+      
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["documents", subjectId] })
+    },
+
+    onError: (err) => {
+      console.error("Error al crear el document:", err)
     },
   })
 }
@@ -57,8 +62,17 @@ export function useUpdateDocument(subjectId: string, documentId: string) {
   return useMutation({
     mutationFn: (data: { title: string; content: string }) =>
       updateDoc(getDocRef(subjectId, documentId), data),
-    onSuccess: () => {
+
+    onSuccess: (_result, variables) => {
+      queryClient.setQueryData(
+        ["documents", subjectId, documentId],
+        (old: Document | undefined) => (old ? { ...old, ...variables } : old),
+      )
       queryClient.invalidateQueries({ queryKey: ["documents", subjectId] })
+    },
+
+    onError: (err) => {
+      console.error("Error al guardar el document:", err)
     },
   })
 }
@@ -68,8 +82,13 @@ export function useDeleteDocument(subjectId: string) {
   return useMutation({
     mutationFn: (documentId: string) =>
       deleteDoc(getDocRef(subjectId, documentId)),
+
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["documents", subjectId] })
+    },
+
+    onError: (err) => {
+      console.error("Error al eliminar el document:", err)
     },
   })
 }
