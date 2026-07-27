@@ -2,12 +2,12 @@ import { createFileRoute, Link, Outlet, useChildMatches } from '@tanstack/react-
 import { ChevronLeft } from 'lucide-react'
 import { DocumentsList } from '@/components/DocumentsList'
 
-export const Route = createFileRoute('/subject/$subjectId')({
+export const Route = createFileRoute('/subject/$subject-id')({
   component: Subject,
 })
 
 function Subject() {
-  const { subjectId } = Route.useParams()
+  const { 'subject-id': subjectId } = Route.useParams()
   const childMatches = useChildMatches()
   const hasChildRoute = childMatches.length > 0
 
@@ -16,8 +16,8 @@ function Subject() {
       <header className='w-full flex justify-start py-4'>
         {hasChildRoute ? (
           <Link
-            to='/subject/$subjectId'
-            params={{ subjectId }}
+            to='/subject/$subject-id'
+            params={{ 'subject-id': subjectId }}
             className='flex items-center text-xl'
           >
             <ChevronLeft className='mr-2' size={26} /> {subjectId} - Carrera

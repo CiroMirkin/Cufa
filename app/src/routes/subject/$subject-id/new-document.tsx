@@ -3,12 +3,12 @@ import { useState } from 'react'
 import { useCreateDocument } from '@/hooks/useDocuments'
 import { MarkdownEditor } from '@/components/MarkdownEditor'
 
-export const Route = createFileRoute('/subject/$subjectId/newDocument')({
+export const Route = createFileRoute('/subject/$subject-id/new-document')({
   component: NewDocument,
 })
 
 function NewDocument() {
-  const { subjectId } = Route.useParams()
+  const { 'subject-id': subjectId } = Route.useParams()
   const navigate = useNavigate()
   const createDocument = useCreateDocument(subjectId)
   const [title, setTitle] = useState('')
@@ -20,7 +20,7 @@ function NewDocument() {
       { title, content },
       {
         onSuccess: (ref) => {
-          navigate({ to: '/subject/$subjectId/$documentId', params: { subjectId, documentId: ref.id } })
+          navigate({ to: '/subject/$subject-id/$document-id', params: { 'subject-id': subjectId, 'document-id': ref.id } })
         },
       },
     )

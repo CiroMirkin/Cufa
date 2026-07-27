@@ -10,9 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SubjectSubjectIdRouteImport } from './routes/subject/$subjectId'
-import { Route as SubjectSubjectIdDocumentIdRouteImport } from './routes/subject/$subjectId/$documentId'
-import { Route as SubjectSubjectIdNewDocumentRouteImport } from './routes/subject/$subjectId/newDocument'
+import { Route as SubjectSubjectIdRouteImport } from './routes/subject/$subject-id'
+import { Route as SubjectSubjectIdDocumentIdRouteImport } from './routes/subject/$subject-id/$document-id'
+import { Route as SubjectSubjectIdNewDocumentRouteImport } from './routes/subject/$subject-id/new-document'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -20,61 +20,61 @@ const IndexRoute = IndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectSubjectIdRoute = SubjectSubjectIdRouteImport.update({
-  id: '/subject/$subjectId',
-  path: '/subject/$subjectId',
+  id: '/subject/$subject-id',
+  path: '/subject/$subject-id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SubjectSubjectIdDocumentIdRoute =
   SubjectSubjectIdDocumentIdRouteImport.update({
-    id: '/$documentId',
-    path: '/$documentId',
+    id: '/$document-id',
+    path: '/$document-id',
     getParentRoute: () => SubjectSubjectIdRoute,
   } as any)
 const SubjectSubjectIdNewDocumentRoute =
   SubjectSubjectIdNewDocumentRouteImport.update({
-    id: '/newDocument',
-    path: '/newDocument',
+    id: '/new-document',
+    path: '/new-document',
     getParentRoute: () => SubjectSubjectIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/subject/$subjectId': typeof SubjectSubjectIdRouteWithChildren
-  '/subject/$subjectId/$documentId': typeof SubjectSubjectIdDocumentIdRoute
-  '/subject/$subjectId/newDocument': typeof SubjectSubjectIdNewDocumentRoute
+  '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
+  '/subject/$subject-id/$document-id': typeof SubjectSubjectIdDocumentIdRoute
+  '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/subject/$subjectId': typeof SubjectSubjectIdRouteWithChildren
-  '/subject/$subjectId/$documentId': typeof SubjectSubjectIdDocumentIdRoute
-  '/subject/$subjectId/newDocument': typeof SubjectSubjectIdNewDocumentRoute
+  '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
+  '/subject/$subject-id/$document-id': typeof SubjectSubjectIdDocumentIdRoute
+  '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/subject/$subjectId': typeof SubjectSubjectIdRouteWithChildren
-  '/subject/$subjectId/$documentId': typeof SubjectSubjectIdDocumentIdRoute
-  '/subject/$subjectId/newDocument': typeof SubjectSubjectIdNewDocumentRoute
+  '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
+  '/subject/$subject-id/$document-id': typeof SubjectSubjectIdDocumentIdRoute
+  '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/subject/$subjectId'
-    | '/subject/$subjectId/$documentId'
-    | '/subject/$subjectId/newDocument'
+    | '/subject/$subject-id'
+    | '/subject/$subject-id/$document-id'
+    | '/subject/$subject-id/new-document'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/subject/$subjectId'
-    | '/subject/$subjectId/$documentId'
-    | '/subject/$subjectId/newDocument'
+    | '/subject/$subject-id'
+    | '/subject/$subject-id/$document-id'
+    | '/subject/$subject-id/new-document'
   id:
     | '__root__'
     | '/'
-    | '/subject/$subjectId'
-    | '/subject/$subjectId/$documentId'
-    | '/subject/$subjectId/newDocument'
+    | '/subject/$subject-id'
+    | '/subject/$subject-id/$document-id'
+    | '/subject/$subject-id/new-document'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -91,24 +91,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subject/$subjectId': {
-      id: '/subject/$subjectId'
-      path: '/subject/$subjectId'
-      fullPath: '/subject/$subjectId'
+    '/subject/$subject-id': {
+      id: '/subject/$subject-id'
+      path: '/subject/$subject-id'
+      fullPath: '/subject/$subject-id'
       preLoaderRoute: typeof SubjectSubjectIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subject/$subjectId/$documentId': {
-      id: '/subject/$subjectId/$documentId'
-      path: '/$documentId'
-      fullPath: '/subject/$subjectId/$documentId'
+    '/subject/$subject-id/$document-id': {
+      id: '/subject/$subject-id/$document-id'
+      path: '/$document-id'
+      fullPath: '/subject/$subject-id/$document-id'
       preLoaderRoute: typeof SubjectSubjectIdDocumentIdRouteImport
       parentRoute: typeof SubjectSubjectIdRoute
     }
-    '/subject/$subjectId/newDocument': {
-      id: '/subject/$subjectId/newDocument'
-      path: '/newDocument'
-      fullPath: '/subject/$subjectId/newDocument'
+    '/subject/$subject-id/new-document': {
+      id: '/subject/$subject-id/new-document'
+      path: '/new-document'
+      fullPath: '/subject/$subject-id/new-document'
       preLoaderRoute: typeof SubjectSubjectIdNewDocumentRouteImport
       parentRoute: typeof SubjectSubjectIdRoute
     }

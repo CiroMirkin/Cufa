@@ -16,8 +16,8 @@
 - Tipo TypeScript `Evaluation` con los campos definidos.
 - Hook `useEvaluations(subjectId)` con TanStack Query (lista, uno, crear, actualizar, eliminar).
 - Ruta de listing dentro de la página de materia (mostrando lista de evaluations).
-- Ruta para crear nueva evaluation.
-- Ruta para ver/editar/eliminar una evaluation existente (mode switching como en SPEC 02).
+- Ruta para crear nueva evaluation (`/subject/$subject-id/new-evaluation`).
+- Ruta para ver/editar/eliminar una evaluation existente (`/subject/$subject-id/$evaluation-id`) con mode switching.
 - Indicadores de carga y error para cada operación.
 
 **Out of scope (for future specs):**
@@ -70,13 +70,13 @@ interface Evaluation {
    - `useDeleteEvaluation` — mutation que elimina el document.
    Cada mutation invalida `["evaluations", subjectId]`.
 
-3. **Evaluations list.** Crear `app/src/components/EvaluationsList.tsx`. Recibe `subjectId`, usa `useEvaluations`, renderiza cada evaluation mostrando título, tipo, fecha y nota. Botón "New evaluation" que navega a `newEvaluation`.
+3. **Evaluations list.** Crear `app/src/components/EvaluationsList.tsx`. Recibe `subjectId`, usa `useEvaluations`, renderiza cada evaluation mostrando título, tipo, fecha y nota. Botón "New evaluation" que navega a `new-evaluation`.
 
-4. **Integrar lista en materia.** En `app/src/routes/subject/$subjectId.tsx`, agregar `<EvaluationsList subjectId={subjectId} />` debajo de `<DocumentsList>` (o donde corresponda en el layout).
+4. **Integrar lista en materia.** En `app/src/routes/subject/$subject-id.tsx`, agregar `<EvaluationsList subjectId={subjectId} />` debajo de `<DocumentsList>` (o donde corresponda en el layout).
 
-5. **Ruta newEvaluation.** Crear `app/src/routes/subject/$subjectId/newEvaluation.tsx`. Formulario con inputs para título, tipo (select con las 5 opciones), fecha, nota (opcional), link (opcional). Al submit, llama `useCreateEvaluation` y navega a la evaluation creada.
+5. **Ruta new-evaluation.** Crear `app/src/routes/subject/$subject-id/new-evaluation.tsx`. Formulario con inputs para título, tipo (select con las 5 opciones), fecha, nota (opcional), link (opcional). Al submit, llama `useCreateEvaluation` y navega a la evaluation creada.
 
-6. **Ruta $evaluationId.** Crear `app/src/routes/subject/$subjectId/$evaluationId.tsx`. Modo vista: muestra todos los campos + botones Edit / Delete. Modo edición: formulario precargado + botón Save. Delete muestra confirmación y navega a `/subject/$subjectId`.
+6. **Ruta $evaluation-id.** Crear `app/src/routes/subject/$subject-id/$evaluation-id.tsx`. Modo vista: muestra todos los campos + botones Edit / Delete. Modo edición: formulario precargado + botón Save. Delete muestra confirmación y navega a `/subject/$subject-id`.
 
 ---
 
@@ -92,11 +92,11 @@ interface Evaluation {
 - [ ] Las mutations invalidan `["evaluations", subjectId]` y la UI se actualiza.
 - [ ] La página de materia muestra una lista de evaluations (título, tipo, fecha, nota).
 - [ ] La lista tiene un botón "New evaluation" que navega a la ruta de creación.
-- [ ] La ruta de creación (`/subject/$subjectId/newEvaluation`) tiene formulario con todos los campos.
+- [ ] La ruta de creación (`/subject/$subject-id/new-evaluation`) tiene formulario con todos los campos.
 - [ ] Al guardar una nueva evaluation, se crea en Firestore y se navega a su vista.
-- [ ] La ruta de una evaluation (`/subject/$subjectId/$evaluationId`) muestra todos sus campos.
+- [ ] La ruta de una evaluation (`/subject/$subject-id/$evaluation-id`) muestra todos sus campos.
 - [ ] Desde la vista se puede entrar a modo edición y guardar cambios.
-- [ ] Desde la vista se puede eliminar la evaluation (con confirmación) y se navega a `/subject/$subjectId`.
+- [ ] Desde la vista se puede eliminar la evaluation (con confirmación) y se navega a `/subject/$subject-id`.
 - [ ] La UI muestra indicador de carga mientras se obtienen datos.
 - [ ] La UI muestra mensaje de error si la consulta falla.
 

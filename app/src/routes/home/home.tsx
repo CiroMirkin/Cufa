@@ -15,8 +15,8 @@ function Home() {
                 {subjects?.map((subject) => (
                     <Link
                         key={subject.id}
-                        to="/subject/$subjectId"
-                        params={{ subjectId: subject.id }}
+                        to='/subject/$subject-id'
+                        params={{ 'subject-id': subject.id }}
                         className="px-8 py-4 rounded text-xl bg-green-100 hover:bg-green-200 shadow-sm"
                     >
                         {subject.name}

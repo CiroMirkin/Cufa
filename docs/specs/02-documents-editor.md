@@ -14,10 +14,10 @@
 - Almacenamiento en Firestore como subcolección `documents` bajo cada subject (`subjects/{id}/documents`).
 - Editor rico abstraído detrás de un wrapper que acepta y devuelve markdown. La implementación concreta (Yoopta) está oculta detrás de esa interfaz.
 - Wrapper del editor instalable como dependencia (`@yoopta/editor` + plugins de bloque + `@yoopta/exports`) pero reemplazable sin tocar Firebase ni los hooks.
-- Ruta de materia (`/subject/$subjectId`) solo lista documents: título + primeros 50 caracteres del contenido. Click en un document lleva a la ruta de gestión.
-- Ruta de gestión de documents (`/subject/$subjectId/$documentId`) con vistas para ver, editar y eliminar.
-- Ruta para crear nuevo document (`/subject/$subjectId/newDocument`).
-- Ruta de materia cambia de `$subjectName` a `$subjectId` para poder consultar la subcolección.
+- Ruta de materia (`/subject/$subject-id`) solo lista documents: título + primeros 50 caracteres del contenido. Click en un document lleva a la ruta de gestión.
+- Ruta de gestión de documents (`/subject/$subject-id/$document-id`) con vistas para ver, editar y eliminar.
+- Ruta para crear nuevo document (`/subject/$subject-id/new-document`).
+- Ruta de materia cambia de `$subjectName` a `$subject-id` para poder consultar la subcolección.
 - Término "document" en toda la implementación: tipos, hooks, componentes, rutas y Firestore.
 
 **Out of scope (for future specs):**
@@ -79,11 +79,11 @@ El wrapper interno convierte markdown ↔ formato del editor concreto. Si se cam
 
 2. **Tipo Document.** Crear `app/src/types/document.ts` con la interfaz `Document` (`id`, `title`, `content`, `createdAt`).
 
-3. **Renombrar ruta de materia.** Renombrar `app/src/routes/subject/$subjectName.tsx` a `app/src/routes/subject/$subjectId.tsx`. Actualizar el componente para que lea `$subjectId` de los params. Crear directorio `app/src/routes/subject/$subjectId/` para rutas hijas.
+3. **Renombrar ruta de materia.** Renombrar `app/src/routes/subject/$subject-name.tsx` a `app/src/routes/subject/$subject-id.tsx`. Actualizar el componente para que lea `$subject-id` de los params. Crear directorio `app/src/routes/subject/$subject-id/` para rutas hijas.
 
-4. **Actualizar Home.** En `app/src/routes/home/home.tsx`, cambiar el `<Link>` para que pase `subjectId: subject.id` en vez de `subjectName: subject.name`.
+4. **Actualizar Home.** En `app/src/routes/home/home.tsx`, cambiar el `<Link>` para que pase `'subject-id': subject.id` en vez de `subjectName: subject.name`.
 
-5. **Subject layout.** En `app/src/routes/subject/$subjectId.tsx`, agregar `<Outlet />` en el `<main>` para renderizar rutas hijas.
+5. **Subject layout.** En `app/src/routes/subject/$subject-id.tsx`, agregar `<Outlet />` en el `<main>` para renderizar rutas hijas.
 
 6. **Hook useDocuments.** Crear `app/src/hooks/useDocuments.ts` con `useDocuments(subjectId)` (lista), `useDocument(subjectId, documentId)` (uno), `useCreateDocument`, `useUpdateDocument`, `useDeleteDocument`. Cada mutation invalida el queryKey `["documents", subjectId]`.
 
@@ -91,13 +91,13 @@ El wrapper interno convierte markdown ↔ formato del editor concreto. Si se cam
 
    El `content` prop solo se usa para inicializar el editor al montar — el wrapper no está controlado respecto a cambios posteriores de `content`. El componente que lo use (paso 11) debe remontarlo con un `key` distinto por cada document (p. ej. `key={documentId}`) para evitar que, al navegar entre documents, se siga mostrando el contenido del anterior.
 
-8. **Documents list.** Crear `app/src/components/DocumentsList.tsx`. Recibe `subjectId`, usa `useDocuments`, renderiza cada document como un `<Link>` a `$documentId` mostrando título y primeros 50 caracteres del contenido. Incluye botón "Nuevo document" que enlaza a `newDocument`.
+8. **Documents list.** Crear `app/src/components/DocumentsList.tsx`. Recibe `subjectId`, usa `useDocuments`, renderiza cada document como un `<Link>` a `$document-id` mostrando título y primeros 50 caracteres del contenido. Incluye botón "Nuevo document" que enlaza a `new-document`.
 
-9. **Integrar lista en materia.** En `app/src/routes/subject/$subjectId.tsx`, renderizar `<DocumentsList subjectId={subjectId} />` antes del `<Outlet />`.
+9. **Integrar lista en materia.** En `app/src/routes/subject/$subject-id.tsx`, renderizar `<DocumentsList subjectId={subjectId} />` antes del `<Outlet />`.
 
-10. **Ruta newDocument.** Crear `app/src/routes/subject/$subjectId/newDocument.tsx`. Formulario con input de título + `<MarkdownEditor>`. Al submit, llama `useCreateDocument` y navega al document creado.
+10. **Ruta new-document.** Crear `app/src/routes/subject/$subject-id/new-document.tsx`. Formulario con input de título + `<MarkdownEditor>`. Al submit, llama `useCreateDocument` y navega al document creado.
 
-11. **Ruta $documentId.** Crear `app/src/routes/subject/$subjectId/$documentId.tsx`. Modo vista: muestra título + contenido renderizado desde markdown + botones Editar/Eliminar. Modo edición: input de título + `<MarkdownEditor key={documentId}>` con el contenido existente + botón Guardar. El `key` fuerza el remontaje del wrapper cuando cambia el document, evitando que quede el contenido del document anterior. Eliminar muestra confirmación y navega a `/subject/$subjectId`.
+11. **Ruta $document-id.** Crear `app/src/routes/subject/$subject-id/$document-id.tsx`. Modo vista: muestra título + contenido renderizado desde markdown + botones Editar/Eliminar. Modo edición: input de título + `<MarkdownEditor key={documentId}>` con el contenido existente + botón Guardar. El `key` fuerza el remontaje del wrapper cuando cambia el document, evitando que quede el contenido del document anterior. Eliminar muestra confirmación y navega a `/subject/$subject-id`.
 
 ---
 
@@ -113,17 +113,17 @@ El wrapper interno convierte markdown ↔ formato del editor concreto. Si se cam
 - [ ] Las mutations invalidan el queryKey `["documents", subjectId]` y la UI se actualiza automáticamente.
 - [ ] El wrapper `MarkdownEditor` acepta `content` (markdown string) y `onChange` (callback con markdown string).
 - [ ] El wrapper `MarkdownEditor` no expone ningún tipo o API de Yoopta en su interfaz pública.
-- [ ] La ruta `/subject/$subjectId` muestra una lista de documents de esa materia.
+- [ ] La ruta `/subject/$subject-id` muestra una lista de documents de esa materia.
 - [ ] Cada document en la lista muestra su título y los primeros 50 caracteres del contenido.
-- [ ] La lista tiene un botón "Nuevo document" que navega a `/subject/$subjectId/newDocument`.
-- [ ] La ruta `/subject/$subjectId/newDocument` muestra un formulario con input de título y el editor.
-- [ ] Al guardar en newDocument, se crea el document en Firestore y se navega a su ruta.
-- [ ] La ruta `/subject/$subjectId/$documentId` muestra el document en modo vista (título + contenido renderizado).
+- [ ] La lista tiene un botón "Nuevo document" que navega a `/subject/$subject-id/new-document`.
+- [ ] La ruta `/subject/$subject-id/new-document` muestra un formulario con input de título y el editor.
+- [ ] Al guardar en new-document, se crea el document en Firestore y se navega a su ruta.
+- [ ] La ruta `/subject/$subject-id/$document-id` muestra el document en modo vista (título + contenido renderizado).
 - [ ] Desde la vista se puede entrar a modo edición (título + editor con contenido existente).
 - [ ] Al guardar en modo edición, se actualiza el document en Firestore.
-- [ ] Desde la vista se puede eliminar el document (con confirmación) y se navega a `/subject/$subjectId`.
-- [ ] La ruta de materia cambió de `$subjectName` a `$subjectId`.
-- [ ] El Home navega a `/subject/$subjectId` usando el `id` del subject.
+- [ ] Desde la vista se puede eliminar el document (con confirmación) y se navega a `/subject/$subject-id`.
+- [ ] La ruta de materia cambió de `$subjectName` a `$subject-id`.
+- [ ] El Home navega a `/subject/$subject-id` usando el `id` del subject.
 
 ---
 
@@ -135,7 +135,7 @@ El wrapper interno convierte markdown ↔ formato del editor concreto. Si se cam
 - **No:** Colección plana `documents` con campo `subjectId`. Más flexible para queries globales, pero innecesario en este alcance.
 - **Sí:** Wrapper `MarkdownEditor` como capa de abstracción. Interfaz pública solo expone markdown; la implementación concreta (Yoopta) está oculta.
 - **No:** Exponer tipos de Yoopta en componentes o hooks. Si se cambia de editor, no se debería tocar nada fuera del wrapper.
-- **Sí:** Ruta única `$documentId` para ver/editar/eliminar con mode switching. Evita duplicar UI para vista y edición.
+- **Sí:** Ruta única `$document-id` para ver/editar/eliminar con mode switching. Evita duplicar UI para vista y edición.
 - **No:** Rutas separadas para view vs edit. Más rutas, más complejidad, sin beneficio real en este alcance.
 - **No:** Campo `updatedAt`. CRUD mínimo; se puede agregar en una spec futura si se necesita.
 - **No:** Tags, búsqueda, imágenes, exportación, colaboración. Cada uno va en su propia spec si se necesita.
