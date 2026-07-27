@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SubjectSubjectIdRouteImport } from './routes/subject/$subject-id'
 import { Route as SubjectSubjectIdDocumentIdRouteImport } from './routes/subject/$subject-id/$document-id'
+import { Route as SubjectSubjectIdEvaluationIdRouteImport } from './routes/subject/$subject-id/$evaluation-id'
 import { Route as SubjectSubjectIdNewDocumentRouteImport } from './routes/subject/$subject-id/new-document'
+import { Route as SubjectSubjectIdNewEvaluationRouteImport } from './routes/subject/$subject-id/new-evaluation'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,10 +32,22 @@ const SubjectSubjectIdDocumentIdRoute =
     path: '/$document-id',
     getParentRoute: () => SubjectSubjectIdRoute,
   } as any)
+const SubjectSubjectIdEvaluationIdRoute =
+  SubjectSubjectIdEvaluationIdRouteImport.update({
+    id: '/$evaluation-id',
+    path: '/$evaluation-id',
+    getParentRoute: () => SubjectSubjectIdRoute,
+  } as any)
 const SubjectSubjectIdNewDocumentRoute =
   SubjectSubjectIdNewDocumentRouteImport.update({
     id: '/new-document',
     path: '/new-document',
+    getParentRoute: () => SubjectSubjectIdRoute,
+  } as any)
+const SubjectSubjectIdNewEvaluationRoute =
+  SubjectSubjectIdNewEvaluationRouteImport.update({
+    id: '/new-evaluation',
+    path: '/new-evaluation',
     getParentRoute: () => SubjectSubjectIdRoute,
   } as any)
 
@@ -41,20 +55,26 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
   '/subject/$subject-id/$document-id': typeof SubjectSubjectIdDocumentIdRoute
+  '/subject/$subject-id/$evaluation-id': typeof SubjectSubjectIdEvaluationIdRoute
   '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
+  '/subject/$subject-id/new-evaluation': typeof SubjectSubjectIdNewEvaluationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
   '/subject/$subject-id/$document-id': typeof SubjectSubjectIdDocumentIdRoute
+  '/subject/$subject-id/$evaluation-id': typeof SubjectSubjectIdEvaluationIdRoute
   '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
+  '/subject/$subject-id/new-evaluation': typeof SubjectSubjectIdNewEvaluationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
   '/subject/$subject-id/$document-id': typeof SubjectSubjectIdDocumentIdRoute
+  '/subject/$subject-id/$evaluation-id': typeof SubjectSubjectIdEvaluationIdRoute
   '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
+  '/subject/$subject-id/new-evaluation': typeof SubjectSubjectIdNewEvaluationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -62,19 +82,25 @@ export interface FileRouteTypes {
     | '/'
     | '/subject/$subject-id'
     | '/subject/$subject-id/$document-id'
+    | '/subject/$subject-id/$evaluation-id'
     | '/subject/$subject-id/new-document'
+    | '/subject/$subject-id/new-evaluation'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/subject/$subject-id'
     | '/subject/$subject-id/$document-id'
+    | '/subject/$subject-id/$evaluation-id'
     | '/subject/$subject-id/new-document'
+    | '/subject/$subject-id/new-evaluation'
   id:
     | '__root__'
     | '/'
     | '/subject/$subject-id'
     | '/subject/$subject-id/$document-id'
+    | '/subject/$subject-id/$evaluation-id'
     | '/subject/$subject-id/new-document'
+    | '/subject/$subject-id/new-evaluation'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -105,6 +131,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectSubjectIdDocumentIdRouteImport
       parentRoute: typeof SubjectSubjectIdRoute
     }
+    '/subject/$subject-id/$evaluation-id': {
+      id: '/subject/$subject-id/$evaluation-id'
+      path: '/$evaluation-id'
+      fullPath: '/subject/$subject-id/$evaluation-id'
+      preLoaderRoute: typeof SubjectSubjectIdEvaluationIdRouteImport
+      parentRoute: typeof SubjectSubjectIdRoute
+    }
     '/subject/$subject-id/new-document': {
       id: '/subject/$subject-id/new-document'
       path: '/new-document'
@@ -112,17 +145,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubjectSubjectIdNewDocumentRouteImport
       parentRoute: typeof SubjectSubjectIdRoute
     }
+    '/subject/$subject-id/new-evaluation': {
+      id: '/subject/$subject-id/new-evaluation'
+      path: '/new-evaluation'
+      fullPath: '/subject/$subject-id/new-evaluation'
+      preLoaderRoute: typeof SubjectSubjectIdNewEvaluationRouteImport
+      parentRoute: typeof SubjectSubjectIdRoute
+    }
   }
 }
 
 interface SubjectSubjectIdRouteChildren {
   SubjectSubjectIdDocumentIdRoute: typeof SubjectSubjectIdDocumentIdRoute
+  SubjectSubjectIdEvaluationIdRoute: typeof SubjectSubjectIdEvaluationIdRoute
   SubjectSubjectIdNewDocumentRoute: typeof SubjectSubjectIdNewDocumentRoute
+  SubjectSubjectIdNewEvaluationRoute: typeof SubjectSubjectIdNewEvaluationRoute
 }
 
 const SubjectSubjectIdRouteChildren: SubjectSubjectIdRouteChildren = {
   SubjectSubjectIdDocumentIdRoute: SubjectSubjectIdDocumentIdRoute,
+  SubjectSubjectIdEvaluationIdRoute: SubjectSubjectIdEvaluationIdRoute,
   SubjectSubjectIdNewDocumentRoute: SubjectSubjectIdNewDocumentRoute,
+  SubjectSubjectIdNewEvaluationRoute: SubjectSubjectIdNewEvaluationRoute,
 }
 
 const SubjectSubjectIdRouteWithChildren =
