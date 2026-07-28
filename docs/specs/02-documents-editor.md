@@ -15,7 +15,7 @@
 - Editor rico abstraído detrás de un wrapper que acepta y devuelve markdown. La implementación concreta (Yoopta) está oculta detrás de esa interfaz.
 - Wrapper del editor instalable como dependencia (`@yoopta/editor` + plugins de bloque + `@yoopta/exports`) pero reemplazable sin tocar Firebase ni los hooks.
 - Ruta de materia (`/subject/$subject-id`) solo lista documents: título + primeros 50 caracteres del contenido. Click en un document lleva a la ruta de gestión.
-- Ruta de gestión de documents (`/subject/$subject-id/$document-id`) con vistas para ver, editar y eliminar.
+- Ruta de gestión de documents (`/subject/$subject-id/document/$document-id`) con vistas para ver, editar y eliminar.
 - Ruta para crear nuevo document (`/subject/$subject-id/new-document`).
 - Ruta de materia cambia de `$subjectName` a `$subject-id` para poder consultar la subcolección.
 - Término "document" en toda la implementación: tipos, hooks, componentes, rutas y Firestore.
@@ -97,7 +97,7 @@ El wrapper interno convierte markdown ↔ formato del editor concreto. Si se cam
 
 10. **Ruta new-document.** Crear `app/src/routes/subject/$subject-id/new-document.tsx`. Formulario con input de título + `<MarkdownEditor>`. Al submit, llama `useCreateDocument` y navega al document creado.
 
-11. **Ruta $document-id.** Crear `app/src/routes/subject/$subject-id/$document-id.tsx`. Modo vista: muestra título + contenido renderizado desde markdown + botones Editar/Eliminar. Modo edición: input de título + `<MarkdownEditor key={documentId}>` con el contenido existente + botón Guardar. El `key` fuerza el remontaje del wrapper cuando cambia el document, evitando que quede el contenido del document anterior. Eliminar muestra confirmación y navega a `/subject/$subject-id`.
+11. **Ruta $document-id.** Crear `app/src/routes/subject/$subject-id/document/$document-id.tsx`. Modo vista: muestra título + contenido renderizado desde markdown + botones Editar/Eliminar. Modo edición: input de título + `<MarkdownEditor key={documentId}>` con el contenido existente + botón Guardar. El `key` fuerza el remontaje del wrapper cuando cambia el document, evitando que quede el contenido del document anterior. Eliminar muestra confirmación y navega a `/subject/$subject-id`.
 
 ---
 
@@ -118,7 +118,7 @@ El wrapper interno convierte markdown ↔ formato del editor concreto. Si se cam
 - [ ] La lista tiene un botón "Nuevo document" que navega a `/subject/$subject-id/new-document`.
 - [ ] La ruta `/subject/$subject-id/new-document` muestra un formulario con input de título y el editor.
 - [ ] Al guardar en new-document, se crea el document en Firestore y se navega a su ruta.
-- [ ] La ruta `/subject/$subject-id/$document-id` muestra el document en modo vista (título + contenido renderizado).
+- [ ] La ruta `/subject/$subject-id/document/$document-id` muestra el document en modo vista (título + contenido renderizado).
 - [ ] Desde la vista se puede entrar a modo edición (título + editor con contenido existente).
 - [ ] Al guardar en modo edición, se actualiza el document en Firestore.
 - [ ] Desde la vista se puede eliminar el document (con confirmación) y se navega a `/subject/$subject-id`.

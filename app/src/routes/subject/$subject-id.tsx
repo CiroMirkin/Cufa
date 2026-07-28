@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useChildMatches } from '@tanstack/react-router'
 import { ChevronLeft } from 'lucide-react'
 import { DocumentsList } from '@/components/DocumentsList'
+import { EvaluationsList } from '@/components/EvaluationsList'
 
 export const Route = createFileRoute('/subject/$subject-id')({
   component: Subject,
@@ -29,7 +30,12 @@ function Subject() {
         )}
       </header>
       <main className='pt-4'>
-        {!hasChildRoute && <DocumentsList subjectId={subjectId} />}
+        {!hasChildRoute && (
+          <>
+            <DocumentsList subjectId={subjectId} />
+            <EvaluationsList subjectId={subjectId} />
+          </>
+        )}
         <Outlet />
       </main>
     </div>

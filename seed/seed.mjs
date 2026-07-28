@@ -44,6 +44,27 @@ catch (err) {
   console.error(`Failed to seed subjects: ${err.message}`)
   process.exitCode = 1
 }
+
+const evaluationData = {
+  title: "Primer parcial de análisis",
+  type: "partial",
+  date: "2026-06-15",
+  grade: null,
+  link: "",
+}
+
+try {
+  await db
+    .collection("subjects")
+    .doc("analisis-matematico")
+    .collection("evaluations")
+    .add(evaluationData)
+  console.log("Seeded 1 evaluation(s) successfully.")
+}
+catch (err) {
+  console.error(`Failed to seed evaluation: ${err.message}`)
+  process.exitCode = 1
+}
 finally {
   await admin.app().delete()
 }
