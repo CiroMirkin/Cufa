@@ -17,7 +17,7 @@
 - Hook `useEvaluations(subjectId)` con TanStack Query (lista, uno, crear, actualizar, eliminar).
 - Ruta de listing dentro de la página de materia (mostrando lista de evaluations).
 - Ruta para crear nueva evaluation (`/subject/$subject-id/new-evaluation`).
-- Ruta para ver/editar/eliminar una evaluation existente (`/subject/$subject-id/$evaluation-id`) con mode switching.
+- Ruta para ver/editar/eliminar una evaluation existente (`/subject/$subject-id/evaluation/$evaluation-id`) con mode switching.
 - Indicadores de carga y error para cada operación.
 
 **Out of scope (for future specs):**
@@ -76,7 +76,7 @@ interface Evaluation {
 
 5. **Ruta new-evaluation.** Crear `app/src/routes/subject/$subject-id/new-evaluation.tsx`. Formulario con inputs para título, tipo (select con las 5 opciones), fecha, nota (opcional), link (opcional). Al submit, llama `useCreateEvaluation` y navega a la evaluation creada.
 
-6. **Ruta $evaluation-id.** Crear `app/src/routes/subject/$subject-id/$evaluation-id.tsx`. Modo vista: muestra todos los campos + botones Edit / Delete. Modo edición: formulario precargado + botón Save. Delete muestra confirmación y navega a `/subject/$subject-id`.
+6. **Ruta $evaluation-id.** Crear `app/src/routes/subject/$subject-id/evaluation/$evaluation-id.tsx`. Modo vista: muestra todos los campos + botones Edit / Delete. Modo edición: formulario precargado + botón Save. Delete muestra confirmación y navega a `/subject/$subject-id`.
 
 ---
 
@@ -94,7 +94,7 @@ interface Evaluation {
 - [ ] La lista tiene un botón "New evaluation" que navega a la ruta de creación.
 - [ ] La ruta de creación (`/subject/$subject-id/new-evaluation`) tiene formulario con todos los campos.
 - [ ] Al guardar una nueva evaluation, se crea en Firestore y se navega a su vista.
-- [ ] La ruta de una evaluation (`/subject/$subject-id/$evaluation-id`) muestra todos sus campos.
+- [ ] La ruta de una evaluation (`/subject/$subject-id/evaluation/$evaluation-id`) muestra todos sus campos.
 - [ ] Desde la vista se puede entrar a modo edición y guardar cambios.
 - [ ] Desde la vista se puede eliminar la evaluation (con confirmación) y se navega a `/subject/$subject-id`.
 - [ ] La UI muestra indicador de carga mientras se obtienen datos.
