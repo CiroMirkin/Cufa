@@ -27,7 +27,7 @@ export function DocumentsList({ subjectId }: DocumentsListProps) {
       {documents?.map((doc) => (
         <Link
           key={doc.id}
-          to="/subject/$subject-id/$document-id"
+          to="/subject/$subject-id/document/$document-id"
           params={{ 'subject-id': subjectId, "document-id": doc.id }}
           className="block px-4 py-3 mb-2 rounded bg-gray-50 hover:bg-gray-100"
         >

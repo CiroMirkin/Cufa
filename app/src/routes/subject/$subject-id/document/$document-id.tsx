@@ -7,7 +7,7 @@ import type { Document } from '@/types/document'
 
 const AUTOSAVE_DELAY = 1000
 
-export const Route = createFileRoute('/subject/$subject-id/$document-id')({
+export const Route = createFileRoute('/subject/$subject-id/document/$document-id')({
   component: DocumentDetail,
 })
 
