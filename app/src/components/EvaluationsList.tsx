@@ -20,13 +20,13 @@ export function EvaluationsList({ subjectId }: EvaluationsListProps) {
   return (
     <div>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">Evaluations</h2>
+        <h2 className="text-xl font-semibold">Evaluaciones</h2>
         <Link
           to="/subject/$subject-id/new-evaluation"
           params={{ 'subject-id': subjectId }}
           className="flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 rounded text-sm"
         >
-          <Plus size={16} /> Nueva evaluation
+          <Plus size={16} /> Nueva evaluación
         </Link>
       </div>
       {isLoading && <p className="text-gray-500">Cargando evaluations...</p>}
