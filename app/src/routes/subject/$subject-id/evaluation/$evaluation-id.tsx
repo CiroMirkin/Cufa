@@ -19,7 +19,7 @@ const evaluationTypes = [
   { value: "presentation", label: "Presentación" },
 ] as const
 
-export const Route = createFileRoute('/subject/$subject-id/$evaluation-id')({
+export const Route = createFileRoute('/subject/$subject-id/evaluation/$evaluation-id')({
   component: EvaluationDetail,
 })
 

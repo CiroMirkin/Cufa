@@ -20,7 +20,7 @@ function NewDocument() {
       { title, content },
       {
         onSuccess: (ref) => {
-          navigate({ to: '/subject/$subject-id/$document-id', params: { 'subject-id': subjectId, 'document-id': ref.id } })
+          navigate({ to: '/subject/$subject-id/document/$document-id', params: { 'subject-id': subjectId, 'document-id': ref.id } })
         },
       },
     )

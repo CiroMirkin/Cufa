@@ -37,7 +37,7 @@ function NewEvaluation() {
       {
         onSuccess: (ref) => {
           navigate({
-            to: '/subject/$subject-id/$evaluation-id',
+            to: '/subject/$subject-id/evaluation/$evaluation-id',
             params: { 'subject-id': subjectId, 'evaluation-id': ref.id },
           })
         },

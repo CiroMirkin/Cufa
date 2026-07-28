@@ -34,7 +34,7 @@ export function EvaluationsList({ subjectId }: EvaluationsListProps) {
       {evaluations?.map((ev) => (
         <Link
           key={ev.id}
-          to="/subject/$subject-id/$evaluation-id"
+          to="/subject/$subject-id/evaluation/$evaluation-id"
           params={{ 'subject-id': subjectId, 'evaluation-id': ev.id }}
           className="block px-4 py-3 mb-2 rounded bg-gray-50 hover:bg-gray-100"
         >
