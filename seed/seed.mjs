@@ -52,6 +52,24 @@ catch (err) {
   process.exitCode = 1
 }
 
+const userId = "test-user-001"
+const userRef = db.collection("users").doc(userId)
+try {
+  await userRef.set({
+    uid: userId,
+    alias: "martin-gonzales",
+    email: "martin.gonzales@example.com",
+    displayName: "Martin Gonzales",
+    photoURL: "https://ui-avatars.com/api/?name=Martin+Gonzales",
+    createdAt: new Date().toISOString(),
+  })
+  console.log("Seeded 1 user(s) successfully.")
+}
+catch (err) {
+  console.error(`Failed to seed user: ${err.message}`)
+  process.exitCode = 1
+}
+
 const evaluationData = {
   title: "Primer parcial de análisis",
   type: "partial",
