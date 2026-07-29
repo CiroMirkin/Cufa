@@ -25,7 +25,11 @@ admin.initializeApp({
 const db = admin.firestore()
 
 const subjects = [
-  { name: "Análisis Matemático", careerId: "ingenieria", plan: "2026" },
+  { name: "Metodologías de Resolución de Problemas", careerId: "ingenieria", plan: "2026" },
+  { name: "Arquitectura de Computadoras", careerId: "ingenieria", plan: "2026" },
+  { name: "Bases de Datos 2", careerId: "ingenieria", plan: "2026" },
+  { name: "Programación 1", careerId: "ingenieria", plan: "2026" },
+  { name: "Diseños y Arquitectura de Despliegue 1", careerId: "ingenieria", plan: "2026" },
 ]
 
 const batch = db.batch()
@@ -56,7 +60,7 @@ const evaluationData = {
 try {
   await db
     .collection("subjects")
-    .doc("analisis-matematico")
+    .doc("programación-1")
     .collection("evaluations")
     .add(evaluationData)
   console.log("Seeded 1 evaluation(s) successfully.")
