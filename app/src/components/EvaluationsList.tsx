@@ -21,15 +21,15 @@ export function EvaluationsList({ subjectId, careerId }: EvaluationsListProps) {
   const { data: evaluations, isLoading, error } = useEvaluations(subjectId)
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
+    <div className='p-1'>
+      <div className="flex items-center justify-between gap-4 mb-4">
         <h2 className="text-xl font-semibold">Evaluaciones</h2>
         <Link
           to="/career/$career-id/subject/$subject-id/new-evaluation"
           params={{ 'career-id': careerId, 'subject-id': subjectId }}
         >
-          <Button>
-            <Plus size={16} /> Nueva evaluación
+          <Button variant='outline'>
+            <Plus size={16} />
           </Button>
         </Link>
       </div>

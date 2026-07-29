@@ -6,6 +6,8 @@ import { useAuth } from '@/auth'
 import { useSubjects } from '@/hooks/useSubjects'
 import { Spinner } from '@/components/ui/spinner'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
 import type { Career } from '@/types/career'
 
 export const Route = createFileRoute('/career/$career-id')({
@@ -43,8 +45,16 @@ function CareerPage() {
 
   return (
     <div className="px-6">
-      <header className="w-full py-4 flex justify-center items-center">
+      <header className="w-full py-4 flex justify-center items-center gap-4">
         <h1 className="font-semibold text-3xl">{career.name}</h1>
+        <Link
+          to="/career/$career-id/new-subject"
+          params={{ 'career-id': careerId }}
+        >
+          <Button>
+            <Plus size={16} /> Nueva materia
+          </Button>
+        </Link>
       </header>
 
       {hasChildRoute ? (

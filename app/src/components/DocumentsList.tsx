@@ -14,15 +14,15 @@ export function DocumentsList({ subjectId, careerId }: DocumentsListProps) {
   const { data: documents, isLoading, error } = useDocuments(subjectId)
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
+    <div className='border-x px-4'>
+      <div className="flex items-center justify-between gap-4 mb-4">
         <h2 className="text-xl font-semibold">Documentos</h2>
         <Link
           to="/career/$career-id/subject/$subject-id/new-document"
           params={{ 'career-id': careerId, 'subject-id': subjectId }}
         >
-          <Button>
-            <Plus size={16} /> Nuevo documento
+          <Button variant='outline'>
+            <Plus size={16} />
           </Button>
         </Link>
       </div>
