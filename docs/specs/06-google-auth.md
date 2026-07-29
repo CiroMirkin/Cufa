@@ -1,6 +1,6 @@
 # SPEC 06 — Google Auth
 
-> **Status:** Draft · **Depends on:** SPEC 01 · **Date:** 2026-07-29
+> **Status:** Implementado · **Depends on:** SPEC 01 · **Date:** 2026-07-29
 > **Objective:** Integrar autenticación con Google OAuth vía Firebase Auth, con ruta `/login`, onboarding de alias, colección `users` en Firestore, logout global, y protección de rutas de carrera.
 
 ---
