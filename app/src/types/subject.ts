@@ -4,4 +4,5 @@ export interface Subject {
   name: string
   careerId: string
   plan: string
+  userId: string
 }

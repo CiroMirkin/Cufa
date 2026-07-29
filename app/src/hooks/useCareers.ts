@@ -1,29 +1,31 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { collection, getDocs, addDoc } from "firebase/firestore"
+import { collection, getDocs, addDoc, query, where } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { Career } from "@/types/career"
 
 const careersRef = collection(db, "careers")
 
-async function fetchCareers(): Promise<Career[]> {
-  const snapshot = await getDocs(careersRef)
+async function fetchCareers(uid: string): Promise<Career[]> {
+  const q = query(careersRef, where("userId", "==", uid))
+  const snapshot = await getDocs(q)
   return snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as Career[]
 }
 
-export function useCareers() {
+export function useCareers(uid: string | undefined) {
   return useQuery({
-    queryKey: ["careers"],
-    queryFn: fetchCareers,
+    queryKey: ["careers", uid],
+    queryFn: () => fetchCareers(uid!),
+    enabled: !!uid,
   })
 }
 
 export function useCreateCareer() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (data: { name: string }) =>
+    mutationFn: (data: { name: string; userId: string }) =>
       addDoc(careersRef, data),
 
     onSuccess: () => {
