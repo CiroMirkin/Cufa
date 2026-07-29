@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore'
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import { signInWithGoogle } from '@/auth'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -23,7 +23,7 @@ function Login() {
       const uid = result.user.uid
       const snap = await getDoc(doc(db, "users", uid))
       if (snap.exists()) {
-        const careersSnap = await getDocs(collection(db, "careers"))
+        const careersSnap = await getDocs(query(collection(db, "careers"), where("userId", "==", uid)))
         const careerId = careersSnap.docs[0]?.id
         if (careerId) {
           navigate({ to: '/career/$career-id', params: { 'career-id': careerId } })

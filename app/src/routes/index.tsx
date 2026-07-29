@@ -13,7 +13,7 @@ export const Route = createFileRoute('/')({
 
 function Home() {
   const { user, loading: authLoading } = useAuth()
-  const { data: careers, isLoading, error } = useCareers()
+  const { data: careers, isLoading, error } = useCareers(user?.uid)
   const createCareer = useCreateCareer()
   const navigate = useNavigate()
   const [name, setName] = useState('')
@@ -50,7 +50,7 @@ function Home() {
     e.preventDefault()
     if (!name.trim()) return
     createCareer.mutate(
-      { name: name.trim() },
+      { name: name.trim(), userId: user!.uid },
       {
         onSuccess: (ref) => {
           navigate({ to: '/career/$career-id', params: { 'career-id': ref.id } })
