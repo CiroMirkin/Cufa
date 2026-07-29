@@ -23,16 +23,19 @@ admin.initializeApp({
 })
 
 const db = admin.firestore()
+const batch = db.batch()
+
+const careerId = "tecnicatura-universitaria-en-programacion-full-stack"
+const careerRef = db.collection("careers").doc(careerId)
+batch.set(careerRef, { name: "Tecnicatura Universitaria en Programación Full Stack" })
 
 const subjects = [
-  { name: "Metodologías de Resolución de Problemas", careerId: "ingenieria", plan: "2026" },
-  { name: "Arquitectura de Computadoras", careerId: "ingenieria", plan: "2026" },
-  { name: "Bases de Datos 2", careerId: "ingenieria", plan: "2026" },
-  { name: "Programación 1", careerId: "ingenieria", plan: "2026" },
-  { name: "Diseños y Arquitectura de Despliegue 1", careerId: "ingenieria", plan: "2026" },
+  { name: "Metodologías de Resolución de Problemas", careerId, plan: "2026" },
+  { name: "Arquitectura de Computadoras", careerId, plan: "2026" },
+  { name: "Bases de Datos 2", careerId, plan: "2026" },
+  { name: "Programación 1", careerId, plan: "2026" },
+  { name: "Diseños y Arquitectura de Despliegue 1", careerId, plan: "2026" },
 ]
-
-const batch = db.batch()
 
 for (const subject of subjects) {
   const docId = subject.name.toLowerCase().replace(/\s+/g, "-")
@@ -42,10 +45,10 @@ for (const subject of subjects) {
 
 try {
   await batch.commit()
-  console.log(`Seeded ${subjects.length} subject(s) successfully.`)
+  console.log(`Seeded 1 career(s) and ${subjects.length} subject(s) successfully.`)
 }
 catch (err) {
-  console.error(`Failed to seed subjects: ${err.message}`)
+  console.error(`Failed to seed: ${err.message}`)
   process.exitCode = 1
 }
 

@@ -7,9 +7,10 @@ import { Button } from './ui/button'
 
 interface DocumentsListProps {
   subjectId: string
+  careerId: string
 }
 
-export function DocumentsList({ subjectId }: DocumentsListProps) {
+export function DocumentsList({ subjectId, careerId }: DocumentsListProps) {
   const { data: documents, isLoading, error } = useDocuments(subjectId)
 
   return (
@@ -17,8 +18,8 @@ export function DocumentsList({ subjectId }: DocumentsListProps) {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">Documentos</h2>
         <Link
-          to="/subject/$subject-id/new-document"
-          params={{ 'subject-id': subjectId }}
+          to="/career/$career-id/subject/$subject-id/new-document"
+          params={{ 'career-id': careerId, 'subject-id': subjectId }}
         >
           <Button>
             <Plus size={16} /> Nuevo documento
@@ -30,8 +31,8 @@ export function DocumentsList({ subjectId }: DocumentsListProps) {
       {documents?.map((doc) => (
         <Link
           key={doc.id}
-          to="/subject/$subject-id/document/$document-id"
-          params={{ 'subject-id': subjectId, "document-id": doc.id }}
+          to="/career/$career-id/subject/$subject-id/document/$document-id"
+          params={{ 'career-id': careerId, 'subject-id': subjectId, "document-id": doc.id }}
           className="block"
         >
           <Card>

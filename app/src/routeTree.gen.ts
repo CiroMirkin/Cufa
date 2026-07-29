@@ -10,102 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as SubjectSubjectIdRouteImport } from './routes/subject/$subject-id'
-import { Route as SubjectSubjectIdNewDocumentRouteImport } from './routes/subject/$subject-id/new-document'
-import { Route as SubjectSubjectIdNewEvaluationRouteImport } from './routes/subject/$subject-id/new-evaluation'
-import { Route as SubjectSubjectIdDocumentDocumentIdRouteImport } from './routes/subject/$subject-id/document/$document-id'
-import { Route as SubjectSubjectIdEvaluationEvaluationIdRouteImport } from './routes/subject/$subject-id/evaluation/$evaluation-id'
+import { Route as CareerCareerIdRouteImport } from './routes/career/$career-id'
+import { Route as CareerCareerIdSubjectSubjectIdRouteImport } from './routes/career/$career-id/subject/$subject-id'
+import { Route as CareerCareerIdSubjectSubjectIdNewDocumentRouteImport } from './routes/career/$career-id/subject/$subject-id/new-document'
+import { Route as CareerCareerIdSubjectSubjectIdNewEvaluationRouteImport } from './routes/career/$career-id/subject/$subject-id/new-evaluation'
+import { Route as CareerCareerIdSubjectSubjectIdDocumentDocumentIdRouteImport } from './routes/career/$career-id/subject/$subject-id/document/$document-id'
+import { Route as CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRouteImport } from './routes/career/$career-id/subject/$subject-id/evaluation/$evaluation-id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubjectSubjectIdRoute = SubjectSubjectIdRouteImport.update({
-  id: '/subject/$subject-id',
-  path: '/subject/$subject-id',
+const CareerCareerIdRoute = CareerCareerIdRouteImport.update({
+  id: '/career/$career-id',
+  path: '/career/$career-id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubjectSubjectIdNewDocumentRoute =
-  SubjectSubjectIdNewDocumentRouteImport.update({
+const CareerCareerIdSubjectSubjectIdRoute =
+  CareerCareerIdSubjectSubjectIdRouteImport.update({
+    id: '/subject/$subject-id',
+    path: '/subject/$subject-id',
+    getParentRoute: () => CareerCareerIdRoute,
+  } as any)
+const CareerCareerIdSubjectSubjectIdNewDocumentRoute =
+  CareerCareerIdSubjectSubjectIdNewDocumentRouteImport.update({
     id: '/new-document',
     path: '/new-document',
-    getParentRoute: () => SubjectSubjectIdRoute,
+    getParentRoute: () => CareerCareerIdSubjectSubjectIdRoute,
   } as any)
-const SubjectSubjectIdNewEvaluationRoute =
-  SubjectSubjectIdNewEvaluationRouteImport.update({
+const CareerCareerIdSubjectSubjectIdNewEvaluationRoute =
+  CareerCareerIdSubjectSubjectIdNewEvaluationRouteImport.update({
     id: '/new-evaluation',
     path: '/new-evaluation',
-    getParentRoute: () => SubjectSubjectIdRoute,
+    getParentRoute: () => CareerCareerIdSubjectSubjectIdRoute,
   } as any)
-const SubjectSubjectIdDocumentDocumentIdRoute =
-  SubjectSubjectIdDocumentDocumentIdRouteImport.update({
+const CareerCareerIdSubjectSubjectIdDocumentDocumentIdRoute =
+  CareerCareerIdSubjectSubjectIdDocumentDocumentIdRouteImport.update({
     id: '/document/$document-id',
     path: '/document/$document-id',
-    getParentRoute: () => SubjectSubjectIdRoute,
+    getParentRoute: () => CareerCareerIdSubjectSubjectIdRoute,
   } as any)
-const SubjectSubjectIdEvaluationEvaluationIdRoute =
-  SubjectSubjectIdEvaluationEvaluationIdRouteImport.update({
+const CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute =
+  CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRouteImport.update({
     id: '/evaluation/$evaluation-id',
     path: '/evaluation/$evaluation-id',
-    getParentRoute: () => SubjectSubjectIdRoute,
+    getParentRoute: () => CareerCareerIdSubjectSubjectIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
-  '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
-  '/subject/$subject-id/new-evaluation': typeof SubjectSubjectIdNewEvaluationRoute
-  '/subject/$subject-id/document/$document-id': typeof SubjectSubjectIdDocumentDocumentIdRoute
-  '/subject/$subject-id/evaluation/$evaluation-id': typeof SubjectSubjectIdEvaluationEvaluationIdRoute
+  '/career/$career-id': typeof CareerCareerIdRouteWithChildren
+  '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
+  '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
+  '/career/$career-id/subject/$subject-id/new-evaluation': typeof CareerCareerIdSubjectSubjectIdNewEvaluationRoute
+  '/career/$career-id/subject/$subject-id/document/$document-id': typeof CareerCareerIdSubjectSubjectIdDocumentDocumentIdRoute
+  '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id': typeof CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
-  '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
-  '/subject/$subject-id/new-evaluation': typeof SubjectSubjectIdNewEvaluationRoute
-  '/subject/$subject-id/document/$document-id': typeof SubjectSubjectIdDocumentDocumentIdRoute
-  '/subject/$subject-id/evaluation/$evaluation-id': typeof SubjectSubjectIdEvaluationEvaluationIdRoute
+  '/career/$career-id': typeof CareerCareerIdRouteWithChildren
+  '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
+  '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
+  '/career/$career-id/subject/$subject-id/new-evaluation': typeof CareerCareerIdSubjectSubjectIdNewEvaluationRoute
+  '/career/$career-id/subject/$subject-id/document/$document-id': typeof CareerCareerIdSubjectSubjectIdDocumentDocumentIdRoute
+  '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id': typeof CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/subject/$subject-id': typeof SubjectSubjectIdRouteWithChildren
-  '/subject/$subject-id/new-document': typeof SubjectSubjectIdNewDocumentRoute
-  '/subject/$subject-id/new-evaluation': typeof SubjectSubjectIdNewEvaluationRoute
-  '/subject/$subject-id/document/$document-id': typeof SubjectSubjectIdDocumentDocumentIdRoute
-  '/subject/$subject-id/evaluation/$evaluation-id': typeof SubjectSubjectIdEvaluationEvaluationIdRoute
+  '/career/$career-id': typeof CareerCareerIdRouteWithChildren
+  '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
+  '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
+  '/career/$career-id/subject/$subject-id/new-evaluation': typeof CareerCareerIdSubjectSubjectIdNewEvaluationRoute
+  '/career/$career-id/subject/$subject-id/document/$document-id': typeof CareerCareerIdSubjectSubjectIdDocumentDocumentIdRoute
+  '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id': typeof CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/subject/$subject-id'
-    | '/subject/$subject-id/new-document'
-    | '/subject/$subject-id/new-evaluation'
-    | '/subject/$subject-id/document/$document-id'
-    | '/subject/$subject-id/evaluation/$evaluation-id'
+    | '/career/$career-id'
+    | '/career/$career-id/subject/$subject-id'
+    | '/career/$career-id/subject/$subject-id/new-document'
+    | '/career/$career-id/subject/$subject-id/new-evaluation'
+    | '/career/$career-id/subject/$subject-id/document/$document-id'
+    | '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/subject/$subject-id'
-    | '/subject/$subject-id/new-document'
-    | '/subject/$subject-id/new-evaluation'
-    | '/subject/$subject-id/document/$document-id'
-    | '/subject/$subject-id/evaluation/$evaluation-id'
+    | '/career/$career-id'
+    | '/career/$career-id/subject/$subject-id'
+    | '/career/$career-id/subject/$subject-id/new-document'
+    | '/career/$career-id/subject/$subject-id/new-evaluation'
+    | '/career/$career-id/subject/$subject-id/document/$document-id'
+    | '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id'
   id:
     | '__root__'
     | '/'
-    | '/subject/$subject-id'
-    | '/subject/$subject-id/new-document'
-    | '/subject/$subject-id/new-evaluation'
-    | '/subject/$subject-id/document/$document-id'
-    | '/subject/$subject-id/evaluation/$evaluation-id'
+    | '/career/$career-id'
+    | '/career/$career-id/subject/$subject-id'
+    | '/career/$career-id/subject/$subject-id/new-document'
+    | '/career/$career-id/subject/$subject-id/new-evaluation'
+    | '/career/$career-id/subject/$subject-id/document/$document-id'
+    | '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  SubjectSubjectIdRoute: typeof SubjectSubjectIdRouteWithChildren
+  CareerCareerIdRoute: typeof CareerCareerIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -117,66 +130,91 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subject/$subject-id': {
-      id: '/subject/$subject-id'
-      path: '/subject/$subject-id'
-      fullPath: '/subject/$subject-id'
-      preLoaderRoute: typeof SubjectSubjectIdRouteImport
+    '/career/$career-id': {
+      id: '/career/$career-id'
+      path: '/career/$career-id'
+      fullPath: '/career/$career-id'
+      preLoaderRoute: typeof CareerCareerIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/subject/$subject-id/new-document': {
-      id: '/subject/$subject-id/new-document'
+    '/career/$career-id/subject/$subject-id': {
+      id: '/career/$career-id/subject/$subject-id'
+      path: '/subject/$subject-id'
+      fullPath: '/career/$career-id/subject/$subject-id'
+      preLoaderRoute: typeof CareerCareerIdSubjectSubjectIdRouteImport
+      parentRoute: typeof CareerCareerIdRoute
+    }
+    '/career/$career-id/subject/$subject-id/new-document': {
+      id: '/career/$career-id/subject/$subject-id/new-document'
       path: '/new-document'
-      fullPath: '/subject/$subject-id/new-document'
-      preLoaderRoute: typeof SubjectSubjectIdNewDocumentRouteImport
-      parentRoute: typeof SubjectSubjectIdRoute
+      fullPath: '/career/$career-id/subject/$subject-id/new-document'
+      preLoaderRoute: typeof CareerCareerIdSubjectSubjectIdNewDocumentRouteImport
+      parentRoute: typeof CareerCareerIdSubjectSubjectIdRoute
     }
-    '/subject/$subject-id/new-evaluation': {
-      id: '/subject/$subject-id/new-evaluation'
+    '/career/$career-id/subject/$subject-id/new-evaluation': {
+      id: '/career/$career-id/subject/$subject-id/new-evaluation'
       path: '/new-evaluation'
-      fullPath: '/subject/$subject-id/new-evaluation'
-      preLoaderRoute: typeof SubjectSubjectIdNewEvaluationRouteImport
-      parentRoute: typeof SubjectSubjectIdRoute
+      fullPath: '/career/$career-id/subject/$subject-id/new-evaluation'
+      preLoaderRoute: typeof CareerCareerIdSubjectSubjectIdNewEvaluationRouteImport
+      parentRoute: typeof CareerCareerIdSubjectSubjectIdRoute
     }
-    '/subject/$subject-id/document/$document-id': {
-      id: '/subject/$subject-id/document/$document-id'
+    '/career/$career-id/subject/$subject-id/document/$document-id': {
+      id: '/career/$career-id/subject/$subject-id/document/$document-id'
       path: '/document/$document-id'
-      fullPath: '/subject/$subject-id/document/$document-id'
-      preLoaderRoute: typeof SubjectSubjectIdDocumentDocumentIdRouteImport
-      parentRoute: typeof SubjectSubjectIdRoute
+      fullPath: '/career/$career-id/subject/$subject-id/document/$document-id'
+      preLoaderRoute: typeof CareerCareerIdSubjectSubjectIdDocumentDocumentIdRouteImport
+      parentRoute: typeof CareerCareerIdSubjectSubjectIdRoute
     }
-    '/subject/$subject-id/evaluation/$evaluation-id': {
-      id: '/subject/$subject-id/evaluation/$evaluation-id'
+    '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id': {
+      id: '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id'
       path: '/evaluation/$evaluation-id'
-      fullPath: '/subject/$subject-id/evaluation/$evaluation-id'
-      preLoaderRoute: typeof SubjectSubjectIdEvaluationEvaluationIdRouteImport
-      parentRoute: typeof SubjectSubjectIdRoute
+      fullPath: '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id'
+      preLoaderRoute: typeof CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRouteImport
+      parentRoute: typeof CareerCareerIdSubjectSubjectIdRoute
     }
   }
 }
 
-interface SubjectSubjectIdRouteChildren {
-  SubjectSubjectIdNewDocumentRoute: typeof SubjectSubjectIdNewDocumentRoute
-  SubjectSubjectIdNewEvaluationRoute: typeof SubjectSubjectIdNewEvaluationRoute
-  SubjectSubjectIdDocumentDocumentIdRoute: typeof SubjectSubjectIdDocumentDocumentIdRoute
-  SubjectSubjectIdEvaluationEvaluationIdRoute: typeof SubjectSubjectIdEvaluationEvaluationIdRoute
+interface CareerCareerIdSubjectSubjectIdRouteChildren {
+  CareerCareerIdSubjectSubjectIdNewDocumentRoute: typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
+  CareerCareerIdSubjectSubjectIdNewEvaluationRoute: typeof CareerCareerIdSubjectSubjectIdNewEvaluationRoute
+  CareerCareerIdSubjectSubjectIdDocumentDocumentIdRoute: typeof CareerCareerIdSubjectSubjectIdDocumentDocumentIdRoute
+  CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute: typeof CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute
 }
 
-const SubjectSubjectIdRouteChildren: SubjectSubjectIdRouteChildren = {
-  SubjectSubjectIdNewDocumentRoute: SubjectSubjectIdNewDocumentRoute,
-  SubjectSubjectIdNewEvaluationRoute: SubjectSubjectIdNewEvaluationRoute,
-  SubjectSubjectIdDocumentDocumentIdRoute:
-    SubjectSubjectIdDocumentDocumentIdRoute,
-  SubjectSubjectIdEvaluationEvaluationIdRoute:
-    SubjectSubjectIdEvaluationEvaluationIdRoute,
+const CareerCareerIdSubjectSubjectIdRouteChildren: CareerCareerIdSubjectSubjectIdRouteChildren =
+  {
+    CareerCareerIdSubjectSubjectIdNewDocumentRoute:
+      CareerCareerIdSubjectSubjectIdNewDocumentRoute,
+    CareerCareerIdSubjectSubjectIdNewEvaluationRoute:
+      CareerCareerIdSubjectSubjectIdNewEvaluationRoute,
+    CareerCareerIdSubjectSubjectIdDocumentDocumentIdRoute:
+      CareerCareerIdSubjectSubjectIdDocumentDocumentIdRoute,
+    CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute:
+      CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute,
+  }
+
+const CareerCareerIdSubjectSubjectIdRouteWithChildren =
+  CareerCareerIdSubjectSubjectIdRoute._addFileChildren(
+    CareerCareerIdSubjectSubjectIdRouteChildren,
+  )
+
+interface CareerCareerIdRouteChildren {
+  CareerCareerIdSubjectSubjectIdRoute: typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
 }
 
-const SubjectSubjectIdRouteWithChildren =
-  SubjectSubjectIdRoute._addFileChildren(SubjectSubjectIdRouteChildren)
+const CareerCareerIdRouteChildren: CareerCareerIdRouteChildren = {
+  CareerCareerIdSubjectSubjectIdRoute:
+    CareerCareerIdSubjectSubjectIdRouteWithChildren,
+}
+
+const CareerCareerIdRouteWithChildren = CareerCareerIdRoute._addFileChildren(
+  CareerCareerIdRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  SubjectSubjectIdRoute: SubjectSubjectIdRouteWithChildren,
+  CareerCareerIdRoute: CareerCareerIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

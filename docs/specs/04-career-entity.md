@@ -1,6 +1,6 @@
 # SPEC 04 — Career entity
 
-> **Status:** Draft · **Depends on:** SPEC 01 · **Date:** 2026-07-29
+> **Status:** Approved · **Depends on:** SPEC 01 · **Date:** 2026-07-29
 > **Objective:** Agregar la entidad "carrera" con colección en Firestore, formulario de creación al primer inicio (shadcn), seed de carrera default, e integrarla en la navegación como raíz de las rutas de materia.
 
 ---

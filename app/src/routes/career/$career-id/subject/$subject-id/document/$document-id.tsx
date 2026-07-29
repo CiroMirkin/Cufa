@@ -7,12 +7,12 @@ import type { Document } from '@/types/document'
 
 const AUTOSAVE_DELAY = 1000
 
-export const Route = createFileRoute('/subject/$subject-id/document/$document-id')({
+export const Route = createFileRoute('/career/$career-id/subject/$subject-id/document/$document-id')({
   component: DocumentDetail,
 })
 
 function DocumentDetail() {
-  const { 'subject-id': subjectId, 'document-id': documentId } = Route.useParams()
+  const { 'career-id': careerId, 'subject-id': subjectId, 'document-id': documentId } = Route.useParams()
   const navigate = useNavigate()
   const { data: document, isLoading, error } = useDocument(subjectId, documentId)
   const updateDocument = useUpdateDocument(subjectId, documentId)
@@ -21,7 +21,7 @@ function DocumentDetail() {
   function handleDelete() {
     if (window.confirm('¿Estás seguro de que quieres eliminar este document?')) {
       deleteDocument.mutate(documentId, {
-        onSuccess: () => navigate({ to: '/subject/$subject-id', params: { 'subject-id': subjectId } }),
+        onSuccess: () => navigate({ to: '/career/$career-id/subject/$subject-id', params: { 'career-id': careerId, 'subject-id': subjectId } }),
       })
     }
   }

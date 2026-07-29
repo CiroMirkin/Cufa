@@ -11,12 +11,12 @@ const evaluationTypes = [
   { value: "presentation", label: "Presentación" },
 ] as const
 
-export const Route = createFileRoute('/subject/$subject-id/evaluation/$evaluation-id')({
+export const Route = createFileRoute('/career/$career-id/subject/$subject-id/evaluation/$evaluation-id')({
   component: EvaluationDetail,
 })
 
 function EvaluationDetail() {
-  const { 'subject-id': subjectId, 'evaluation-id': evaluationId } = Route.useParams()
+  const { 'career-id': careerId, 'subject-id': subjectId, 'evaluation-id': evaluationId } = Route.useParams()
   const navigate = useNavigate()
   const { data: evaluation, isLoading, error } = useEvaluation(subjectId, evaluationId)
   const updateEvaluation = useUpdateEvaluation(subjectId, evaluationId)
@@ -57,7 +57,7 @@ function EvaluationDetail() {
     if (window.confirm('¿Estás seguro de que quieres eliminar esta evaluación?')) {
       deleteEvaluation.mutate(evaluationId, {
         onSuccess: () =>
-          navigate({ to: '/subject/$subject-id', params: { 'subject-id': subjectId } }),
+          navigate({ to: '/career/$career-id/subject/$subject-id', params: { 'career-id': careerId, 'subject-id': subjectId } }),
       })
     }
   }
