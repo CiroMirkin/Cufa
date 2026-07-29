@@ -18,6 +18,7 @@
 - Raíz `/` sin autenticar también redirige a `/login`.
 - Persistencia de sesión por defecto de Firebase Auth (IndexedDB).
 - Componentes shadcn para login, onboarding y header.
+- Cada usuario ve solo sus propias carreras y materias: filtrado por `userId` en Firestore.
 
 **Out of scope (for future specs):**
 
@@ -44,13 +45,35 @@ interface AppUser {
   photoURL: string;    // de Google OAuth
   createdAt: string;   // ISO timestamp, se setea al crear el documento
 }
+
+// Firestore — colección careers
+// Colección: careers/{docId}
+
+interface Career {
+  id: string;
+  name: string;
+  userId: string;      // Firebase Auth UID del dueño
+}
+
+// Firestore — colección subjects
+// Colección: subjects/{docId}
+
+interface Subject {
+  id: string;
+  name: string;
+  careerId: string;
+  plan: string;
+  userId: string;      // Firebase Auth UID del dueño
+}
 ```
 
 **Convenciones:**
 
 - `alias` único en toda la colección `users`. Se valida contra Firestore antes de guardar (query `where("alias", "==", alias)`). Si ya existe, se muestra error y se pide otro.
-- Colección `users` plana en Firestore, misma arquitectura que `careers` y `subjects`.
+- Colecciones `users`, `careers` y `subjects` planas en Firestore.
 - `uid` es el mismo que el `uid` de Firebase Auth.
+- Toda query sobre `careers` y `subjects` incluye `where("userId", "==", uid)` para aislamiento por usuario.
+- `userId` se asigna en el momento de crear la carrera o materia; no se transfiere.
 
 ---
 
@@ -98,6 +121,15 @@ interface AppUser {
 9. **Raíz no autenticada.** Modificar `app/src/routes/index.tsx`:
    - Si no hay sesión → redirect a `/login` (en lugar de mostrar formulario de carrera o redirect a `/career`).
 
+10. **Vincular carreras y materias al usuario.** Actualizar tipos, hooks, seed y rutas para filtrar por `userId`:
+    - `app/src/types/career.ts`: agregar `userId: string`.
+    - `app/src/types/subject.ts`: agregar `userId: string`.
+    - `app/src/hooks/useCareers.ts`: `useCareers(uid)` filtra con `where("userId", "==", uid)`. `useCreateCareer()` recibe `{ name, userId }`.
+    - `app/src/hooks/useSubjects.ts`: `useSubjects(uid, careerId)` filtra con `where("userId", "==", uid)` además de `where("careerId", "==", careerId)`.
+    - `seed/seed.mjs`: agregar `userId: "test-user-001"` en la carrera y las materias existentes.
+    - `app/src/routes/index.tsx`: pasar `user.uid` a `useCareers(uid)` y a `useCreateCareer({ name, userId })`.
+    - `app/src/routes/career/$career-id.tsx`: pasar `uid` a `useSubjects(uid, careerId)`.
+
 ---
 
 ## Acceptance criteria
@@ -118,6 +150,13 @@ interface AppUser {
 - [ ] `/` sin autenticación redirige a `/login`.
 - [ ] El header global muestra foto, nombre y botón "Cerrar sesión".
 - [ ] El alias "martin gonzales" existe en el seed.
+- [ ] `Career` tiene campo `userId`.
+- [ ] `Subject` tiene campo `userId`.
+- [ ] `useCareers(uid)` solo devuelve carreras del usuario autenticado.
+- [ ] `useSubjects(uid, careerId)` solo devuelve materias del usuario autenticado.
+- [ ] `useCreateCareer()` guarda la carrera con `userId` del usuario actual.
+- [ ] El seed incluye `userId: "test-user-001"` en la carrera y materias.
+- [ ] Cada usuario ve únicamente sus propias carreras y materias en la UI.
 
 ---
 
@@ -131,6 +170,7 @@ interface AppUser {
 - **Sí:** `ProtectedRoute` como wrapper de las rutas `/career/*`. Misma arquitectura que otras protecciones en TanStack Router.
 - **Sí:** Componentes shadcn para toda la UI nueva (login, onboarding, header).
 - **Sí:** Seed con usuario de prueba "martin gonzales".
+- **Sí:** `userId` en `Career` y `Subject` para filtrar datos por usuario. Las queries siempre incluyen `where("userId", "==", uid)`. Esto es más simple que usar subcolecciones anidadas y mantiene la estructura plana de Firestore.
 - **No:** Email/contraseña como provider alternativo.
 - **No:** Roles y permisos (admin, editor, etc.).
 - **No:** Página de perfil o edición de alias posterior al onboarding.
