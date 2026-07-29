@@ -14,6 +14,7 @@ import { Route as CareerRouteImport } from './routes/career'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as CareerCareerIdRouteImport } from './routes/career/$career-id'
+import { Route as CareerCareerIdNewSubjectRouteImport } from './routes/career/$career-id/new-subject'
 import { Route as CareerCareerIdSubjectSubjectIdRouteImport } from './routes/career/$career-id/subject/$subject-id'
 import { Route as CareerCareerIdSubjectSubjectIdNewDocumentRouteImport } from './routes/career/$career-id/subject/$subject-id/new-document'
 import { Route as CareerCareerIdSubjectSubjectIdNewEvaluationRouteImport } from './routes/career/$career-id/subject/$subject-id/new-evaluation'
@@ -45,6 +46,12 @@ const CareerCareerIdRoute = CareerCareerIdRouteImport.update({
   path: '/$career-id',
   getParentRoute: () => CareerRoute,
 } as any)
+const CareerCareerIdNewSubjectRoute =
+  CareerCareerIdNewSubjectRouteImport.update({
+    id: '/new-subject',
+    path: '/new-subject',
+    getParentRoute: () => CareerCareerIdRoute,
+  } as any)
 const CareerCareerIdSubjectSubjectIdRoute =
   CareerCareerIdSubjectSubjectIdRouteImport.update({
     id: '/subject/$subject-id',
@@ -82,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/career/$career-id': typeof CareerCareerIdRouteWithChildren
+  '/career/$career-id/new-subject': typeof CareerCareerIdNewSubjectRoute
   '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
   '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
   '/career/$career-id/subject/$subject-id/new-evaluation': typeof CareerCareerIdSubjectSubjectIdNewEvaluationRoute
@@ -94,6 +102,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/career/$career-id': typeof CareerCareerIdRouteWithChildren
+  '/career/$career-id/new-subject': typeof CareerCareerIdNewSubjectRoute
   '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
   '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
   '/career/$career-id/subject/$subject-id/new-evaluation': typeof CareerCareerIdSubjectSubjectIdNewEvaluationRoute
@@ -107,6 +116,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/career/$career-id': typeof CareerCareerIdRouteWithChildren
+  '/career/$career-id/new-subject': typeof CareerCareerIdNewSubjectRoute
   '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
   '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
   '/career/$career-id/subject/$subject-id/new-evaluation': typeof CareerCareerIdSubjectSubjectIdNewEvaluationRoute
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/career/$career-id'
+    | '/career/$career-id/new-subject'
     | '/career/$career-id/subject/$subject-id'
     | '/career/$career-id/subject/$subject-id/new-document'
     | '/career/$career-id/subject/$subject-id/new-evaluation'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/career/$career-id'
+    | '/career/$career-id/new-subject'
     | '/career/$career-id/subject/$subject-id'
     | '/career/$career-id/subject/$subject-id/new-document'
     | '/career/$career-id/subject/$subject-id/new-evaluation'
@@ -145,6 +157,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/career/$career-id'
+    | '/career/$career-id/new-subject'
     | '/career/$career-id/subject/$subject-id'
     | '/career/$career-id/subject/$subject-id/new-document'
     | '/career/$career-id/subject/$subject-id/new-evaluation'
@@ -195,6 +208,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/career/$career-id'
       preLoaderRoute: typeof CareerCareerIdRouteImport
       parentRoute: typeof CareerRoute
+    }
+    '/career/$career-id/new-subject': {
+      id: '/career/$career-id/new-subject'
+      path: '/new-subject'
+      fullPath: '/career/$career-id/new-subject'
+      preLoaderRoute: typeof CareerCareerIdNewSubjectRouteImport
+      parentRoute: typeof CareerCareerIdRoute
     }
     '/career/$career-id/subject/$subject-id': {
       id: '/career/$career-id/subject/$subject-id'
@@ -259,10 +279,12 @@ const CareerCareerIdSubjectSubjectIdRouteWithChildren =
   )
 
 interface CareerCareerIdRouteChildren {
+  CareerCareerIdNewSubjectRoute: typeof CareerCareerIdNewSubjectRoute
   CareerCareerIdSubjectSubjectIdRoute: typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
 }
 
 const CareerCareerIdRouteChildren: CareerCareerIdRouteChildren = {
+  CareerCareerIdNewSubjectRoute: CareerCareerIdNewSubjectRoute,
   CareerCareerIdSubjectSubjectIdRoute:
     CareerCareerIdSubjectSubjectIdRouteWithChildren,
 }
