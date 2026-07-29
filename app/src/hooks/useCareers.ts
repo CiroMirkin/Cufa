@@ -1,13 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore"
+import { collection, getDocs, addDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { Career } from "@/types/career"
 
 const careersRef = collection(db, "careers")
 
 async function fetchCareers(): Promise<Career[]> {
-  const q = query(careersRef, orderBy("__name__", "desc"))
-  const snapshot = await getDocs(q)
+  const snapshot = await getDocs(careersRef)
   return snapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
