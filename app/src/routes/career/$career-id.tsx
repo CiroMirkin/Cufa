@@ -2,6 +2,7 @@ import { createFileRoute, Link, Outlet, useChildMatches } from '@tanstack/react-
 import { useQuery } from "@tanstack/react-query"
 import { doc, getDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
+import { useAuth } from '@/auth'
 import { useSubjects } from '@/hooks/useSubjects'
 import { Spinner } from '@/components/ui/spinner'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,6 +14,7 @@ export const Route = createFileRoute('/career/$career-id')({
 
 function CareerPage() {
   const { 'career-id': careerId } = Route.useParams()
+  const { user } = useAuth()
   const childMatches = useChildMatches()
   const hasChildRoute = childMatches.length > 0
 
@@ -25,7 +27,7 @@ function CareerPage() {
     },
   })
 
-  const { data: subjects, isLoading: subjectsLoading, error } = useSubjects()
+  const { data: subjects, isLoading: subjectsLoading, error } = useSubjects(user?.uid, careerId)
 
   if (careerLoading || subjectsLoading) {
     return (
