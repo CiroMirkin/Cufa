@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
+import { useAuth } from '@/auth'
 import { useCareers, useCreateCareer } from '@/hooks/useCareers'
 import { Spinner } from '@/components/ui/spinner'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -11,16 +12,22 @@ export const Route = createFileRoute('/')({
 })
 
 function Home() {
+  const { user, loading: authLoading } = useAuth()
   const { data: careers, isLoading, error } = useCareers()
   const createCareer = useCreateCareer()
   const navigate = useNavigate()
   const [name, setName] = useState('')
 
   useEffect(() => {
+    if (authLoading) return
+    if (!user) {
+      navigate({ to: '/login' })
+      return
+    }
     if (careers && careers.length > 0) {
       navigate({ to: '/career/$career-id', params: { 'career-id': careers[0].id } })
     }
-  }, [careers, navigate])
+  }, [user, authLoading, careers, navigate])
 
   if (isLoading) {
     return (
