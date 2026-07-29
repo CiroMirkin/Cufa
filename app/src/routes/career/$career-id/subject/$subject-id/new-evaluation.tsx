@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
 import { useCreateEvaluation } from '@/hooks/useEvaluations'
 
-export const Route = createFileRoute('/subject/$subject-id/new-evaluation')({
+export const Route = createFileRoute('/career/$career-id/subject/$subject-id/new-evaluation')({
   component: NewEvaluation,
 })
 
@@ -15,7 +15,7 @@ const evaluationTypes = [
 ] as const
 
 function NewEvaluation() {
-  const { 'subject-id': subjectId } = Route.useParams()
+  const { 'career-id': careerId, 'subject-id': subjectId } = Route.useParams()
   const navigate = useNavigate()
   const createEvaluation = useCreateEvaluation(subjectId)
   const [title, setTitle] = useState('')
@@ -37,8 +37,8 @@ function NewEvaluation() {
       {
         onSuccess: (ref) => {
           navigate({
-            to: '/subject/$subject-id/evaluation/$evaluation-id',
-            params: { 'subject-id': subjectId, 'evaluation-id': ref.id },
+            to: '/career/$career-id/subject/$subject-id/evaluation/$evaluation-id',
+            params: { 'career-id': careerId, 'subject-id': subjectId, 'evaluation-id': ref.id },
           })
         },
       },

@@ -14,9 +14,10 @@ const typeLabels: Record<string, string> = {
 
 interface EvaluationsListProps {
   subjectId: string
+  careerId: string
 }
 
-export function EvaluationsList({ subjectId }: EvaluationsListProps) {
+export function EvaluationsList({ subjectId, careerId }: EvaluationsListProps) {
   const { data: evaluations, isLoading, error } = useEvaluations(subjectId)
 
   return (
@@ -24,8 +25,8 @@ export function EvaluationsList({ subjectId }: EvaluationsListProps) {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">Evaluaciones</h2>
         <Link
-          to="/subject/$subject-id/new-evaluation"
-          params={{ 'subject-id': subjectId }}
+          to="/career/$career-id/subject/$subject-id/new-evaluation"
+          params={{ 'career-id': careerId, 'subject-id': subjectId }}
         >
           <Button>
             <Plus size={16} /> Nueva evaluación
@@ -37,8 +38,8 @@ export function EvaluationsList({ subjectId }: EvaluationsListProps) {
       {evaluations?.map((ev) => (
         <Link
           key={ev.id}
-          to="/subject/$subject-id/evaluation/$evaluation-id"
-          params={{ 'subject-id': subjectId, 'evaluation-id': ev.id }}
+          to="/career/$career-id/subject/$subject-id/evaluation/$evaluation-id"
+          params={{ 'career-id': careerId, 'subject-id': subjectId, 'evaluation-id': ev.id }}
           className="block"
         >
           <Card>
