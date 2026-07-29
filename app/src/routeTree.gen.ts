@@ -10,6 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CareerRouteImport } from './routes/career'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as CareerCareerIdRouteImport } from './routes/career/$career-id'
 import { Route as CareerCareerIdSubjectSubjectIdRouteImport } from './routes/career/$career-id/subject/$subject-id'
 import { Route as CareerCareerIdSubjectSubjectIdNewDocumentRouteImport } from './routes/career/$career-id/subject/$subject-id/new-document'
@@ -22,10 +25,25 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CareerCareerIdRoute = CareerCareerIdRouteImport.update({
-  id: '/career/$career-id',
-  path: '/career/$career-id',
+const CareerRoute = CareerRouteImport.update({
+  id: '/career',
+  path: '/career',
   getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CareerCareerIdRoute = CareerCareerIdRouteImport.update({
+  id: '/$career-id',
+  path: '/$career-id',
+  getParentRoute: () => CareerRoute,
 } as any)
 const CareerCareerIdSubjectSubjectIdRoute =
   CareerCareerIdSubjectSubjectIdRouteImport.update({
@@ -60,6 +78,9 @@ const CareerCareerIdSubjectSubjectIdEvaluationEvaluationIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/career': typeof CareerRouteWithChildren
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/career/$career-id': typeof CareerCareerIdRouteWithChildren
   '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
   '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
@@ -69,6 +90,9 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/career': typeof CareerRouteWithChildren
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/career/$career-id': typeof CareerCareerIdRouteWithChildren
   '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
   '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
@@ -79,6 +103,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/career': typeof CareerRouteWithChildren
+  '/login': typeof LoginRoute
+  '/onboarding': typeof OnboardingRoute
   '/career/$career-id': typeof CareerCareerIdRouteWithChildren
   '/career/$career-id/subject/$subject-id': typeof CareerCareerIdSubjectSubjectIdRouteWithChildren
   '/career/$career-id/subject/$subject-id/new-document': typeof CareerCareerIdSubjectSubjectIdNewDocumentRoute
@@ -90,6 +117,9 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/career'
+    | '/login'
+    | '/onboarding'
     | '/career/$career-id'
     | '/career/$career-id/subject/$subject-id'
     | '/career/$career-id/subject/$subject-id/new-document'
@@ -99,6 +129,9 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/career'
+    | '/login'
+    | '/onboarding'
     | '/career/$career-id'
     | '/career/$career-id/subject/$subject-id'
     | '/career/$career-id/subject/$subject-id/new-document'
@@ -108,6 +141,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/career'
+    | '/login'
+    | '/onboarding'
     | '/career/$career-id'
     | '/career/$career-id/subject/$subject-id'
     | '/career/$career-id/subject/$subject-id/new-document'
@@ -118,7 +154,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CareerCareerIdRoute: typeof CareerCareerIdRouteWithChildren
+  CareerRoute: typeof CareerRouteWithChildren
+  LoginRoute: typeof LoginRoute
+  OnboardingRoute: typeof OnboardingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -130,12 +168,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/career': {
+      id: '/career'
+      path: '/career'
+      fullPath: '/career'
+      preLoaderRoute: typeof CareerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/career/$career-id': {
       id: '/career/$career-id'
-      path: '/career/$career-id'
+      path: '/$career-id'
       fullPath: '/career/$career-id'
       preLoaderRoute: typeof CareerCareerIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof CareerRoute
     }
     '/career/$career-id/subject/$subject-id': {
       id: '/career/$career-id/subject/$subject-id'
@@ -212,9 +271,22 @@ const CareerCareerIdRouteWithChildren = CareerCareerIdRoute._addFileChildren(
   CareerCareerIdRouteChildren,
 )
 
+interface CareerRouteChildren {
+  CareerCareerIdRoute: typeof CareerCareerIdRouteWithChildren
+}
+
+const CareerRouteChildren: CareerRouteChildren = {
+  CareerCareerIdRoute: CareerCareerIdRouteWithChildren,
+}
+
+const CareerRouteWithChildren =
+  CareerRoute._addFileChildren(CareerRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CareerCareerIdRoute: CareerCareerIdRouteWithChildren,
+  CareerRoute: CareerRouteWithChildren,
+  LoginRoute: LoginRoute,
+  OnboardingRoute: OnboardingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
