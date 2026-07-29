@@ -25,16 +25,17 @@ admin.initializeApp({
 const db = admin.firestore()
 const batch = db.batch()
 
+const userId = "test-user-001"
 const careerId = "tecnicatura-universitaria-en-programacion-full-stack"
 const careerRef = db.collection("careers").doc(careerId)
-batch.set(careerRef, { name: "Tecnicatura Universitaria en Programación Full Stack" })
+batch.set(careerRef, { name: "Tecnicatura Universitaria en Programación Full Stack", userId })
 
 const subjects = [
-  { name: "Metodologías de Resolución de Problemas", careerId, plan: "2026" },
-  { name: "Arquitectura de Computadoras", careerId, plan: "2026" },
-  { name: "Bases de Datos 2", careerId, plan: "2026" },
-  { name: "Programación 1", careerId, plan: "2026" },
-  { name: "Diseños y Arquitectura de Despliegue 1", careerId, plan: "2026" },
+  { name: "Metodologías de Resolución de Problemas", careerId, plan: "2026", userId },
+  { name: "Arquitectura de Computadoras", careerId, plan: "2026", userId },
+  { name: "Bases de Datos 2", careerId, plan: "2026", userId },
+  { name: "Programación 1", careerId, plan: "2026", userId },
+  { name: "Diseños y Arquitectura de Despliegue 1", careerId, plan: "2026", userId },
 ]
 
 for (const subject of subjects) {
@@ -52,7 +53,6 @@ catch (err) {
   process.exitCode = 1
 }
 
-const userId = "test-user-001"
 const userRef = db.collection("users").doc(userId)
 try {
   await userRef.set({
