@@ -1,6 +1,8 @@
 import { Link } from '@tanstack/react-router'
 import { useEvaluations } from '@/hooks/useEvaluations'
 import { Plus } from 'lucide-react'
+import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
+import { Button } from './ui/button'
 
 const typeLabels: Record<string, string> = {
   partial: "Parcial",
@@ -24,9 +26,10 @@ export function EvaluationsList({ subjectId }: EvaluationsListProps) {
         <Link
           to="/subject/$subject-id/new-evaluation"
           params={{ 'subject-id': subjectId }}
-          className="flex items-center gap-2 px-4 py-2 bg-green-100 hover:bg-green-200 rounded text-sm"
         >
-          <Plus size={16} /> Nueva evaluación
+          <Button>
+            <Plus size={16} /> Nueva evaluación
+          </Button>
         </Link>
       </div>
       {isLoading && <p className="text-gray-500">Cargando evaluations...</p>}
@@ -36,13 +39,17 @@ export function EvaluationsList({ subjectId }: EvaluationsListProps) {
           key={ev.id}
           to="/subject/$subject-id/evaluation/$evaluation-id"
           params={{ 'subject-id': subjectId, 'evaluation-id': ev.id }}
-          className="block px-4 py-3 mb-2 rounded bg-gray-50 hover:bg-gray-100"
+          className="block"
         >
-          <p className="font-medium">{ev.title}</p>
-          <p className="text-sm text-gray-500">
-            {typeLabels[ev.type] ?? ev.type} &middot; {ev.date}
-            {ev.grade !== null ? ` · ${ev.grade}` : " · Sin nota"}
-          </p>
+          <Card>
+            <CardHeader>
+              <CardTitle>{ev.title}</CardTitle>
+              <CardDescription>
+                {typeLabels[ev.type] ?? ev.type} &middot; {ev.date}
+                {ev.grade !== null ? ` · ${ev.grade}` : " · Sin nota"}
+              </CardDescription>
+            </CardHeader>
+          </Card>
         </Link>
       ))}
     </div>
