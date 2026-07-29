@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
-import { collection, doc, getDoc, getDocs } from 'firebase/firestore'
+import { collection, doc, getDoc } from 'firebase/firestore'
+import { addDoc } from 'firebase/firestore'
 import { db } from '@/lib/firebase'
 import { useAuth } from '@/auth'
 import { useCheckAlias, useCreateUser } from '@/hooks/useUsers'
@@ -16,11 +17,13 @@ function Onboarding() {
   const { user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const [alias, setAlias] = useState('')
+  const [careerName, setCareerName] = useState('')
   const [aliasTouched, setAliasTouched] = useState(false)
   const { data: aliasResults, isLoading: checkingAlias } = useCheckAlias(
     aliasTouched ? alias : '',
   )
   const createUser = useCreateUser()
+  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (authLoading) return
@@ -35,11 +38,7 @@ function Onboarding() {
       }
       const snap = await getDoc(doc(db, "users", user.uid))
       if (snap.exists()) {
-        const careersSnap = await getDocs(collection(db, "careers"))
-        const careerId = careersSnap.docs[0]?.id
-        if (careerId) {
-          navigate({ to: '/career/$career-id', params: { 'career-id': careerId } })
-        }
+        navigate({ to: '/' })
       }
     }
     checkUserDoc()
@@ -51,33 +50,33 @@ function Onboarding() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!user || !alias.trim() || aliasTaken) return
-    createUser.mutate(
-      {
+    if (!user || !alias.trim() || aliasTaken || !careerName.trim()) return
+    setSubmitting(true)
+    try {
+      await createUser.mutateAsync({
         uid: user.uid,
         alias: alias.trim(),
         email: user.email ?? '',
         displayName: user.displayName ?? '',
         photoURL: user.photoURL ?? '',
         createdAt: new Date().toISOString(),
-      },
-      {
-        onSuccess: async () => {
-          const careersSnap = await getDocs(collection(db, "careers"))
-          const careerId = careersSnap.docs[0]?.id
-          if (careerId) {
-            navigate({ to: '/career/$career-id', params: { 'career-id': careerId } })
-          }
-        },
-      },
-    )
+      })
+      const ref = await addDoc(collection(db, "careers"), {
+        name: careerName.trim(),
+        userId: user.uid,
+      })
+      navigate({ to: '/career/$career-id', params: { 'career-id': ref.id } })
+    }
+    catch {
+      setSubmitting(false)
+    }
   }
 
   return (
     <div className="grid place-items-center min-h-screen px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Elegí tu alias</CardTitle>
+          <CardTitle>Creá tu cuenta</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -101,12 +100,20 @@ function Onboarding() {
                 <p className="text-sm text-green-500 mt-1">Alias disponible</p>
               )}
             </div>
+            <div>
+              <Input
+                placeholder="Nombre de la carrera"
+                value={careerName}
+                onChange={(e) => setCareerName(e.target.value)}
+                required
+              />
+            </div>
             <Button
               type="submit"
-              disabled={!alias.trim() || aliasTaken || createUser.isPending}
+              disabled={!alias.trim() || aliasTaken || !careerName.trim() || submitting}
               className="w-full"
             >
-              {createUser.isPending ? 'Guardando...' : 'Comenzar'}
+              {submitting ? 'Creando...' : 'Comenzar'}
             </Button>
           </form>
         </CardContent>
