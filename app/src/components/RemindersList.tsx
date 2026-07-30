@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Plus, Trash2 } from 'lucide-react'
+import { Plus, Trash2, Check } from 'lucide-react'
 import { useReminders, useCreateReminder, useUpdateReminder, useDeleteReminder } from '@/hooks/useReminders'
 import { InlineEditableText } from './InlineEditableField'
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
@@ -27,40 +27,34 @@ export function RemindersList({ subjectId }: RemindersListProps) {
 
   const [isCreating, setIsCreating] = useState(false)
   const [newTitle, setNewTitle] = useState('')
+  const [newContent, setNewContent] = useState('')
   const [newExpiresAt, setNewExpiresAt] = useState('')
 
   function handleCreate() {
     if (!newTitle.trim() || !newExpiresAt) return
     createReminder.mutate({
       title: newTitle.trim(),
-      items: [],
+      content: newContent.trim(),
       expiresAt: newExpiresAt,
+      done: false,
     }, {
       onSuccess: () => {
         setNewTitle('')
+        setNewContent('')
         setNewExpiresAt('')
         setIsCreating(false)
       },
     })
   }
 
+  function handleToggleDone(reminderId: string, done: boolean) {
+    updateReminder.mutate({ id: reminderId, done: !done })
+  }
+
   function handleDelete(reminderId: string) {
     if (confirm('¿Eliminar este recordatorio?')) {
       deleteReminder.mutate(reminderId)
     }
-  }
-
-  function handleDeleteItem(reminderId: string, items: { text: string; checked: boolean }[], index: number) {
-    if (confirm('¿Eliminar este item?')) {
-      const newItems = items.filter((_, i) => i !== index)
-      updateReminder.mutate({ ...findReminderUpdateData(reminderId), id: reminderId, items: newItems })
-    }
-  }
-
-  function findReminderUpdateData(reminderId: string) {
-    const reminder = reminders?.find((r) => r.id === reminderId)
-    if (!reminder) return {}
-    return { title: reminder.title, items: reminder.items, expiresAt: reminder.expiresAt }
   }
 
   return (
@@ -84,6 +78,12 @@ export function RemindersList({ subjectId }: RemindersListProps) {
                 onSave={(v) => setNewTitle(v)}
                 placeholder="Título del recordatorio"
               />
+              <InlineEditableText
+                value={newContent}
+                onSave={(v) => setNewContent(v)}
+                placeholder="Notas (opcional)"
+                className="text-sm"
+              />
               <input
                 type="date"
                 value={newExpiresAt}
@@ -105,15 +105,42 @@ export function RemindersList({ subjectId }: RemindersListProps) {
 
       <div className="flex flex-col gap-2">
         {reminders?.map((reminder) => (
-          <Card key={reminder.id} className={cn('group', getUrgencyClass(reminder.expiresAt))}>
-            <CardHeader>
-              <div className="flex items-center justify-between gap-2">
+          <Card key={reminder.id} className={cn('group', getUrgencyClass(reminder.expiresAt), reminder.done && 'opacity-50')}>
+            <div className="w-full flex gap-2">
+              <CardHeader className='w-full'>
                 <CardTitle className="text-base">
                   <InlineEditableText
                     value={reminder.title}
                     onSave={(title) => updateReminder.mutate({ id: reminder.id, title })}
                   />
                 </CardTitle>
+                <CardDescription>
+                  <InlineEditableText
+                    type="date"
+                    value={reminder.expiresAt}
+                    className="text-xs font-semibold"
+                    onSave={(expiresAt) => updateReminder.mutate({ id: reminder.id, expiresAt })}
+                  />
+                </CardDescription>
+                <div className="mt-2">
+                  <InlineEditableText
+                    value={reminder.content ?? ""}
+                    onSave={(content) => updateReminder.mutate({ id: reminder.id, content })}
+                    placeholder="Agregar notas..."
+                    className="text-sm text-muted-foreground"
+                  />
+                </div>
+              </CardHeader>
+
+              <div className="flex flex-col items-center gap-2 pt-6 pr-2">
+                <Button
+                  variant={reminder.done ? 'default' : 'outline'}
+                  size="icon"
+                  onClick={() => handleToggleDone(reminder.id, reminder.done)}
+                  className="w-6 h-6"
+                >
+                  <Check size={12} />
+                </Button>
                 <Button
                   variant="destructive"
                   size="icon"
@@ -124,51 +151,7 @@ export function RemindersList({ subjectId }: RemindersListProps) {
                   <Trash2 size={12} />
                 </Button>
               </div>
-              <CardDescription>
-                <InlineEditableText
-                  type="date"
-                  value={reminder.expiresAt}
-                  className="text-xs font-semibold"
-                  onSave={(expiresAt) => updateReminder.mutate({ id: reminder.id, expiresAt })}
-                />
-              </CardDescription>
-
-              {reminder.items.length > 0 && (
-                <div className="flex flex-col gap-1 mt-2">
-                  {reminder.items.map((item, idx) => (
-                    <div key={idx} className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={item.checked}
-                        onChange={() => {
-                          const newItems = [...reminder.items]
-                          newItems[idx] = { ...newItems[idx], checked: !newItems[idx].checked }
-                          updateReminder.mutate({ id: reminder.id, items: newItems })
-                        }}
-                        className="w-4 h-4"
-                      />
-                      <InlineEditableText
-                        value={item.text}
-                        onSave={(text) => {
-                          const newItems = [...reminder.items]
-                          newItems[idx] = { ...newItems[idx], text: text.slice(0, 200) }
-                          updateReminder.mutate({ id: reminder.id, items: newItems })
-                        }}
-                        className="flex-1 text-sm"
-                      />
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        onClick={() => handleDeleteItem(reminder.id, reminder.items, idx)}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity w-5 h-5"
-                      >
-                        <Trash2 size={10} />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardHeader>
+            </div>
           </Card>
         ))}
       </div>

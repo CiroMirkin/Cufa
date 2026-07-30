@@ -1,14 +1,10 @@
 
-export interface ReminderItem {
-  text: string
-  checked: boolean
-}
-
 export interface Reminder {
   id: string
   subjectId: string
   title: string
-  items: ReminderItem[]
+  content?: string
+  done: boolean
   expiresAt: string
   createdAt: string
 }

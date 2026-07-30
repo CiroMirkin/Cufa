@@ -118,7 +118,8 @@ const reminders = [
   {
     subject: "metodologías-de-resolución-de-problemas",
     title: "Inscripción a materias",
-    items: [],
+    content: "",
+    done: false,
     expiresAt: "2026-08-15",
   },
 ]
@@ -132,7 +133,6 @@ for (const reminder of reminders) {
       .add({
         subjectId: reminder.subject,
         title: reminder.title,
-        items: reminder.items,
         expiresAt: reminder.expiresAt,
         createdAt: new Date().toISOString(),
       })

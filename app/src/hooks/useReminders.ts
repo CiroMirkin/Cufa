@@ -30,8 +30,9 @@ export function useReminders(subjectId: string) {
 
 type CreateReminderData = {
   title: string
-  items: { text: string; checked: boolean }[]
+  content: string
   expiresAt: string
+  done: boolean
 }
 
 type UpdateReminderData = Partial<CreateReminderData> & { id: string }
