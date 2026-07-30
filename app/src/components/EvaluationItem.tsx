@@ -50,19 +50,18 @@ export function EvaluationItem({ evaluation, subjectId }: EvaluationItemProps) {
             <Trash2 size={16} />
           </Button>
         </div>
-        <CardDescription className="flex items-center gap-1 flex-wrap">
+        <CardDescription className="flex flex-col items-start gap-1 flex-wrap">
           <InlineEditableSelect
             value={evaluation.type}
             options={evaluationTypes}
             onSave={(type) => updateEvaluation.mutate({ ...evaluation, type: type as Evaluation['type'] })}
           />
-          <span>&middot;</span>
           <InlineEditableText
             type="date"
             value={evaluation.date}
+            className="font-semibold"
             onSave={(date) => updateEvaluation.mutate({ ...evaluation, date })}
           />
-          <span>&middot;</span>
           <InlineEditableText
             type="number"
             value={evaluation.grade === null ? "" : String(evaluation.grade)}

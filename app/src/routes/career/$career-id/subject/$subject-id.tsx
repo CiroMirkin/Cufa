@@ -70,7 +70,7 @@ function Subject() {
         </Breadcrumb>
       </header>
       <main className="pt-4 grid grid-cols-1 lg:grid-cols-[1fr_3fr_1fr] gap-6">
-        <section className='flex flex-col gap-4'>
+        <section className='max-w-50 flex flex-col gap-4'>
           <SubjectEvaluationsCalendar subjectId={subjectId} />
           <EvaluationsList subjectId={subjectId} />
         </section>
