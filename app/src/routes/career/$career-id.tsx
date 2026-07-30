@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import type { Career } from '@/types/career'
 import { CareerEvaluationsCalendar } from '@/components/CareerEvaluationsCalendar'
+import UpcomingRemindersSection from './$career-id/UpcomingRemindersSection'
+
 
 export const Route = createFileRoute('/career/$career-id')({
   component: CareerPage,
@@ -61,8 +63,8 @@ function CareerPage() {
           </Button>
         </Link>
       </header>
-        <main className="pt-4 flex justify-around gap-4">
-          <section className="flex gap-6 flex-wrap justify-center">
+        <main className="pt-4 flex justify-between gap-4">
+          <section className="px-8 flex gap-6 flex-wrap justify-center">
             {error && <p className="text-red-500">Error al cargar las materias.</p>}
             {subjects?.map((subject) => (
               <Link
@@ -79,7 +81,10 @@ function CareerPage() {
               </Link>
             ))}
           </section>
-          <CareerEvaluationsCalendar subjects={subjects ?? []} />
+          <div className="flex flex-wrap gap-4">
+            <UpcomingRemindersSection careerId={careerId} subjects={subjects ?? []} />
+            <CareerEvaluationsCalendar subjects={subjects ?? []} />
+          </div>
         </main>
     </div>
   )
