@@ -43,6 +43,10 @@ function CareerPage() {
     return <p className="text-gray-500 px-6">Carrera no encontrada.</p>
   }
 
+  if(hasChildRoute) {
+    return <Outlet />
+  }
+
   return (
     <div className="px-6">
       <header className="w-full py-4 flex justify-center items-center gap-4">
@@ -56,10 +60,6 @@ function CareerPage() {
           </Button>
         </Link>
       </header>
-
-      {hasChildRoute ? (
-        <Outlet />
-      ) : (
         <main className="pt-4 flex gap-6 flex-wrap justify-center">
           {error && <p className="text-red-500">Error al cargar las materias.</p>}
           {subjects?.map((subject) => (
@@ -77,7 +77,6 @@ function CareerPage() {
             </Link>
           ))}
         </main>
-      )}
     </div>
   )
 }
