@@ -113,6 +113,36 @@ for (const note of notes) {
     process.exitCode = 1
   }
 }
-finally {
-  await admin.app().delete()
+
+const reminders = [
+  {
+    subject: "metodologías-de-resolución-de-problemas",
+    title: "Inscripción a materias",
+    content: "",
+    done: false,
+    expiresAt: "2026-08-15",
+  },
+]
+
+for (const reminder of reminders) {
+  try {
+    await db
+      .collection("subjects")
+      .doc(reminder.subject)
+      .collection("reminders")
+      .add({
+        subjectId: reminder.subject,
+        title: reminder.title,
+        expiresAt: reminder.expiresAt,
+        createdAt: new Date().toISOString(),
+      })
+    console.log(`Seeded reminder in '${reminder.subject}' successfully.`)
+  }
+  catch (err) {
+    console.error(`Failed to seed reminder in '${reminder.subject}': ${err.message}`)
+    process.exitCode = 1
+  }
+  finally {
+    await admin.app().delete()
+  }
 }

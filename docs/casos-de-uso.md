@@ -67,6 +67,20 @@
 | `Breadcrumb` | Navegación jerárquica (Inicio > Carrera > Materia). |
 | `Calendar` | Calendario con modifiers por nivel de urgencia. |
 
+## Módulo: Recordatorios
+
+| Caso de uso | Descripción | Hook/Componente |
+|---|---|---|
+| Listar recordatorios | Cards apiladas ordenadas por fecha de expiración ascendente. | `RemindersList` → `useReminders` |
+| Crear recordatorio | Form inline con título + fecha de expiración. | `RemindersList` → `useCreateReminder` |
+| Editar recordatorio | Edición inline de título, fecha de expiración e items. | `RemindersList` → `useUpdateReminder` |
+| Eliminar recordatorio | Confirmación y borrado. | `useDeleteReminder` |
+| Marcar item como completado | Checkbox inline que cambia `checked`. | `RemindersList` → `useUpdateReminder` |
+| Agregar item a recordatorio | Botón "+" que agrega un item vacío. | `RemindersList` → `useUpdateReminder` |
+| Eliminar item de recordatorio | Confirmación y borrado del item del array. | `RemindersList` → `useUpdateReminder` |
+| Ver próximos recordatorios (< 7 días) | Sección en página de carrera con recordatorios próximos agrupados por materia. | `UpcomingRemindersSection` → `useCareerReminders` |
+| Niveles de urgencia | Vencido (opacidad), < 3d (rojo), < 7d (naranja). Mismo patrón que evaluaciones. | `RemindersList` → `getUrgencyClass` |
+
 ## Seed de datos
 
-`seed/seed.mjs` — script que crea 1 usuario, 1 carrera, 5 materias, 1 evaluación y 2 notas de prueba usando `firebase-admin`.
+`seed/seed.mjs` — script que crea 1 usuario, 1 carrera, 5 materias, 1 evaluación, 2 notas y 2 recordatorios de prueba usando `firebase-admin`.

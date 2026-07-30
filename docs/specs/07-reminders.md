@@ -1,6 +1,6 @@
 # SPEC 07 — Reminder entity
 
-> **Status:** Draft · **Depends on:** SPEC 01, SPEC 05 · **Date:** 2026-07-30
+> **Status:** Aprobado · **Depends on:** SPEC 01, SPEC 05 · **Date:** 2026-07-30
 > **Objective:** Agregar la entidad "recordatorio" (reminder) con título, fecha de expiración y lista opcional de ítems checkbox, asociado a un subject, con CRUD inline en la página de materia, vista próxima (< 7 días) en carrera, y seed con 2 recordatorios en subjects distintos.
 
 ---
@@ -93,6 +93,8 @@ interface Reminder {
    - Usar `useCareerReminders(careerId, subjectIds)`.
    - Renderizar una sección con los recordatorios que expiran en < 7 días, agrupados o listados con el nombre de la materia.
    - Si no hay recordatorios próximos, no mostrar la sección.
+
+7. **Documentar.** Documentar en `docs/casos-de-uso.md` y `docs/esquema.md` los tipos, hooks, componente y flujo de recordatorios.
 
 ---
 
