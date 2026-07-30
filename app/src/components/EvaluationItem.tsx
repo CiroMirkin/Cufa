@@ -3,6 +3,7 @@ import { useUpdateEvaluation, useDeleteEvaluation } from '@/hooks/useEvaluations
 import { InlineEditableText, InlineEditableSelect } from './InlineEditableField'
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
+import { cn } from '@/lib/utils'
 import type { Evaluation } from '@/types/evaluation'
 
 const evaluationTypes = [
@@ -12,6 +13,24 @@ const evaluationTypes = [
   { value: "practical_work", label: "TP" },
   { value: "presentation", label: "Presentación" },
 ] as const
+
+const MS_PER_DAY = 1000 * 60 * 60 * 24
+
+function getDaysUntil(dateString: string) {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const target = new Date(dateString)
+  target.setHours(0, 0, 0, 0)
+  return Math.round((target.getTime() - today.getTime()) / MS_PER_DAY)
+}
+
+function getUrgencyClass(dateString: string) {
+  const daysUntil = getDaysUntil(dateString)
+  if (daysUntil < 0) return 'opacity-50 bg-slate-100'
+  if (daysUntil < 3) return 'bg-red-100 border-red-300 dark:bg-red-950 dark:border-red-800'
+  if (daysUntil < 6) return 'bg-orange-100 border-orange-300 dark:bg-orange-950 dark:border-orange-800'
+  return ''
+}
 
 interface EvaluationItemProps {
   evaluation: Evaluation
@@ -29,7 +48,7 @@ export function EvaluationItem({ evaluation, subjectId }: EvaluationItemProps) {
   }
 
   return (
-    <Card className="group">
+    <Card className={cn('group mb-2', getUrgencyClass(evaluation.date))}>
       <CardHeader>
         <div className="flex items-center justify-between gap-2">
           <CardTitle>
