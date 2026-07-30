@@ -5,24 +5,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
 import type { Evaluation } from '@/types/evaluation'
-
-const evaluationTypes = [
-  { value: "partial", label: "Parcial" },
-  { value: "final", label: "Final" },
-  { value: "retake", label: "Recuperatorio" },
-  { value: "practical_work", label: "TP" },
-  { value: "presentation", label: "Presentación" },
-] as const
-
-const MS_PER_DAY = 1000 * 60 * 60 * 24
-
-function getDaysUntil(dateString: string) {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const target = new Date(dateString)
-  target.setHours(0, 0, 0, 0)
-  return Math.round((target.getTime() - today.getTime()) / MS_PER_DAY)
-}
+import { evaluationTypes, getDaysUntil } from '@/lib/evaluations'
 
 function getUrgencyClass(dateString: string) {
   const daysUntil = getDaysUntil(dateString)
