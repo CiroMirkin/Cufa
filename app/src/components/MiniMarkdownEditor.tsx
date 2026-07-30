@@ -115,7 +115,7 @@ export function MiniMarkdownEditor({
         placeholder={placeholder}
         autoFocus={autoFocus}
         className={className}
-        style={{ width: '100%', paddingBottom: 5, }}
+        style={{ width: '100%', paddingBottom: 40, height: 20, }}
       >
         <Toolbar />
         <SlashCommandMenu />
