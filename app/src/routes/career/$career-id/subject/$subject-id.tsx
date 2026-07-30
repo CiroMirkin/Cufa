@@ -2,6 +2,7 @@ import { createFileRoute, Link, Outlet, useChildMatches } from '@tanstack/react-
 import { DocumentsList } from '@/components/DocumentsList'
 import { EvaluationsList } from '@/components/EvaluationsList'
 import { NotesList } from '@/components/NotesList'
+import { RemindersList } from '@/components/RemindersList'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -84,6 +85,7 @@ function Subject() {
             <h2 className="text-xl font-semibold">Notas</h2>
           </div>
           <NotesList subjectId={subjectId} />
+          <RemindersList subjectId={subjectId} />
         </section>
       </main>
     </div>
