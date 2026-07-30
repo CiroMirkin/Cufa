@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { useQuery, useQueries, useMutation, useQueryClient } from "@tanstack/react-query"
 import { collection, getDocs, getDoc, doc, addDoc, updateDoc, deleteDoc } from "firebase/firestore"
 import { db } from "@/lib/firebase"
 import type { Evaluation } from "@/types/evaluation"
@@ -15,6 +15,7 @@ async function fetchEvaluations(subjectId: string): Promise<Evaluation[]> {
   const snapshot = await getDocs(getDocsRef(subjectId))
   return snapshot.docs.map((d) => ({
     id: d.id,
+    subjectId,
     ...d.data(),
   })) as Evaluation[]
 }
@@ -36,6 +37,20 @@ export function useEvaluation(subjectId: string, evaluationId: string) {
     queryKey: ["evaluations", subjectId, evaluationId],
     queryFn: () => fetchEvaluation(subjectId, evaluationId),
   })
+}
+
+export function useAllEvaluations(subjectIds: string[]) {
+  const results = useQueries({
+    queries: subjectIds.map((subjectId) => ({
+      queryKey: ["evaluations", subjectId],
+      queryFn: () => fetchEvaluations(subjectId),
+    })),
+  })
+  return {
+    data: results.flatMap((r) => r.data ?? []),
+    isLoading: results.some((r) => r.isLoading),
+    error: results.find((r) => r.error)?.error ?? null,
+  }
 }
 
 type CreateEvaluationData = {
