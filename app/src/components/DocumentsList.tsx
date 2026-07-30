@@ -14,7 +14,7 @@ export function DocumentsList({ subjectId, careerId }: DocumentsListProps) {
   const { data: documents, isLoading, error } = useDocuments(subjectId)
 
   return (
-    <div className='border-x px-4'>
+    <div className='border-x px-4 pb-6'>
       <div className="flex items-center justify-between gap-4 mb-4">
         <h2 className="text-xl font-semibold">Documentos</h2>
         <Link
@@ -28,23 +28,25 @@ export function DocumentsList({ subjectId, careerId }: DocumentsListProps) {
       </div>
       {isLoading && <p className="text-gray-500">Cargando documents...</p>}
       {error && <p className="text-red-500">Error al cargar los documents.</p>}
-      {documents?.map((doc) => (
-        <Link
-          key={doc.id}
-          to="/career/$career-id/subject/$subject-id/document/$document-id"
-          params={{ 'career-id': careerId, 'subject-id': subjectId, "document-id": doc.id }}
-          className="block"
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle>{doc.title}</CardTitle>
+      <section className="flex gap-3">
+        {documents?.map((doc) => (
+          <Link
+            key={doc.id}
+            to="/career/$career-id/subject/$subject-id/document/$document-id"
+            params={{ 'career-id': careerId, 'subject-id': subjectId, "document-id": doc.id }}
+            className="block"
+          >
+            <Card className="w-80">
+              <CardHeader>
+                <CardTitle>{doc.title}</CardTitle>
               <CardDescription>
-                <MarkdownPreview content={doc.content}/>
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </Link>
-      ))}
+                  <MarkdownPreview content={doc.content}/>
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          </Link>
+        ))}
+      </section>
     </div>
   )
 }

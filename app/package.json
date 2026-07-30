@@ -23,6 +23,7 @@
     "@yoopta/editor": "^6.0.5",
     "@yoopta/exports": "^6.0.5",
     "@yoopta/headings": "^6.0.5",
+    "@yoopta/link": "^6.0.5",
     "@yoopta/lists": "^6.0.5",
     "@yoopta/marks": "^6.0.5",
     "@yoopta/paragraph": "^6.0.5",

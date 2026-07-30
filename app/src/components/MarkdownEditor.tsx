@@ -19,6 +19,7 @@ import Blockquote from '@yoopta/blockquote'
 import Table from '@yoopta/table'
 import Code from '@yoopta/code'
 import Lists from '@yoopta/lists'
+import Link from '@yoopta/link'
 import { Bold, Italic, Underline, Strike, CodeMark, Highlight } from '@yoopta/marks'
 import { applyTheme } from '@yoopta/themes-shadcn'
 import { markdown } from '@yoopta/exports'
@@ -35,6 +36,7 @@ const PLUGINS = applyTheme([
   Code.Code,
   Code.CodeGroup,
   Table,
+  Link,
 ])
 
 const MARKS = [Bold, Italic, Underline, Strike, CodeMark, Highlight]
@@ -233,7 +235,7 @@ export function MarkdownEditor({
         placeholder={placeholder}
         autoFocus={autoFocus}
         className={className}
-        style={{ width: '100%', minHeight: '100%', overflowY: 'auto' }}
+        style={{ width: '100%', minHeight: '100%', overflowY: 'auto', paddingBottom: 150 }}
       >
         <Toolbar />
         <BlockActions />
