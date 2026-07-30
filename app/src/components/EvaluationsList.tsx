@@ -1,58 +1,36 @@
-import { Link } from '@tanstack/react-router'
+import { useState } from 'react'
 import { useEvaluations } from '@/hooks/useEvaluations'
 import { Plus } from 'lucide-react'
-import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
+import { EvaluationItem } from './EvaluationItem'
+import { NewEvaluationDialog } from './NewEvaluationDialog'
 import { Button } from './ui/button'
-
-const typeLabels: Record<string, string> = {
-  partial: "Parcial",
-  final: "Final",
-  retake: "Recuperatorio",
-  practical_work: "TP",
-  presentation: "Presentación",
-}
 
 interface EvaluationsListProps {
   subjectId: string
-  careerId: string
 }
 
-export function EvaluationsList({ subjectId, careerId }: EvaluationsListProps) {
+export function EvaluationsList({ subjectId }: EvaluationsListProps) {
   const { data: evaluations, isLoading, error } = useEvaluations(subjectId)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   return (
     <div className='p-1'>
       <div className="flex items-center justify-between gap-4 mb-4">
         <h2 className="text-xl font-semibold">Evaluaciones</h2>
-        <Link
-          to="/career/$career-id/subject/$subject-id/new-evaluation"
-          params={{ 'career-id': careerId, 'subject-id': subjectId }}
-        >
-          <Button variant='outline'>
-            <Plus size={16} />
-          </Button>
-        </Link>
+        <Button variant='outline' onClick={() => setIsDialogOpen(true)}>
+          <Plus size={16} />
+        </Button>
       </div>
       {isLoading && <p className="text-gray-500">Cargando evaluations...</p>}
       {error && <p className="text-red-500">Error al cargar las evaluations.</p>}
       {evaluations?.map((ev) => (
-        <Link
-          key={ev.id}
-          to="/career/$career-id/subject/$subject-id/evaluation/$evaluation-id"
-          params={{ 'career-id': careerId, 'subject-id': subjectId, 'evaluation-id': ev.id }}
-          className="block"
-        >
-          <Card>
-            <CardHeader>
-              <CardTitle>{ev.title}</CardTitle>
-              <CardDescription>
-                {typeLabels[ev.type] ?? ev.type} &middot; {ev.date}
-                {ev.grade !== null ? ` · ${ev.grade}` : " · Sin nota"}
-              </CardDescription>
-            </CardHeader>
-          </Card>
-        </Link>
+        <EvaluationItem key={ev.id} evaluation={ev} subjectId={subjectId} />
       ))}
+      <NewEvaluationDialog
+        subjectId={subjectId}
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+      />
     </div>
   )
 }

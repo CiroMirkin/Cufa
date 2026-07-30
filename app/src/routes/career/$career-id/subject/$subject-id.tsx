@@ -30,9 +30,7 @@ function Subject() {
 
   const activeSection = childMatches.some((m) => m.routeId.includes('document'))
     ? 'document'
-    : childMatches.some((m) => m.routeId.includes('evaluation'))
-      ? 'evaluation'
-      : null
+    : null
 
   const careerName = career?.name ?? "Carrera"
   const subjectName = subject?.name ?? subjectId
@@ -64,9 +62,7 @@ function Subject() {
       </header>
       <main className="pt-4 grid grid-cols-1 lg:grid-cols-[1fr_3fr_1fr] gap-6">
         <section>
-          {activeSection === 'evaluation'
-            ? <Outlet />
-            : <EvaluationsList subjectId={subjectId} careerId={careerId} />}
+          <EvaluationsList subjectId={subjectId} />
         </section>
         <section>
           {activeSection === 'document'
