@@ -1,6 +1,6 @@
 # SPEC 05 — Notes entity
 
-> **Status:** Draft · **Depends on:** SPEC 01, SPEC 04 · **Date:** 2026-07-29
+> **Status:** Implementado · **Depends on:** SPEC 01, SPEC 04 · **Date:** 2026-07-29
 > **Objective:** Agregar la entidad "note" como post-it corto (<200 caracteres, sin markdown) asociado a un subject, con subcolección en Firestore, CRUD inline en la página de materia, y seed con 2 notas en subjects distintos de la misma carrera.
 
 ---
@@ -14,8 +14,9 @@
 - Hook `useNotes(subjectId)` con TanStack Query: lista, crear, editar, eliminar.
 - Componente `NotesList` integrado en la página de materia (sin ruta propia).
 - CRUD inline: crear, editar y eliminar notas desde el mismo componente.
-- Validación: `content` ≤ 200 caracteres, sin markdown (texto plano).
+- Validación: `content` ≤ 250 caracteres, sin markdown (texto plano).
 - Seed actualizado: 2 notas en 2 subjects distintos de la carrera existente.
+- Al precionar 'enter' la nota se crea.
 
 **Out of scope (for future specs):**
 

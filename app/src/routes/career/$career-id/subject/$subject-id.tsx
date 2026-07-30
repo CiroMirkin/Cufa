@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useChildMatches } from '@tanstack/react-router'
 import { DocumentsList } from '@/components/DocumentsList'
 import { EvaluationsList } from '@/components/EvaluationsList'
+import { NotesList } from '@/components/NotesList'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -76,9 +77,11 @@ function Subject() {
             ? <Outlet />
             : <DocumentsList subjectId={subjectId} careerId={careerId} />}
         </section>
-        <section>
-          <h2 className="text-lg font-medium mb-4">Notas</h2>
-          <div />
+        <section className='max-w-60'>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-semibold">Notas</h2>
+          </div>
+          <NotesList subjectId={subjectId} />
         </section>
       </main>
     </div>
