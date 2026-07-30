@@ -13,6 +13,7 @@ import {
 import { useAuth } from '@/auth'
 import { useCareers } from '@/hooks/useCareers'
 import { useSubjects } from '@/hooks/useSubjects'
+import { SubjectEvaluationsCalendar } from '@/components/SubjectEvaluationsCalendar'
 
 export const Route = createFileRoute('/career/$career-id/subject/$subject-id')({
   component: Subject,
@@ -69,7 +70,8 @@ function Subject() {
         </Breadcrumb>
       </header>
       <main className="pt-4 grid grid-cols-1 lg:grid-cols-[1fr_3fr_1fr] gap-6">
-        <section>
+        <section className='flex flex-col gap-4'>
+          <SubjectEvaluationsCalendar subjectId={subjectId} />
           <EvaluationsList subjectId={subjectId} />
         </section>
         <section>

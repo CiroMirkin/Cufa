@@ -9,6 +9,7 @@ import { Card, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
 import type { Career } from '@/types/career'
+import { CareerEvaluationsCalendar } from '@/components/CareerEvaluationsCalendar'
 
 export const Route = createFileRoute('/career/$career-id')({
   component: CareerPage,
@@ -60,22 +61,25 @@ function CareerPage() {
           </Button>
         </Link>
       </header>
-        <main className="pt-4 flex gap-6 flex-wrap justify-center">
-          {error && <p className="text-red-500">Error al cargar las materias.</p>}
-          {subjects?.map((subject) => (
-            <Link
-              key={subject.id}
-              to='/career/$career-id/subject/$subject-id'
-              params={{ 'career-id': careerId, 'subject-id': subject.id }}
-              className="block w-64"
-            >
-              <Card className="hover:bg-emerald-100 transition-colors ease-in-out duration-100">
-                <CardHeader>
-                  <CardTitle>{subject.name}</CardTitle>
-                </CardHeader>
-              </Card>
-            </Link>
-          ))}
+        <main className="pt-4 flex justify-around gap-4">
+          <section className="flex gap-6 flex-wrap justify-center">
+            {error && <p className="text-red-500">Error al cargar las materias.</p>}
+            {subjects?.map((subject) => (
+              <Link
+                key={subject.id}
+                to='/career/$career-id/subject/$subject-id'
+                params={{ 'career-id': careerId, 'subject-id': subject.id }}
+                className="block w-64"
+              >
+                <Card className="hover:bg-emerald-100 transition-colors ease-in-out duration-100">
+                  <CardHeader>
+                    <CardTitle>{subject.name}</CardTitle>
+                  </CardHeader>
+                </Card>
+              </Link>
+            ))}
+          </section>
+          <CareerEvaluationsCalendar subjects={subjects ?? []} />
         </main>
     </div>
   )
