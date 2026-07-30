@@ -55,7 +55,14 @@ function Subject() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{subjectName}</BreadcrumbPage>
+              <BreadcrumbLink>
+                <Link
+                  to='/career/$career-id/subject/$subject-id'
+                  params={{ 'career-id': careerId, 'subject-id': subjectId }}
+                >
+                  <BreadcrumbPage>{subjectName}</BreadcrumbPage>
+                </Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
