@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Plus, Trash2, Check } from 'lucide-react'
 import { useReminders, useCreateReminder, useUpdateReminder, useDeleteReminder } from '@/hooks/useReminders'
 import { InlineEditableText } from './InlineEditableField'
+import { MiniMarkdownEditor } from './MiniMarkdownEditor'
 import { Card, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Button } from './ui/button'
 import { cn } from '@/lib/utils'
@@ -68,7 +69,7 @@ export function RemindersList({ subjectId }: RemindersListProps) {
 
       {isLoading && <p className="text-gray-500 text-sm">Cargando recordatorios...</p>}
       {error && <p className="text-red-500 text-sm">Error al cargar los recordatorios.</p>}
-      
+
       {isCreating && (
         <Card className="mb-2 border-dashed">
           <CardHeader>
@@ -78,11 +79,10 @@ export function RemindersList({ subjectId }: RemindersListProps) {
                 onSave={(v) => setNewTitle(v)}
                 placeholder="Título del recordatorio"
               />
-              <InlineEditableText
+              <MiniMarkdownEditor
                 value={newContent}
-                onSave={(v) => setNewContent(v)}
+                onChange={setNewContent}
                 placeholder="Notas (opcional)"
-                className="text-sm"
               />
               <input
                 type="date"
@@ -123,11 +123,10 @@ export function RemindersList({ subjectId }: RemindersListProps) {
                   />
                 </CardDescription>
                 <div className="mt-2">
-                  <InlineEditableText
-                    value={reminder.content ?? ""}
-                    onSave={(content) => updateReminder.mutate({ id: reminder.id, content })}
+                  <MiniMarkdownEditor
+                    value={reminder.content ?? ''}
+                    onChange={(content) => updateReminder.mutate({ id: reminder.id, content })}
                     placeholder="Agregar notas..."
-                    className="text-sm text-muted-foreground"
                   />
                 </div>
               </CardHeader>
