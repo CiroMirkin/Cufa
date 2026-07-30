@@ -34,7 +34,7 @@ type CreateReminderData = {
   expiresAt: string
 }
 
-type UpdateReminderData = Partial<CreateReminderData>
+type UpdateReminderData = Partial<CreateReminderData> & { id: string }
 
 export function useCreateReminder(subjectId: string) {
   const queryClient = useQueryClient()
@@ -56,11 +56,11 @@ export function useCreateReminder(subjectId: string) {
   })
 }
 
-export function useUpdateReminder(subjectId: string, reminderId: string) {
+export function useUpdateReminder(subjectId: string) {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (data: UpdateReminderData) =>
-      updateDoc(getDocRef(subjectId, reminderId), data),
+    mutationFn: ({ id, ...data }: UpdateReminderData) =>
+      updateDoc(getDocRef(subjectId, id), data),
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["reminders", subjectId] })

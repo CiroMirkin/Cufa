@@ -22,7 +22,7 @@ interface RemindersListProps {
 export function RemindersList({ subjectId }: RemindersListProps) {
   const { data: reminders, isLoading, error } = useReminders(subjectId)
   const createReminder = useCreateReminder(subjectId)
-  const updateReminder = useUpdateReminder(subjectId, '')
+  const updateReminder = useUpdateReminder(subjectId)
   const deleteReminder = useDeleteReminder(subjectId)
 
   const [isCreating, setIsCreating] = useState(false)
@@ -53,7 +53,7 @@ export function RemindersList({ subjectId }: RemindersListProps) {
   function handleDeleteItem(reminderId: string, items: { text: string; checked: boolean }[], index: number) {
     if (confirm('¿Eliminar este item?')) {
       const newItems = items.filter((_, i) => i !== index)
-      updateReminder.mutate({ ...findReminderUpdateData(reminderId), items: newItems })
+      updateReminder.mutate({ ...findReminderUpdateData(reminderId), id: reminderId, items: newItems })
     }
   }
 
@@ -111,7 +111,7 @@ export function RemindersList({ subjectId }: RemindersListProps) {
                 <CardTitle className="text-base">
                   <InlineEditableText
                     value={reminder.title}
-                    onSave={(title) => updateReminder.mutate({ ...reminder, title })}
+                    onSave={(title) => updateReminder.mutate({ id: reminder.id, title })}
                   />
                 </CardTitle>
                 <Button
@@ -129,7 +129,7 @@ export function RemindersList({ subjectId }: RemindersListProps) {
                   type="date"
                   value={reminder.expiresAt}
                   className="text-xs font-semibold"
-                  onSave={(expiresAt) => updateReminder.mutate({ ...reminder, expiresAt })}
+                  onSave={(expiresAt) => updateReminder.mutate({ id: reminder.id, expiresAt })}
                 />
               </CardDescription>
 
@@ -143,7 +143,7 @@ export function RemindersList({ subjectId }: RemindersListProps) {
                         onChange={() => {
                           const newItems = [...reminder.items]
                           newItems[idx] = { ...newItems[idx], checked: !newItems[idx].checked }
-                          updateReminder.mutate({ ...reminder, items: newItems })
+                          updateReminder.mutate({ id: reminder.id, items: newItems })
                         }}
                         className="w-4 h-4"
                       />
@@ -152,7 +152,7 @@ export function RemindersList({ subjectId }: RemindersListProps) {
                         onSave={(text) => {
                           const newItems = [...reminder.items]
                           newItems[idx] = { ...newItems[idx], text: text.slice(0, 200) }
-                          updateReminder.mutate({ ...reminder, items: newItems })
+                          updateReminder.mutate({ id: reminder.id, items: newItems })
                         }}
                         className="flex-1 text-sm"
                       />
