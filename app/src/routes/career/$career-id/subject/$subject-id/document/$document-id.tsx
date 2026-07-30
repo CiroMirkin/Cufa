@@ -2,7 +2,9 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState } from 'react'
 import { useDocument, useUpdateDocument, useDeleteDocument } from '@/hooks/useDocuments'
 import { MarkdownEditor } from '@/components/MarkdownEditor'
+import { DocumentsList } from '@/components/DocumentsList'
 import { exportAsMarkdown } from '@/lib/exportDocument'
+import { Button } from '@/components/ui/button'
 import type { Document } from '@/types/document'
 
 const AUTOSAVE_DELAY = 1000
@@ -34,6 +36,8 @@ function DocumentDetail() {
     <DocumentForm
       key={documentId}
       document={document}
+      careerId={careerId}
+      subjectId={subjectId}
       onSave={(data) => updateDocument.mutate(data)}
       isSaving={updateDocument.isPending}
       onDelete={handleDelete}
@@ -44,12 +48,16 @@ function DocumentDetail() {
 
 function DocumentForm({
   document,
+  careerId,
+  subjectId,
   onSave,
   isSaving,
   onDelete,
   isDeleting,
 }: {
   document: Document
+  careerId: string
+  subjectId: string
   onSave: (data: { title: string; content: string }) => void
   isSaving: boolean
   onDelete: () => void
@@ -70,52 +78,40 @@ function DocumentForm({
     return () => clearTimeout(timeout)
   }, [title, content])
 
-  function handleSave(e: React.FormEvent) {
-    e.preventDefault()
-    onSave({ title, content })
-  }
-
   return (
-    <>
-      <form onSubmit={handleSave} className="w-full grid place-items-center print:hidden">
-        <div className="w-full max-w-7xl">
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 mb-4 border"
-            required
-          />
-        </div>
-        <div className="mb-4 max-w-7xl">
-          <MarkdownEditor value={content} onChange={setContent} />
-        </div>
-        <div className="w-full max-w-7xl flex flex-wrap items-center gap-2">
-          <button
-            type="submit"
-            disabled={isSaving}
-            className="px-6 py-2 bg-green-600 hover:bg-green-700 text-white rounded disabled:opacity-50"
-          >
-            {isSaving ? 'Guardando...' : 'Guardar'}
-          </button>
-          <button
-            type="button"
-            onClick={onDelete}
-            disabled={isDeleting}
-            className="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded disabled:opacity-50"
-          >
-            {isDeleting ? 'Eliminando...' : 'Eliminar'}
-          </button>
-          <button
-            type="button"
-            onClick={() => exportAsMarkdown(title, content)}
-            className="px-6 py-2 bg-gray-100 hover:bg-gray-200 rounded"
-          >
-            Exportar .md
-          </button>
-          {isSaving && <span className="text-sm text-gray-500">Guardado automático...</span>}
-        </div>
-      </form>
-    </>
+    <div className="w-full grid place-items-center print:hidden">
+      <div className="w-full max-w-7xl">
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full px-4 py-2 mb-4 border"
+          required
+        />
+      </div>
+      <div className="mb-4 w-full max-w-7xl">
+        <MarkdownEditor value={content} onChange={setContent} />
+      </div>
+      <div className="w-full max-w-7xl flex flex-wrap items-center gap-2">
+        <Button
+          variant="destructive"
+          onClick={onDelete}
+          disabled={isDeleting}
+        >
+          {isDeleting ? 'Eliminando...' : 'Eliminar'}
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => exportAsMarkdown(title, content)}
+        >
+          Exportar .md
+        </Button>
+        {isSaving && <span className="text-sm text-gray-500">Guardado automático...</span>}
+      </div>
+      <div className="w-full max-w-7xl mt-8 pt-6 border-t">
+        <DocumentsList subjectId={subjectId} careerId={careerId} />
+      </div>
+    </div>
   )
 }

@@ -223,14 +223,17 @@ export function MarkdownEditor({
   }
 
   return (
-    <div className="w-full p-4 shadow-lg">
+    <div
+      className="w-full p-4 shadow-lg overflow-y-auto"
+      style={{ height: 'calc(100vh - 220px)' }}
+    >
       <YooptaEditor
         editor={editor}
         onChange={handleChange}
         placeholder={placeholder}
         autoFocus={autoFocus}
         className={className}
-        style={{ width: '100%', paddingBottom: 150 }}
+        style={{ width: '100%', minHeight: '100%', overflowY: 'auto' }}
       >
         <Toolbar />
         <BlockActions />
