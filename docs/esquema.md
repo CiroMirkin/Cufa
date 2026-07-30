@@ -63,6 +63,16 @@ Tipo: `src/types/evaluation.ts` → `Evaluation { id, subjectId, title, type, da
 
 Tipo: `src/types/note.ts` → `Note { id, subjectId, content, createdAt }`
 
+#### `reminders` - `subjects/{subjectId}/reminders`
+
+- `subjectId`: string (denormalizado)
+- `title`: string
+- `items`: array de `{ text: string, checked: boolean }` (opcional, puede ser vacío)
+- `expiresAt`: string ("YYYY-MM-DD")
+- `createdAt`: string (ISO 8601)
+
+Tipos: `src/types/reminder.ts` → `Reminder { id, subjectId, title, items, expiresAt, createdAt }` / `ReminderItem { text, checked }`
+
 ---
 
 ## Diagrama entidad-relación
@@ -116,9 +126,19 @@ erDiagram
         string createdAt
     }
 
+    reminders {
+        string id PK
+        string subjectId FK
+        string title
+        array items
+        string expiresAt
+        string createdAt
+    }
+
     users ||--o{ careers : "creates"
     careers ||--o{ subjects : contains
     subjects ||--o{ documents : contains
     subjects ||--o{ evaluations : contains
     subjects ||--o{ notes : contains
+    subjects ||--o{ reminders : contains
 ```
