@@ -90,6 +90,29 @@ catch (err) {
   console.error(`Failed to seed evaluation: ${err.message}`)
   process.exitCode = 1
 }
+const notes = [
+  { subject: "programación-1", content: "Repasar funciones de orden superior" },
+  { subject: "metodologías-de-resolución-de-problemas", content: "TP grupal entregar el viernes" },
+]
+
+for (const note of notes) {
+  try {
+    await db
+      .collection("subjects")
+      .doc(note.subject)
+      .collection("notes")
+      .add({
+        subjectId: note.subject,
+        content: note.content,
+        createdAt: new Date().toISOString(),
+      })
+    console.log(`Seeded note in '${note.subject}' successfully.`)
+  }
+  catch (err) {
+    console.error(`Failed to seed note in '${note.subject}': ${err.message}`)
+    process.exitCode = 1
+  }
+}
 finally {
   await admin.app().delete()
 }
