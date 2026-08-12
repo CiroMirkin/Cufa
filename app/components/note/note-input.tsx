@@ -10,7 +10,13 @@ function NoteInput({ onAdd }: Props) {
  
   const handleSubmit = () => {
     if (!content.trim()) return
-    onAdd({ content: content.trim(), createdAt: new Date().toISOString() })
+    onAdd({
+      id: `${content} ${new Date()}`,
+      careerId: "",
+      subjectId: "",
+      content: content.trim(),
+      createdAt: new Date().toISOString(),
+    })
     setContent("")
   }
  
