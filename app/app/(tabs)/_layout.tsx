@@ -5,6 +5,8 @@ const TabLayout = () => (
         <Tabs.Screen name="index" options={{ title: "Inicio" }} />
         <Tabs.Screen name="notes" options={{ title: "Notas" }} />
         <Tabs.Screen name="evaluation" options={{ title: "Evaluaciones" }} />
+        
+        <Tabs.Screen name="subject/[id]" options={{ href: null }} />
     </Tabs>
 )
 

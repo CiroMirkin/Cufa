@@ -1,17 +1,18 @@
 import { Note } from "@/types/note"
 import { useState } from "react"
+import { Pressable, Text, TextInput, View } from "react-native"
 
 interface Props {
   onAdd: (note: Note) => void
 }
- 
+
 function NoteInput({ onAdd }: Props) {
   const [content, setContent] = useState("")
- 
+
   const handleSubmit = () => {
     if (!content.trim()) return
     onAdd({
-      id: `${content} ${new Date()}`,
+      id: `${Date.now()}`,
       careerId: "",
       subjectId: "",
       content: content.trim(),
@@ -19,32 +20,25 @@ function NoteInput({ onAdd }: Props) {
     })
     setContent("")
   }
- 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-      handleSubmit()
-    }
-  }
- 
+
   return (
-    <div className="flex flex-col gap-2">
-      <textarea
+    <View className="w-full gap-2 px-4">
+      <TextInput
         value={content}
-        onChange={(e) => setContent(e.target.value)}
-        onKeyDown={handleKeyDown}
+        onChangeText={setContent}
         placeholder="Escribi una nota..."
-        rows={4}
-        className="w-full resize-none rounded-lg border border-neutral-300 bg-white p-3 text-sm text-neutral-800 outline-none focus:border-neutral-500"
+        multiline
+        numberOfLines={4}
+        className="w-full rounded-lg border border-neutral-300 bg-white p-3 text-sm text-neutral-800"
       />
-      <button
-        onClick={handleSubmit}
-        className="self-end rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white hover:bg-neutral-700"
+      <Pressable
+        onPress={handleSubmit}
+        className="self-end rounded-lg bg-neutral-900 px-4 py-2"
       >
-        Guardar nota
-      </button>
-    </div>
+        <Text className="text-sm font-medium text-white">Guardar nota</Text>
+      </Pressable>
+    </View>
   )
 }
 
 export default NoteInput
- 
