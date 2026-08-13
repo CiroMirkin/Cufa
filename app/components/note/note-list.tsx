@@ -1,7 +1,6 @@
 import { useCareer } from "@/hooks/useCareer"
 import { useNotes } from "@/hooks/useNotes"
 import { useSubjects } from "@/hooks/useSubject"
-import { Note } from "@/types/note"
 import { FlatList, Pressable, Text, View } from "react-native"
 
 interface Props {
@@ -11,8 +10,16 @@ interface Props {
 function NoteList({ subjectId }: Props) {
   const { career } = useCareer()
   const { getSubject } = useSubjects(career.id)
-  const { notes, deleteNote } = useNotes(subjectId, career.id)
-  
+  const { notes, deleteNote, loading } = useNotes(subjectId, career.id)
+
+  if (loading) {
+    return (
+      <View className="flex-1 items-center justify-center bg-white">
+        <Text className="text-neutral-400">Cargando...</Text>
+      </View>
+    )
+  }
+
   if (!notes || notes.length === 0) {
     return (
       <Text className="px-4 pt-4 text-sm text-neutral-400">
@@ -30,9 +37,9 @@ function NoteList({ subjectId }: Props) {
       renderItem={({ item }) => (
         <View className="flex-row items-start justify-between gap-3 rounded-lg border border-neutral-200 bg-white p-3">
           <View className="flex-1 gap-1">
-            { item.subjectId !== null && (
+            {item.subjectId !== null && (
               <Text className="border rounded px-1 text-xs text-neutral-800 mb-2">
-                { getSubject(item.subjectId)?.name }
+                {getSubject(item.subjectId)?.name}
               </Text>
             )}
             <Text className="text-sm text-neutral-800">{item.content}</Text>
