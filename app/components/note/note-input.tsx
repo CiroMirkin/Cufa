@@ -29,7 +29,7 @@ function NoteInput({ onAdd }: Props) {
         placeholder="Escribi una nota..."
         multiline
         numberOfLines={4}
-        className="w-full rounded-lg border border-neutral-300 bg-white p-3 text-sm text-neutral-800"
+        className="w-full bg-white p-3 text-sm text-neutral-800"
       />
       <Pressable
         onPress={handleSubmit}
