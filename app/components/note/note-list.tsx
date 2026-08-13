@@ -1,16 +1,18 @@
 import { useCareer } from "@/hooks/useCareer"
+import { useNotes } from "@/hooks/useNotes"
 import { useSubjects } from "@/hooks/useSubject"
 import { Note } from "@/types/note"
 import { FlatList, Pressable, Text, View } from "react-native"
 
 interface Props {
-  notes: Note[]
-  onDelete: (id: string) => void
+  subjectId: string | null
 }
 
-function NoteList({ notes, onDelete }: Props) {
+function NoteList({ subjectId }: Props) {
   const { career } = useCareer()
   const { getSubject } = useSubjects(career.id)
+  const { notes, deleteNote } = useNotes(subjectId, career.id)
+  
   if (!notes || notes.length === 0) {
     return (
       <Text className="px-4 pt-4 text-sm text-neutral-400">
@@ -38,7 +40,7 @@ function NoteList({ notes, onDelete }: Props) {
               {new Date(item.createdAt).toLocaleString()}
             </Text>
           </View>
-          <Pressable onPress={() => onDelete(item.id)} hitSlop={8} className="p-1.5">
+          <Pressable onPress={() => deleteNote(item.id)} hitSlop={8} className="p-1.5">
             <Text className="text-red-500">Eliminar</Text>
           </Pressable>
         </View>

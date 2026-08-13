@@ -2,14 +2,20 @@ import { useCallback, useEffect, useState } from "react"
 import { Evaluation } from "@/types/evaluation"
 import { getEvaluations, saveEvaluations } from "@/lib/storage"
 
-export function useEvaluation() {
+interface Params {
+  subjectId: string | null
+}
+
+export function useEvaluation({ subjectId }: Params) {
   const [evaluations, setEvaluations] = useState<Evaluation[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getEvaluations().then((all) => {
+      const evaluations = !subjectId ? all : all.filter(ev => ev.subjectId === subjectId) 
+      
       const now = new Date()
-      const upcoming = all.filter((e) => new Date(e.date) >= now)
+      const upcoming = evaluations.filter((e) => new Date(e.date) >= now)
       upcoming.sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
       )

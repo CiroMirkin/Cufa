@@ -1,31 +1,30 @@
 import { Stack, useLocalSearchParams } from "expo-router"
-import { View } from "react-native"
+import { View, Text } from "react-native"
 import NoteInput from "@/components/note/note-input"
 import NoteList from "@/components/note/note-list"
-import { Note } from "@/types/note"
-import { useNotes } from "@/hooks/useNotes"
-import { useCareer } from "@/hooks/useCareer"
+import EvaluationInput from "@/components/evaluation/evaluation-input"
+import EvaluationList from "@/components/evaluation/evaluation-list"
+import { useEvaluation } from "@/hooks/useEvaluation"
 
 export default function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
-    const { career } = useCareer()
-    const { notes, addNote, deleteNote } = useNotes(id, career.id)
-
-    const handleAdd = (note: Note) => {
-        if (!note) return
-        addNote(note.content)
-    }
-
-    const handleDelete = (id: string) => {
-        if (!id) return
-        deleteNote(id)
-    }
+    const { evaluations } = useEvaluation({ subjectId: id })
 
     return (
         <View className="flex-1 bg-white">
-            <Stack.Screen options={{ title: "Notas" }} />
-            <NoteInput onAdd={handleAdd} />
-            <NoteList notes={notes} onDelete={handleDelete} />
+            <Stack.Screen options={{ title: "Asignatura", headerShown: false }} />
+            
+            <Text className="px-4 pt-4 text-lg font-bold text-neutral-800">Evaluaciones</Text>
+            <EvaluationInput 
+                subjectId={id} 
+            />
+            <EvaluationList 
+                evaluations={evaluations} 
+            />
+
+            <Text className="px-4 pt-4 text-lg font-bold text-neutral-800">Notas</Text>
+            <NoteInput subjectId={id} />
+            <NoteList subjectId={id} />
         </View>
     )
 }

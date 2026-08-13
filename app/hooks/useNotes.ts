@@ -19,7 +19,7 @@ export function useNotes(subjectId: string | null, careerId: string) {
   }, [subjectId])
 
   const addNote = useCallback(
-    async (content: string) => {
+    async ({ content }: { content: string }) => {
       const newNote: Note = {
         id: `${Date.now()}`,
         subjectId,
