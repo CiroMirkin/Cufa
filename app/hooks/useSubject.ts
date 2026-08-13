@@ -13,7 +13,7 @@ export function useSubjects(careerId: string) {
     })
   }, [careerId])
 
-  const getSubject = (subjectId: string): Subject | null => {
+  const getSubject = (subjectId: string | null): Subject | null => {
     if(!subjectId) return null
     return subjects.find(s => s.id === subjectId) || null
   }
