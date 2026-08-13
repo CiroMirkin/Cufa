@@ -1,51 +1,238 @@
-import { Evaluation } from "@/types/evaluation"
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
+import { Evaluation, EvaluationType } from "@/types/evaluation"
+import { Subject } from "@/types/subject"
 import { useState } from "react"
-import { Pressable, Text, TextInput, View } from "react-native"
+import { Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native"
+import { formatDateTimeLocal } from "@/lib/date"
+import { useEvaluation } from "@/hooks/useEvaluation"
 
-const BLANK_EVALUATION = {
-    title: "",
-    note: "",
-    type: "",
-    date: "",
-    link: "",
-  }
+const EVALUATION_TYPES: { value: EvaluationType; label: string }[] = [
+  { value: "partial", label: "Parcial" },
+  { value: "final", label: "Final" },
+  { value: "retake", label: "Recuperatorio" },
+  { value: "practical_work", label: "TP" },
+  { value: "presentation", label: "Presentación" },
+  { value: "task", label: "Tarea" },
+]
 
-interface Props {
-  onAdd: (evaluation: Evaluation) => void
+interface FormState {
+  subjectId: string
+  title: string
+  date: Date
+  type: EvaluationType
+  note: string
+  link: string
+  topicsRaw: string
+  showPicker: boolean
+  pickerMode: "date" | "time"
 }
 
-function EvaluationInput({ onAdd }: Props) {
-  const [evaluation, setEvaluation] = useState({... BLANK_EVALUATION})
+interface Props {
+  subjects?: Subject[]
+  subjectId: string | null
+  onCancel?: () => void
+}
+
+function getInitialState(subjectId: string | null): FormState {
+  return {
+    subjectId: subjectId ?? "",
+    title: "",
+    date: new Date(),
+    type: "partial",
+    note: "",
+    link: "",
+    topicsRaw: "",
+    showPicker: false,
+    pickerMode: "date",
+  }
+}
+
+export default function EvaluationInput({ subjects, subjectId, onCancel }: Props) {
+  const [form, setForm] = useState<FormState>(() => getInitialState(subjectId))
+  const { addEvaluation } = useEvaluation({ subjectId })
+  const isSubjectLocked = !!subjectId
+
+  const updateField = <K extends keyof FormState>(field: K, value: FormState[K]) => {
+    setForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    if (Platform.OS === "android") updateField("showPicker", false)
+    if (selectedDate) {
+      setForm((prev) => {
+        const current = new Date(prev.date)
+        if (prev.pickerMode === "date") {
+          current.setFullYear(selectedDate.getFullYear())
+          current.setMonth(selectedDate.getMonth())
+          current.setDate(selectedDate.getDate())
+          if (Platform.OS === "android") {
+            return { ...prev, date: current, pickerMode: "time", showPicker: true }
+          }
+        } else {
+          current.setHours(selectedDate.getHours())
+          current.setMinutes(selectedDate.getMinutes())
+        }
+        return { ...prev, date: current }
+      })
+    }
+  }
+
+  const openDatePicker = () => {
+    setForm((prev) => ({ ...prev, pickerMode: "date", showPicker: true }))
+  }
 
   const handleSubmit = () => {
-    if (!evaluation.title.trim()) return
-    //onAdd()
-    setEvaluation({...BLANK_EVALUATION})
+    if (!form.title.trim() || !form.subjectId) return
+
+    const topics = form.topicsRaw
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0)
+
+    addEvaluation({
+      subjectId: form.subjectId,
+      title: form.title.trim(),
+      date: formatDateTimeLocal(form.date),
+      type: form.type,
+      note: form.note.trim() || undefined,
+      link: form.link.trim() || undefined,
+      topics: topics.length > 0 ? topics : undefined,
+    })
+
+    setForm(getInitialState(subjectId))
   }
 
   return (
-    <View className="w-full gap-2 px-4">
-      <TextInput
-        value={evaluation.title}
-        onChangeText={(title) => setEvaluation({ ...evaluation, title })}
-        className="w-full border bg-white p-3 text-sm text-neutral-800"
-      />
-      <TextInput
-        value={evaluation.note}
-        onChangeText={(note) => setEvaluation({ ...evaluation, note })}
-        multiline
-        numberOfLines={4}
-        className="w-full border bg-white p-3 text-sm text-neutral-800"
-      />
-      
-      <Pressable
-        onPress={handleSubmit}
-        className="self-end rounded-lg bg-neutral-900 px-4 py-2"
-      >
-        <Text className="text-sm font-medium text-white">Crear</Text>
-      </Pressable>
-    </View>
+    <ScrollView className="w-full gap-3 px-4 py-2">
+      {!isSubjectLocked && subjects && (
+        <View className="gap-1">
+          <Text className="text-sm font-medium text-neutral-700">Asignatura *</Text>
+          <View className="flex-row flex-wrap gap-2">
+            {subjects.map((s) => (
+              <Pressable
+                key={s.id}
+                onPress={() => updateField("subjectId", s.id)}
+                className={`rounded-full px-3 py-1.5 ${
+                  form.subjectId === s.id ? "bg-blue-500" : "bg-neutral-200"
+                }`}
+              >
+                <Text
+                  className={`text-xs font-medium ${
+                    form.subjectId === s.id ? "text-white" : "text-neutral-700"
+                  }`}
+                >
+                  {s.name}
+                </Text>
+              </Pressable>
+            ))}
+          </View>
+        </View>
+      )}
+
+      <View className="gap-1">
+        <Text className="text-sm font-medium text-neutral-700">Nombre *</Text>
+        <TextInput
+          value={form.title}
+          onChangeText={(text) => updateField("title", text)}
+          placeholder="Ej: Primer parcial"
+          className="w-full rounded-lg border border-neutral-300 bg-white p-3 text-sm text-neutral-800"
+        />
+      </View>
+
+      <View className="gap-1">
+        <Text className="text-sm font-medium text-neutral-700">Fecha y hora *</Text>
+        <Pressable
+          onPress={openDatePicker}
+          className="w-full rounded-lg border border-neutral-300 bg-white p-3"
+        >
+          <Text className="text-sm text-neutral-800">
+            {formatDateTimeLocal(form.date).replace("T", " ")}
+          </Text>
+        </Pressable>
+        {form.showPicker && (
+          <DateTimePicker
+            value={form.date}
+            mode={form.pickerMode}
+            is24Hour={true}
+            display={Platform.OS === "ios" ? "spinner" : "default"}
+            onChange={onChangeDate}
+          />
+        )}
+      </View>
+
+      <View className="gap-1">
+        <Text className="text-sm font-medium text-neutral-700">Tipo</Text>
+        <View className="flex-row flex-wrap gap-2">
+          {EVALUATION_TYPES.map((t) => (
+            <Pressable
+              key={t.value}
+              onPress={() => updateField("type", t.value)}
+              className={`rounded-full px-3 py-1.5 ${
+                form.type === t.value ? "bg-blue-500" : "bg-neutral-200"
+              }`}
+            >
+              <Text
+                className={`text-xs font-medium ${
+                  form.type === t.value ? "text-white" : "text-neutral-700"
+                }`}
+              >
+                {t.label}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+
+      <View className="gap-1">
+        <Text className="text-sm font-medium text-neutral-700">Notas</Text>
+        <TextInput
+          value={form.note}
+          onChangeText={(text) => updateField("note", text)}
+          multiline
+          numberOfLines={3}
+          maxLength={5000}
+          placeholder="Detalles adicionales..."
+          className="w-full rounded-lg border border-neutral-300 bg-white p-3 text-sm text-neutral-800"
+        />
+        <Text className="text-xs text-neutral-400">{form.note.length}/5000</Text>
+      </View>
+
+      <View className="gap-1">
+        <Text className="text-sm font-medium text-neutral-700">Enlace</Text>
+        <TextInput
+          value={form.link}
+          onChangeText={(text) => updateField("link", text)}
+          placeholder="https://..."
+          className="w-full rounded-lg border border-neutral-300 bg-white p-3 text-sm text-neutral-800"
+        />
+      </View>
+
+      <View className="gap-1">
+        <Text className="text-sm font-medium text-neutral-700">Temas a repasar</Text>
+        <TextInput
+          value={form.topicsRaw}
+          onChangeText={(text) => updateField("topicsRaw", text)}
+          placeholder="Separados por coma"
+          className="w-full rounded-lg border border-neutral-300 bg-white p-3 text-sm text-neutral-800"
+        />
+      </View>
+
+      <View className="flex-row justify-end gap-2 py-2">
+        {onCancel && (
+          <Pressable
+            onPress={onCancel}
+            className="rounded-lg bg-neutral-200 px-4 py-2"
+          >
+            <Text className="text-sm font-medium text-neutral-700">Cancelar</Text>
+          </Pressable>
+        )}
+        <Pressable
+          onPress={handleSubmit}
+          className="rounded-lg bg-blue-500 px-4 py-2"
+        >
+          <Text className="text-sm font-medium text-white">Crear</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   )
 }
-
-export default EvaluationInput

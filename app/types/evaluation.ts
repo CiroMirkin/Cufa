@@ -1,3 +1,4 @@
+
 export type EvaluationType = "partial" | "final" | "retake" | "practical_work" | "presentation" | "task"
 
 export interface Evaluation {
@@ -12,3 +13,13 @@ export interface Evaluation {
   link?: string
   topics?: string[]
 }
+
+export const TYPE_LABELS: Record<EvaluationType, string> = {
+  partial: "Parcial",
+  final: "Final",
+  retake: "Recuperatorio",
+  practical_work: "TP",
+  presentation: "Presentación",
+  task: "Tarea",
+}
+
