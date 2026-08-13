@@ -1,5 +1,5 @@
-import { FlatList, Pressable, Text, View } from "react-native"
-import { Link, router } from "expo-router"
+import { FlatList, Text } from "react-native"
+import { Link } from "expo-router"
 import { Subject } from "@/types/subject"
 
 interface Props {
@@ -33,9 +33,6 @@ export default function SubjectList({ subjects, onDelete }: Props) {
           <Text className="text-base font-medium text-neutral-800">
             {item.name}
           </Text>
-          <Pressable onPress={() => onDelete(item.id)} hitSlop={8} className="p-1.5">
-            <Text className="text-red-500">Eliminar</Text>
-          </Pressable>
         </Link>
       )}
     />
