@@ -4,21 +4,21 @@ import NoteInput from "@/components/note/note-input"
 import NoteList from "@/components/note/note-list"
 import { Note } from "@/types/note"
 import { useNotes } from "@/hooks/useNotes"
-
-const DEFAULT_CAREER_ID = "default"
+import { useCareer } from "@/hooks/useCareer"
 
 export default function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
-    const { notes, addNote, deleteNote } = useNotes(id, DEFAULT_CAREER_ID)
+    const { career } = useCareer()
+    const { notes, addNote, deleteNote } = useNotes(id, career.id)
 
     const handleAdd = (note: Note) => {
+        if (!note) return
         addNote(note.content)
     }
 
-    const handleDelete = (index: number) => {
-        const note = notes[index]
-        if (!note) return
-        deleteNote(note.id)
+    const handleDelete = (id: string) => {
+        if (!id) return
+        deleteNote(id)
     }
 
     return (

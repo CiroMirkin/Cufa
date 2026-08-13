@@ -13,6 +13,11 @@ export function useSubjects(careerId: string) {
     })
   }, [careerId])
 
+  const getSubject = (subjectId: string): Subject | null => {
+    if(!subjectId) return null
+    return subjects.find(s => s.id === subjectId) || null
+  }
+
   const addSubject = useCallback(
     async (name: string) => {
       const newSubject: Subject = {
@@ -33,5 +38,5 @@ export function useSubjects(careerId: string) {
     setSubjects((prev) => prev.filter((s) => s.id !== id))
   }, [])
 
-  return { subjects, loading, addSubject, deleteSubject }
+  return { subjects, loading, addSubject, deleteSubject, getSubject }
 }

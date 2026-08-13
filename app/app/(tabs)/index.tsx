@@ -1,14 +1,14 @@
 import SubjectList from "@/components/subject/SubjectList"
 import SubjectModal from "@/components/subject/SubjectModal"
+import { useCareer } from "@/hooks/useCareer"
 import { useSubjects } from "@/hooks/useSubject"
 import { useState } from "react"
 import { Pressable, Text, View } from "react-native"
 
-const DEFAULT_CAREER_ID = "default"
-
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
-  const { subjects, addSubject, deleteSubject } = useSubjects(DEFAULT_CAREER_ID)
+  const { career } = useCareer()
+  const { subjects, addSubject, deleteSubject } = useSubjects(career.id)
 
   return (
     <View className="flex-1 bg-white">

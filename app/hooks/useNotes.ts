@@ -2,13 +2,18 @@ import { useCallback, useEffect, useState } from "react"
 import { Note } from "@/types/note"
 import { getNotes, saveNotes } from "@/lib/storage"
 
-export function useNotes(subjectId: string, careerId: string) {
+export function useNotes(subjectId: string | null, careerId: string) {
   const [notes, setNotes] = useState<Note[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     getNotes().then((all) => {
-      setNotes(all.filter((n) => n.subjectId === subjectId))
+      if(subjectId === null) {
+        setNotes(all)
+      }
+      else {
+        setNotes(all.filter((n) => n.subjectId === subjectId))
+      }
       setLoading(false)
     })
   }, [subjectId])

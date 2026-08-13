@@ -1,37 +1,23 @@
 import NoteInput from "@/components/note/note-input"
 import { Pressable, Text, View } from "react-native"
 import { Note } from "@/types/note"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import NoteList from "@/components/note/note-list"
-import { getNotes, saveNotes } from "@/lib/storage"
+import { useNotes } from "@/hooks/useNotes"
+import { useCareer } from "@/hooks/useCareer"
 
 export default function Notes() {
-    const [notes, setNotes] = useState<Note[]>([])
+    const { career } = useCareer()
+    const { notes, addNote, loading, deleteNote } = useNotes(null, career.id)
     const [notesInputVisible, setNotesInputVisible] = useState(false)
-    const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        getNotes().then((stored) => {
-            setNotes(stored)
-            setLoading(false)
-        })
-    }, [])
-
-    const addNote = (note: Note) => {
-        setNotes((prev) => {
-            const updated = [note, ...prev]
-            saveNotes(updated)
-            return updated
-        })
+    const handleAddNote = (note: Note) => {
+        addNote(note.content)
         setNotesInputVisible(false)
     }
 
-    const deleteNote = (index: number) => {
-        setNotes((prev) => {
-            const updated = prev.filter((_, i) => i !== index)
-            saveNotes(updated)
-            return updated
-        })
+    const handleDeleteNote = (id: string) => {
+        deleteNote(id)
     }
 
     if (loading) {
@@ -54,9 +40,9 @@ export default function Notes() {
               </Pressable>
             </View>
             { notesInputVisible && (
-                <NoteInput onAdd={addNote} />
+                <NoteInput onAdd={handleAddNote} />
             )}
-            <NoteList notes={notes} onDelete={deleteNote} />
+            <NoteList notes={notes} onDelete={handleDeleteNote} />
         </View>
     )
 }

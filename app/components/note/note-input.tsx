@@ -1,20 +1,23 @@
+import { useCareer } from "@/hooks/useCareer"
 import { Note } from "@/types/note"
 import { useState } from "react"
 import { Pressable, Text, TextInput, View } from "react-native"
 
 interface Props {
   onAdd: (note: Note) => void
+  subjectId?: string | null
 }
 
-function NoteInput({ onAdd }: Props) {
+function NoteInput({ onAdd, subjectId = null }: Props) {
   const [content, setContent] = useState("")
+  const { career } = useCareer()
 
   const handleSubmit = () => {
     if (!content.trim()) return
     onAdd({
       id: `${Date.now()}`,
-      careerId: "",
-      subjectId: "",
+      careerId: career.id,
+      subjectId,
       content: content.trim(),
       createdAt: new Date().toISOString(),
     })
