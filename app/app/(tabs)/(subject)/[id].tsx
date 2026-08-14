@@ -21,29 +21,31 @@ export default function SubjectScreen() {
         <View className="flex-1 bg-white">
             <Stack.Screen options={{ title: "Asignatura", headerShown: false }} />
 
-            <View className="py-4 text-lg">
-                <Text>{subject?.name}</Text>
+            <View className="flex-row justify-between gap-4">
+                <View className="py-4 text-lg">
+                    <Text>{subject?.name}</Text>
+                </View>
+
+                <View className="flex-row px-4 pt-4 gap-3">
+                    <Link
+                        href={{ pathname: "/(evaluation)/new", params: { subjectId: id } }}
+                        className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
+                    >
+                        <Text className="font-semibold text-white text-center">Nueva Evaluacion</Text>
+                    </Link>
+                    <Link
+                        href={{ pathname: "/(note)/new", params: { subjectId: id } }}
+                        className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
+                    >
+                        <Text className="font-semibold text-white text-center">Nueva nota</Text>
+                    </Link>
+                </View>
             </View>
 
-            <View className="flex-row px-4 pt-4 gap-3">
-                <Link
-                    href={{ pathname: "/(evaluation)/new", params: { subjectId: id } }}
-                    className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
-                >
-                    <Text className="font-semibold text-white text-center">Nueva Evaluacion</Text>
-                </Link>
-                <Link
-                    href={{ pathname: "/(note)/new", params: { subjectId: id } }}
-                    className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
-                >
-                    <Text className="font-semibold text-white text-center">Nueva nota</Text>
-                </Link>
-            </View>
-
-            <Text className="px-4 pt-4 text-lg font-bold text-neutral-800">Evaluaciones</Text>
+            <Text className="px-4 pt-4 text-lg font-bold text-neutral-400">Próximas Evaluaciones</Text>
             <EvaluationList evaluations={evaluations} />
 
-            <Text className="px-4 pt-4 text-lg font-bold text-neutral-800">Notas</Text>
+            <Text className="px-4 pt-4 text-lg font-bold text-neutral-400">Notas</Text>
             <NoteList subjectId={id} />
         </View>
     )
