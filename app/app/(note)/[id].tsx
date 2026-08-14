@@ -52,7 +52,7 @@ export default function NoteDetailScreen() {
                     { !note.subjectId 
                         ? <Link href={{ pathname: "/(tabs)/notes", }}>Volver</Link>
                         : <Link href={{ 
-                            pathname: "/subject/[id]",
+                            pathname: "/(tabs)/(subject)/[id]",
                             params: { id: note.subjectId },
                         }}>Volver</Link>
                     }

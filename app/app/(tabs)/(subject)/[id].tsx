@@ -16,29 +16,22 @@ export default function SubjectScreen() {
     const { career } = useCareer()
     const { getSubject } = useSubjects(career.id)
     const subject = getSubject(id)
-    const [activeInput, setActiveInput] = useState<ActiveInput>(null)
-
-    const toggleInput = (input: ActiveInput) => {
-        setActiveInput(prev => (prev === input ? null : input))
-    }
 
     return (
         <View className="flex-1 bg-white">
             <Stack.Screen options={{ title: "Asignatura", headerShown: false }} />
 
             <View className="py-4 text-lg">
-                <Text>{ subject?.name }</Text>
+                <Text>{subject?.name}</Text>
             </View>
 
             <View className="flex-row px-4 pt-4 gap-3">
-                <TouchableOpacity
+                <Link
+                    href={{ pathname: "/(evaluation)/new", params: { subjectId: id } }}
                     className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
-                    onPress={() => toggleInput("evaluation")}
                 >
-                    <Text className="font-semibold text-white">
-                        {activeInput === "evaluation" ? "Cancelar" : "Nueva evaluación"}
-                    </Text>
-                </TouchableOpacity>
+                    <Text className="font-semibold text-white text-center">Nueva Evaluacion</Text>
+                </Link>
                 <Link
                     href={{ pathname: "/(note)/new", params: { subjectId: id } }}
                     className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
@@ -47,19 +40,11 @@ export default function SubjectScreen() {
                 </Link>
             </View>
 
-            {activeInput === "evaluation" && (
-                <EvaluationInput subjectId={id} />
-            )}
+            <Text className="px-4 pt-4 text-lg font-bold text-neutral-800">Evaluaciones</Text>
+            <EvaluationList evaluations={evaluations} />
 
-            {activeInput === null && (
-                <>
-                    <Text className="px-4 pt-4 text-lg font-bold text-neutral-800">Evaluaciones</Text>
-                    <EvaluationList evaluations={evaluations} />
-
-                    <Text className="px-4 pt-4 text-lg font-bold text-neutral-800">Notas</Text>
-                    <NoteList subjectId={id} />
-                </>
-            )}
+            <Text className="px-4 pt-4 text-lg font-bold text-neutral-800">Notas</Text>
+            <NoteList subjectId={id} />
         </View>
     )
 }
