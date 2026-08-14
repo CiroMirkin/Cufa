@@ -1,40 +1,43 @@
-import { useCareer } from "@/hooks/useCareer"
-import { useNotes } from "@/hooks/useNotes"
-import { useSubjects } from "@/hooks/useSubject"
+import { Link } from "expo-router"
+import { Text } from "react-native"
 import { Note } from "@/types/note"
-import { Pressable, Text, View } from "react-native"
 
 interface Props {
     note: Note
+    subjectName?: string
 }
 
-export default function NoteItem({ note }: Props) {
-    const { career } = useCareer()
-    const { getSubject } = useSubjects(career.id)
-    const { deleteNote } = useNotes(note.subjectId, career.id)
-    const subjectName = getSubject(note.subjectId) || ""
+function firstLine(content: string) {
+    return content.split("\n")[0]
+}
 
+export default function NoteItem({ note, subjectName }: Props) {
     return (
-        <View className="flex-row items-start justify-between gap-3 rounded-lg border border-neutral-200 bg-white p-3">
-            <View className="flex-1 gap-1">
-                {!subjectName && (
-                    <Text className="mb-2 rounded border px-1 text-xs text-neutral-800">
-                        { subjectName }
-                    </Text>
-                )}
-                <Text className="text-sm text-neutral-800">{note.content}</Text>
-                <Text className="text-xs text-neutral-400">
-                    {new Date(note.createdAt).toLocaleString()}
+        <Link
+            href={{
+                pathname: "/(note)/[id]",
+                params: { id: note.id }
+            }}
+            className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-white p-3"
+        >
+            {!subjectName && (
+                <Text className="mb-1 self-start rounded border px-1 text-xs text-neutral-500">
+                    Sin asignatura
                 </Text>
-            </View>
+            )}
+            {subjectName && (
+                <Text className="mb-1 self-start rounded border px-1 text-xs text-neutral-800">
+                    {subjectName}
+                </Text>
+            )}
+
+            <Text numberOfLines={1} className="text-base text-neutral-800">
+                {firstLine(note.content)}
+            </Text>
             
-            <Pressable
-                onPress={() => deleteNote(note.id)}
-                hitSlop={8}
-                className="p-1.5"
-            >
-                <Text className="text-red-500">Eliminar</Text>
-            </Pressable>
-        </View>
+            <Text className="text-xs text-neutral-500">
+                {new Date(note.createdAt).toLocaleString()}
+            </Text>
+        </Link>
     )
 }

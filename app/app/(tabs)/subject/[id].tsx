@@ -1,7 +1,6 @@
 import { useState } from "react"
-import { Stack, useLocalSearchParams } from "expo-router"
+import { Link, Stack, useLocalSearchParams } from "expo-router"
 import { View, Text, TouchableOpacity } from "react-native"
-import NoteInput from "@/components/note/note-input"
 import NoteList from "@/components/note/note-list"
 import EvaluationInput from "@/components/evaluation/evaluation-input"
 import EvaluationList from "@/components/evaluation/evaluation-list"
@@ -9,7 +8,7 @@ import { useEvaluation } from "@/hooks/useEvaluation"
 import { useSubjects } from "@/hooks/useSubject"
 import { useCareer } from "@/hooks/useCareer"
 
-type ActiveInput = "evaluation" | "note" | null
+type ActiveInput = "evaluation" | null
 
 export default function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -40,22 +39,16 @@ export default function SubjectScreen() {
                         {activeInput === "evaluation" ? "Cancelar" : "Nueva evaluación"}
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                <Link
+                    href={{ pathname: "/(note)/new", params: { subjectId: id } }}
                     className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
-                    onPress={() => toggleInput("note")}
                 >
-                    <Text className="font-semibold text-white">
-                        {activeInput === "note" ? "Cancelar" : "Nueva nota"}
-                    </Text>
-                </TouchableOpacity>
+                    <Text className="font-semibold text-white text-center">Nueva nota</Text>
+                </Link>
             </View>
 
             {activeInput === "evaluation" && (
                 <EvaluationInput subjectId={id} />
-            )}
-
-            {activeInput === "note" && (
-                <NoteInput subjectId={id} />
             )}
 
             {activeInput === null && (

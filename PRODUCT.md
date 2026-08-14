@@ -126,8 +126,8 @@ Dentro de la pantalla de notas se pueden crear notas que estén o no asociadas a
 
 - **CU-13 — Ver lista de notas:** se puede ver una lista de todas las notas existentes; primero se muestran las que no están asociadas a ninguna asignatura.
 - **CU-14 — Crear nota:** (sub-ruta).
-- **CU-15 — Ver listado resumido de notas:** se debe poder ver una lista de las notas con título, fecha y primera línea de contenido.
-- **CU-16 — Ver/editar detalle de nota:** se debe poder hacer clic en una nota para ver su contenido, editar su contenido, eliminarla o asociarla a una asignatura (sub-ruta).
+- **CU-15 — Ver listado resumido de notas:** se debe poder ver una lista de las notas con fecha y primera línea de contenido.
+- **CU-16 — Ver/editar detalle de nota:** se debe poder hacer clic en una nota para ver su contenido, editar su contenido, eliminarla o asociarla a una asignatura si se esta viendo desde la pantalla de notas (sub-ruta).
 
 ### 7.4 Evaluaciones
 

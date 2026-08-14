@@ -18,6 +18,11 @@ export function useNotes(subjectId: string | null, careerId: string) {
     })
   }, [subjectId])
 
+  const getNote = (id: string) => {
+    if(!id) return null
+    return notes.find(note => note.id === id)
+  }
+
   const addNote = useCallback(
     async ({ content }: { content: string }) => {
       const newNote: Note = {
@@ -30,8 +35,19 @@ export function useNotes(subjectId: string | null, careerId: string) {
       const all = await getNotes()
       await saveNotes([...all, newNote])
       setNotes((prev) => [...prev, newNote])
+      return newNote
     },
     [subjectId, careerId]
+  )
+
+  const updateNote = useCallback(
+    async (id: string, changes: Partial<Pick<Note, "content" | "subjectId">>) => {
+      const all = await getNotes()
+      const updated = all.map((n) => (n.id === id ? { ...n, ...changes } : n))
+      await saveNotes(updated)
+      setNotes((prev) => prev.map((n) => (n.id === id ? { ...n, ...changes } : n)))
+    },
+    []
   )
 
   const deleteNote = useCallback(async (id: string) => {
@@ -40,5 +56,5 @@ export function useNotes(subjectId: string | null, careerId: string) {
     setNotes((prev) => prev.filter((n) => n.id !== id))
   }, [])
 
-  return { notes, loading, addNote, deleteNote }
+  return { notes, loading, addNote, updateNote, deleteNote, getNote }
 }

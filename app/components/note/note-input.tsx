@@ -1,44 +1,42 @@
+import { useState } from "react"
+import { View, TextInput, TouchableOpacity, Text } from "react-native"
 import { useCareer } from "@/hooks/useCareer"
 import { useNotes } from "@/hooks/useNotes"
-import { Note } from "@/types/note"
-import { useState } from "react"
-import { Pressable, Text, TextInput, View } from "react-native"
 
 interface Props {
   subjectId: string | null
+  onDone?: () => void
 }
 
-function NoteInput({ subjectId }: Props) {
-  const [content, setContent] = useState("")
+export default function NoteInput({ subjectId, onDone }: Props) {
   const { career } = useCareer()
   const { addNote } = useNotes(subjectId, career.id)
+  const [content, setContent] = useState("")
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!content.trim()) return
-    addNote({
-      content: content.trim(),
-    })
+    await addNote({ content })
     setContent("")
+    onDone?.()
   }
 
   return (
-    <View className="w-full gap-2 px-4">
+    <View className="w-[90%] self-center gap-2 pt-4">
+      <TouchableOpacity
+        className="items-center rounded-lg bg-neutral-800 py-3"
+        onPress={handleSubmit}
+      >
+        <Text className="font-semibold text-white">Guardar</Text>
+      </TouchableOpacity>
+      
       <TextInput
         value={content}
         onChangeText={setContent}
-        placeholder="Escribi una nota..."
+        placeholder="Contenido"
         multiline
         numberOfLines={4}
-        className="w-full bg-white p-3 text-sm text-neutral-800"
+        className="rounded-lg border border-neutral-200 px-3 py-2 text-neutral-800"
       />
-      <Pressable
-        onPress={handleSubmit}
-        className="self-end rounded-lg bg-neutral-900 px-4 py-2"
-      >
-        <Text className="text-sm font-medium text-white">Guardar nota</Text>
-      </Pressable>
     </View>
   )
 }
-
-export default NoteInput

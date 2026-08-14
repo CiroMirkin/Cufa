@@ -20,7 +20,7 @@ export default function Notes() {
             { notesInputVisible && (
                 <NoteInput subjectId={null} />
             )}
-            <NoteList subjectId={null} />
+            <NoteList subjectId={null} withoutSubjectFirst />
         </View>
     )
 }
