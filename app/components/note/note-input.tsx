@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { View, TextInput, TouchableOpacity, Text } from "react-native"
-import { useCareer } from "@/hooks/useCareer"
-import { useNotes } from "@/hooks/useNotes"
+import { useCareerStore } from "@/stores/careerStore"
+import { useNotesStore } from "@/stores/notesStore"
 
 interface Props {
   subjectId: string | null
@@ -9,13 +9,13 @@ interface Props {
 }
 
 export default function NoteInput({ subjectId, onDone }: Props) {
-  const { career } = useCareer()
-  const { addNote } = useNotes(subjectId, career.id)
+  const career = useCareerStore((s) => s.career)
+  const addNote = useNotesStore((s) => s.addNote)
   const [content, setContent] = useState("")
 
   const handleSubmit = async () => {
     if (!content.trim()) return
-    await addNote({ content })
+    addNote({ subjectId, careerId: career.id, content })
     setContent("")
     onDone?.()
   }

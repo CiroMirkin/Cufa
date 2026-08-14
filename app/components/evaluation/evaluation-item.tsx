@@ -5,9 +5,10 @@ import EvaluationEditItem from "./evaluation-edit-item"
 import { getProximityStyle } from "./getProximityStyle"
 import { formatDate } from "../../lib/formatDate"
 import { getDaysLeft } from "../../lib/getDaysLeft"
-import { useCareer } from "@/hooks/useCareer"
-import { useSubjects } from "@/hooks/useSubject"
-import { useEvaluation } from "@/hooks/useEvaluation"
+import { useCareerStore } from "@/stores/careerStore"
+import { useSubjectsStore } from "@/stores/subjectsStore"
+import { useEvaluationsStore } from "@/stores/evaluationsStore"
+import { useShallow } from "zustand/react/shallow"
 
 interface Props {
     item: Evaluation
@@ -16,9 +17,14 @@ interface Props {
 export default function EvaluationItem({ item }: Props) {
     const [isExpanded, setIsExpanded] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
-    const { career } = useCareer()
-    const { subjects } = useSubjects(career.id)
-    const { updateEvaluation, deleteEvaluation } = useEvaluation({ subjectId: item.subjectId })
+    const career = useCareerStore((s) => s.career)
+    const subjects = useSubjectsStore(
+        useShallow((s) =>
+            s.subjects.filter((sub) => sub.careerId === career.id),
+        )
+    )
+    const updateEvaluation = useEvaluationsStore((s) => s.updateEvaluation)
+    const deleteEvaluation = useEvaluationsStore((s) => s.deleteEvaluation)
 
     const style = getProximityStyle(item.date)
 

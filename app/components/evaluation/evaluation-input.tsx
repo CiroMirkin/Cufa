@@ -4,7 +4,7 @@ import { Subject } from "@/types/subject"
 import { useState } from "react"
 import { Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native"
 import { formatDateTimeLocal } from "@/lib/date"
-import { useEvaluation } from "@/hooks/useEvaluation"
+import { useEvaluationsStore } from "@/stores/evaluationsStore"
 
 const EVALUATION_TYPES: { value: EvaluationType; label: string }[] = [
   { value: "partial", label: "Parcial" },
@@ -49,7 +49,7 @@ function getInitialState(subjectId: string | null): FormState {
 
 export default function EvaluationInput({ subjects, subjectId, onCancel }: Props) {
   const [form, setForm] = useState<FormState>(() => getInitialState(subjectId))
-  const { addEvaluation } = useEvaluation({ subjectId })
+  const addEvaluation = useEvaluationsStore((s) => s.addEvaluation)
   const isSubjectLocked = !!subjectId
 
   const updateField = <K extends keyof FormState>(field: K, value: FormState[K]) => {

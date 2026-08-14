@@ -1,21 +1,23 @@
-import { useState } from "react"
 import { Link, Stack, useLocalSearchParams } from "expo-router"
-import { View, Text, TouchableOpacity } from "react-native"
+import { View, Text } from "react-native"
 import NoteList from "@/components/note/note-list"
-import EvaluationInput from "@/components/evaluation/evaluation-input"
 import EvaluationList from "@/components/evaluation/evaluation-list"
-import { useEvaluation } from "@/hooks/useEvaluation"
-import { useSubjects } from "@/hooks/useSubject"
-import { useCareer } from "@/hooks/useCareer"
+import { useEvaluationsStore } from "@/stores/evaluationsStore"
+import { useSubjectsStore } from "@/stores/subjectsStore"
+import { useShallow } from "zustand/react/shallow"
 
-type ActiveInput = "evaluation" | null
-
-export default function SubjectScreen() {
+function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
-    const { evaluations } = useEvaluation({ subjectId: id })
-    const { career } = useCareer()
-    const { getSubject } = useSubjects(career.id)
-    const subject = getSubject(id)
+    const subjects = useSubjectsStore((s) => s.subjects)
+    const subject = subjects.find((s) => s.id === id)
+    const evaluations = useEvaluationsStore(
+        useShallow((s) => 
+            s.evaluations
+                .filter((e) => e.subjectId === id)
+                .filter((e) => new Date(e.date).getTime() >= Date.now())
+                .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+        ),
+    )
 
     return (
         <View className="flex-1 bg-white">
@@ -50,3 +52,5 @@ export default function SubjectScreen() {
         </View>
     )
 }
+
+export default SubjectScreen

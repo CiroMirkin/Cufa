@@ -1,20 +1,17 @@
 import EvaluationList from "@/components/evaluation/evaluation-list"
-import { useEvaluation } from "@/hooks/useEvaluation"
+import { useEvaluationsStore } from "@/stores/evaluationsStore"
+import { useShallow } from 'zustand/react/shallow'
 import { Text, View } from "react-native"
 import { Link } from "expo-router"
 
 export default function EvaluationsTab() {
-  const { evaluations, loading } = useEvaluation({ subjectId: null })
-
-  if (loading) {
-    return (
-      <View className="flex-1 items-center justify-center bg-white">
-        <Text className="text-neutral-400">Cargando...</Text>
-      </View>
-    )
-  }
-  console.log(evaluations)
-
+  const evaluations = useEvaluationsStore(
+    useShallow((s) =>
+      s.evaluations
+        .filter((e) => new Date(e.date).getTime() >= Date.now())
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+    ),
+  )
   return (
     <View className="flex-1 bg-white">
       <View className="flex-row items-center justify-between px-4 pt-4">

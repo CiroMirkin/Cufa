@@ -1,8 +1,8 @@
-import { useCareer } from "@/hooks/useCareer"
-import { useNotes } from "@/hooks/useNotes"
-import { FlatList, Text, View } from "react-native"
+import { useNotesStore } from "@/stores/notesStore"
+import { useSubjectsStore } from "@/stores/subjectsStore"
+import { FlatList, Text } from "react-native"
 import NoteItem from "./note-item"
-import { useSubjects } from "@/hooks/useSubject"
+import { useShallow } from "zustand/react/shallow"
 
 interface Props {
   subjectId: string | null
@@ -10,17 +10,12 @@ interface Props {
 }
 
 export default function NoteList({ subjectId, withoutSubjectFirst = false }: Props) {
-  const { career } = useCareer()
-  const { getSubject } = useSubjects(career.id)
-  const { notes, loading } = useNotes(subjectId, career.id)
-
-  if (loading) {
-    return (
-      <View className="flex-1 items-center justify-center bg-white">
-        <Text className="text-neutral-400">Cargando...</Text>
-      </View>
+  const subjects = useSubjectsStore((s) => s.subjects)
+  const notes = useNotesStore(
+    useShallow((s) =>
+      subjectId === null ? s.notes : s.notes.filter((n) => n.subjectId === subjectId),
     )
-  }
+  )
 
   if (!notes || notes.length === 0) {
     return (
@@ -39,7 +34,7 @@ export default function NoteList({ subjectId, withoutSubjectFirst = false }: Pro
       renderItem={({ item }) => (
         <NoteItem
           note={item}
-          subjectName={getSubject(item.subjectId)?.name}
+          subjectName={subjects.find((s) => s.id === item.subjectId)?.name}
         />
       )}
     />

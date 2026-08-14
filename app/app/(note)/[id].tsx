@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
-import { Link, Stack, router, useLocalSearchParams } from "expo-router"
+import { Stack, router, useLocalSearchParams } from "expo-router"
 import { ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { useCareer } from "@/hooks/useCareer"
-import { useNotes } from "@/hooks/useNotes"
+import { useNotesStore } from "@/stores/notesStore"
 
 export default function NoteDetailScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
-    const { career } = useCareer()
-    const { loading, updateNote, deleteNote, getNote } = useNotes(null, career.id)
+    const notes = useNotesStore((s) => s.notes)
+    const updateNote = useNotesStore((s) => s.updateNote)
+    const deleteNote = useNotesStore((s) => s.deleteNote)
 
-    const note = getNote(id)
+    const note = notes.find((n) => n.id === id)
     const [content, setContent] = useState(note?.content ?? "")
 
     useEffect(() => {
@@ -17,14 +17,6 @@ export default function NoteDetailScreen() {
             setContent(note.content)
         }
     }, [note])
-
-    if (loading) {
-        return (
-            <View className="flex-1 items-center justify-center bg-white">
-                <Text className="text-neutral-400">Cargando...</Text>
-            </View>
-        )
-    }
 
     if (!note) {
         return (
@@ -49,13 +41,9 @@ export default function NoteDetailScreen() {
 
             <View className="w-[90%] self-center gap-2 pt-4">
                 <View className="flex flex-row gap-2 justify-between">
-                    { !note.subjectId 
-                        ? <Link href={{ pathname: "/(tabs)/notes", }}>Volver</Link>
-                        : <Link href={{ 
-                            pathname: "/(tabs)/(subject)/[id]",
-                            params: { id: note.subjectId },
-                        }}>Volver</Link>
-                    }
+                    <TouchableOpacity onPress={() => router.back()}>
+                        Volver
+                    </TouchableOpacity>
                     <View className="flex flex-row gap-2">
                         <TouchableOpacity
                             className="rounded-lg bg-neutral-800 py-3 px-2"
