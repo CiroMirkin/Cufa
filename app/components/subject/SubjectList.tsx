@@ -25,7 +25,7 @@ export default function SubjectList({ subjects, onDelete }: Props) {
       renderItem={({ item }) => (
         <Link
         href={{
-            pathname: "/subject/[id]",
+            pathname: "/(tabs)/(subject)/[id]",
             params: { id: item.id },
         }}
           className="flex-row items-center justify-between rounded-lg border border-neutral-200 bg-white p-4"
