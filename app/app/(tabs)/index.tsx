@@ -1,6 +1,8 @@
+import EvaluationList from "@/components/evaluation/evaluation-list"
 import SubjectList from "@/components/subject/SubjectList"
 import SubjectModal from "@/components/subject/SubjectModal"
 import { useCareer } from "@/hooks/useCareer"
+import { useEvaluation } from "@/hooks/useEvaluation"
 import { useSubjects } from "@/hooks/useSubject"
 import { useState } from "react"
 import { Pressable, Text, View } from "react-native"
@@ -9,9 +11,12 @@ export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
   const { career } = useCareer()
   const { subjects, addSubject, deleteSubject } = useSubjects(career.id)
-
+  const { evaluations } = useEvaluation({ subjectId: null })
+  
   return (
     <View className="flex-1 bg-white">
+      <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
+
       <View className="flex-row items-center justify-between px-4 pt-4">
         <Text className="text-xl font-bold text-blue-500">Asignaturas</Text>
         <Pressable
