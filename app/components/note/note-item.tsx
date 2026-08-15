@@ -15,7 +15,7 @@ export default function NoteItem({ note, subjectName }: Props) {
     return (
         <Link
             href={{
-                pathname: "/(tabs)/(note)/[id]",
+                pathname: "/(tabs)/note/[id]",
                 params: { id: note.id }
             }}
             asChild

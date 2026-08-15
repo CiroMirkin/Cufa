@@ -13,7 +13,7 @@ export default function Notes() {
       <View className="flex-row items-center justify-between px-4 pt-4">
         <Text className="text-2xl font-bold text-blue">Notas</Text>
         <Link
-          href={{ pathname: "/(tabs)/(note)/new", params: { subjectId: null } }}
+          href={{ pathname: "/(tabs)/note/new", params: { subjectId: null } }}
           className="rounded border-2 bg-blue p-2"
         >
           <icons.plus width={24} height={24} />
