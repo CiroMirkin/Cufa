@@ -10,5 +10,8 @@
 /** blue #97ccb8*/
 
 @theme {
-    --color-white: #eeecdf;
+    --color-white: #f3edce;
+    --color-black: #34313a;
+    --color-blue: #2a94e8;
+    --color-green: #88cc90;
 }

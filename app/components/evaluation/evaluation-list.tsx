@@ -1,5 +1,5 @@
 import { Evaluation } from "@/types/evaluation"
-import { FlatList, Text } from "react-native"
+import { FlatList, Text, View } from "react-native"
 import EvaluationItem from "./evaluation-item"
 import { isWithinThisAndNextWeek } from "@/lib/isWithinThisAndNextWeek"
 
@@ -14,11 +14,7 @@ export default function EvaluationList({ evaluations, onlyThisAndNextWeek }: Pro
     : evaluations
 
   if (!filtered || filtered.length === 0) {
-    return (
-      <Text className="px-4 pt-4 text-sm text-neutral-400">
-        Aún no hay evaluaciones registradas.
-      </Text>
-    )
+    return <View></View>
   }
 
   return (

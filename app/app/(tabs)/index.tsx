@@ -7,6 +7,7 @@ import { useSubjectsStore } from "@/stores/subjectsStore"
 import { useShallow } from 'zustand/react/shallow'
 import { useState } from "react"
 import { Pressable, Text, View } from "react-native"
+import { icons } from "@/constants/icons"
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
@@ -28,16 +29,16 @@ export default function Index() {
   )
   
   return (
-    <View className="flex-1 bg-white">
+    <View className="flex-1 bg-white px-4 pt-4">
       <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
 
       <View className="flex-row items-center justify-between px-4 pt-4">
-        <Text className="text-xl font-bold text-blue-500">Asignaturas</Text>
+        <Text className="text-2xl opacity-70 font-bold text-black">Asignaturas</Text>
         <Pressable
           onPress={() => setModalVisible(true)}
-          className="h-9 w-9 items-center justify-center rounded-full bg-blue-500"
+          className="h-9 w-9 items-center justify-center rounded border-2 bg-green"
         >
-          <Text className="text-lg font-bold text-white">+</Text>
+          <icons.plus width={24} height={24} />
         </Pressable>
       </View>
 

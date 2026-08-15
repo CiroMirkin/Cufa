@@ -21,16 +21,16 @@ export default function SubjectList({ subjects, onDelete }: Props) {
       data={subjects}
       keyExtractor={(item) => item.id}
       className="flex-1"
-      contentContainerClassName="gap-2 px-4 pt-4"
+      contentContainerClassName="gap-4 px-4 pt-4"
       renderItem={({ item }) => (
         <Link
         href={{
             pathname: "/(tabs)/(subject)/[id]",
             params: { id: item.id },
         }}
-          className="flex-row items-center justify-between rounded-lg border border-neutral-200 bg-white p-4"
+          className="flex-row items-center justify-between rounded-lg border-2 border-black bg-green p-4"
         >
-          <Text className="text-base font-medium text-neutral-800">
+          <Text className="text-xl font-medium text-black">
             {item.name}
           </Text>
         </Link>
