@@ -9,6 +9,7 @@ import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import clsx from "clsx"
 import { icons } from "@/constants/icons"
 import { useSubjectsByCareer } from "@/hooks/useSubjectsByCareer"
+import { Linking } from "react-native"
 
 interface Props {
     item: Evaluation
@@ -83,7 +84,9 @@ export default function EvaluationItem({ item }: Props) {
                         <Text className="text-base text-black">{item.note}</Text>
                     ) : null}
                     {item.link ? (
-                        <Text className="text-base text-blue">{item.link}</Text>
+                        <Pressable onPress={() => Linking.openURL(item.link as string)}>
+                            <Text className="text-base text-blue underline">{item.link}</Text>
+                        </Pressable>
                     ) : null}
                     {item.topics && item.topics.length > 0 ? (
                         <View className="gap-1">
