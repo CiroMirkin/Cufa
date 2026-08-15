@@ -1,5 +1,5 @@
 import { Link } from "expo-router"
-import { Text } from "react-native"
+import { Text, View } from "react-native"
 import { Note } from "@/types/note"
 
 interface Props {
@@ -8,36 +8,32 @@ interface Props {
 }
 
 function firstLine(content: string) {
-    return content.split("\n")[0]
+    return content.trimStart().split("\n")[0]
 }
 
 export default function NoteItem({ note, subjectName }: Props) {
     return (
         <Link
             href={{
-                pathname: "/(note)/[id]",
+                pathname: "/(tabs)/(note)/[id]",
                 params: { id: note.id }
             }}
-            className="flex flex-col gap-2 rounded-lg border border-neutral-200 bg-white p-3"
+            className="flex flex-col gap-2 rounded-lg border-2 bg-[#abdef1] p-2 px-3"
         >
-            {!subjectName && (
-                <Text className="mb-1 self-start rounded border px-1 text-xs text-neutral-500">
-                    Sin asignatura
-                </Text>
-            )}
-            {subjectName && (
-                <Text className="mb-1 self-start rounded border px-1 text-xs text-neutral-800">
-                    {subjectName}
-                </Text>
-            )}
-
-            <Text numberOfLines={1} className="text-base text-neutral-800">
+            <Text numberOfLines={1} className="text-base text-black">
                 {firstLine(note.content)}
             </Text>
-            
-            <Text className="text-xs text-neutral-500">
-                {new Date(note.createdAt).toLocaleString()}
-            </Text>
+
+            <View className="flex-row justify-between items-center">
+                {subjectName && (
+                    <Text className="px-2 py-1 self-end text-xs rounded-xl text-black font-semibold bg-green">
+                        {subjectName}
+                    </Text>
+                )}
+                <Text className="text-xs text-neutral-500">
+                    {new Date(note.createdAt).toLocaleString()}
+                </Text>
+            </View>
         </Link>
     )
 }

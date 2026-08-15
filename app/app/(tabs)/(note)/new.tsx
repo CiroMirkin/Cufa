@@ -12,8 +12,11 @@ export default function NewNoteScreen() {
             <Stack.Screen options={{ title: "Nueva nota" }} />
             <NoteInput
                 subjectId={subjectId ?? null}
-                onDone={() => router.back()}
+                onDone={() => {
+                    subjectId ? router.replace(`/(subject)/${subjectId}`) : router.replace("/(tabs)/notes")
+                }}
             />
         </View>
     )
 }
+

@@ -45,7 +45,7 @@ function SubjectScreen() {
                     <View className="pt-8 flex-row justify-between">
                         <Text className="text-2xl text-black font-bold opacity-90">Notas</Text>
                         <Link
-                            href={{ pathname: "/(note)/new", params: { subjectId: id } }}
+                            href={{ pathname: "/(tabs)/(note)/new", params: { subjectId: id } }}
                             className="text-lg rounded border-2 bg-blue p-2 font-semibold text-black text-center"
                         >
                             <icons.plus width={24} height={24} />
