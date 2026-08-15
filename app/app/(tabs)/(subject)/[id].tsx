@@ -31,10 +31,10 @@ function SubjectScreen() {
             <View className="flex-1 items-stretch">
                 <View className="flex-1">
                     <View className="flex-row justify-between">
-                        <Text className="pt-4 text-2xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
+                        <Text className="pt-4 text-xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
                         <Link
-                            href={{ pathname: "/(evaluation)/new", params: { subjectId: id } }}
-                            className="text-lg rounded border-2 bg-green p-2 font-semibold text-black text-center"
+                            href={{ pathname: "/(tabs)/(evaluation)/new", params: { subjectId: id } }}
+                            className="rounded border-2 bg-green p-2"
                         >
                             <icons.plus width={24} height={24} />
                         </Link>
@@ -43,10 +43,10 @@ function SubjectScreen() {
                 </View>
                 <View className="flex-1">
                     <View className="pt-8 flex-row justify-between">
-                        <Text className="text-2xl text-black font-bold opacity-90">Notas</Text>
+                        <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
                         <Link
                             href={{ pathname: "/(tabs)/(note)/new", params: { subjectId: id } }}
-                            className="text-lg rounded border-2 bg-blue p-2 font-semibold text-black text-center"
+                            className="text-lg rounded border-2 bg-blue p-2"
                         >
                             <icons.plus width={24} height={24} />
                         </Link>

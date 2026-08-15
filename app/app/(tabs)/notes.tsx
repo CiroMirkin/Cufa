@@ -1,5 +1,4 @@
-import NoteInput from "@/components/note/note-input"
-import { Pressable, Text, View } from "react-native"
+import { Text, View } from "react-native"
 import { useState } from "react"
 import NoteList from "@/components/note/note-list"
 import { icons } from "@/constants/icons"
@@ -13,7 +12,7 @@ export default function Notes() {
       <View className="flex-row items-center justify-between px-4 pt-4">
         <Text className="text-2xl font-bold text-blue">Notas</Text>
         <Link
-          href={{ pathname: "/(note)/new", params: { subjectId: null } }}
+          href={{ pathname: "/(tabs)/(note)/new", params: { subjectId: null } }}
           className="rounded border-2 bg-blue p-2"
         >
           <icons.plus width={24} height={24} />

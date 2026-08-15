@@ -21,13 +21,16 @@ export default function Index() {
   const deleteSubject = useSubjectsStore((s) => s.deleteSubject)
 
   const evaluations = useEvaluationsStore(
-    useShallow((s) =>
-      s.evaluations
-        .filter((e) => new Date(e.date).getTime() >= Date.now())
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
-    ),
+    useShallow((s) => {
+      const startOfToday = new Date()
+      startOfToday.setHours(0, 0, 0, 0)
+
+      return s.evaluations
+        .filter((e) => new Date(e.date).getTime() >= startOfToday.getTime())
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    }),
   )
-  
+
   return (
     <View className="flex-1 bg-white px-4 pt-4">
       <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />

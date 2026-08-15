@@ -43,6 +43,7 @@ const TabLayout = () => (
         <Tabs.Screen name="(subject)/[id]" options={{ href: null }} />
         <Tabs.Screen name="(note)/new" options={{ href: null }} />
         <Tabs.Screen name="(note)/[id]" options={{ href: null }} />
+        <Tabs.Screen name="(evaluation)/new" options={{ href: null }} />
     </Tabs>
 )
 

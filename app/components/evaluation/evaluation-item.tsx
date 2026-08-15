@@ -9,6 +9,8 @@ import { useCareerStore } from "@/stores/careerStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useShallow } from "zustand/react/shallow"
+import clsx from "clsx"
+import { icons } from "@/constants/icons"
 
 interface Props {
     item: Evaluation
@@ -27,6 +29,8 @@ export default function EvaluationItem({ item }: Props) {
     const deleteEvaluation = useEvaluationsStore((s) => s.deleteEvaluation)
 
     const style = getProximityStyle(item.date)
+    const daysLeft = getDaysLeft(item.date)
+    const isTextDaysLeft = typeof daysLeft === "string"
 
     const getSubjectName = (subjectId: string) =>
         subjects.find((s) => s.id === subjectId)?.name || "Asignatura desconocida"
@@ -48,36 +52,49 @@ export default function EvaluationItem({ item }: Props) {
     return (
         <Pressable
             onPress={() => setIsExpanded((prev) => !prev)}
-            className={`rounded-lg border p-3 ${style.bg} ${style.border}`}
+            className={clsx("rounded-lg border p-3", style.bg, style.border)}
         >
-            <View className="flex-row items-start justify-between gap-3">
-                <View className="flex-1 gap-1">
-                    <Text className="text-base font-semibold text-neutral-800">
+            <View
+                className={clsx(
+                    "gap-2",
+                    isTextDaysLeft ? "flex-col" : "items-center flex-row"
+                )}
+            >
+                <View
+                    className={clsx(
+                        "border-black",
+                        isTextDaysLeft
+                            ? "w-full border-b-2 pb-2"
+                            : "items-center border-r-2 px-4 pr-7"
+                    )}
+                >
+                    <Text className={clsx("text-4xl font-bold", isTextDaysLeft ? "text-left" : "text-center")}>{daysLeft}</Text>
+                    {!isTextDaysLeft && <Text className="text-lg text-center">Dias</Text>}
+                </View>
+                <View className={clsx("flex-1 gap-1", !isTextDaysLeft && "pl-4")}>
+                    <Text className="text-lg font-semibold text-neutral-800">
                         {item.title}
                     </Text>
-                    <Text className="text-xs text-neutral-500">
-                        {getSubjectName(item.subjectId)} · {TYPE_LABELS[item.type]}
+                    <Text className="text-md text-black">
+                        <Text className="font-semibold">{TYPE_LABELS[item.type]}</Text> · {getSubjectName(item.subjectId)}
                     </Text>
-                    <Text className={`text-xs font-medium ${style.text}`}>
-                        {formatDate(item.date)} · {getDaysLeft(item.date)}
+                    <Text className="text-xs font-medium text-black opacity-80">
+                        {formatDate(item.date)}
                     </Text>
                 </View>
-                <Text className="text-lg text-neutral-400">
-                    {isExpanded ? "▲" : "▼"}
-                </Text>
             </View>
 
             {isExpanded && (
-                <View className="mt-3 gap-2 border-t border-neutral-200 pt-3">
+                <View className="mt-3 gap-2 border-t-2 border-black pt-3">
                     {item.note ? (
-                        <Text className="text-sm text-neutral-700">{item.note}</Text>
+                        <Text className="text-base text-black">{item.note}</Text>
                     ) : null}
                     {item.link ? (
-                        <Text className="text-sm text-blue-500">{item.link}</Text>
+                        <Text className="text-base text-blue">{item.link}</Text>
                     ) : null}
                     {item.topics && item.topics.length > 0 ? (
                         <View className="gap-1">
-                            <Text className="text-xs font-medium text-neutral-500">
+                            <Text className="text-base font-medium text-black">
                                 Temas a repasar:
                             </Text>
                             <View className="flex-row flex-wrap gap-1">
@@ -96,19 +113,15 @@ export default function EvaluationItem({ item }: Props) {
                     <View className="flex-row justify-end gap-2 pt-1">
                         <Pressable
                             onPress={() => setIsEditing(true)}
-                            className="rounded-lg bg-neutral-100 px-3 py-1.5"
+                            className="rounded-lg bg-blue border-2 p-2"
                         >
-                            <Text className="text-xs font-medium text-neutral-700">
-                                Editar
-                            </Text>
+                            <icons.pencil width={24} height={24} />
                         </Pressable>
                         <Pressable
                             onPress={() => deleteEvaluation(item.id)}
-                            className="rounded-lg bg-red-100 px-3 py-1.5"
+                            className="rounded-lg bg-red border-2 p-2"
                         >
-                            <Text className="text-xs font-medium text-red-600">
-                                Eliminar
-                            </Text>
+                            <icons.trash width={24} height={24} />
                         </Pressable>
                     </View>
                 </View>
