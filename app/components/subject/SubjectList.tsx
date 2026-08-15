@@ -25,7 +25,7 @@ export default function SubjectList({ subjects, onDelete }: Props) {
             pathname: "/(tabs)/(subject)/[id]",
             params: { id: item.id },
           }}
-          className="flex-row items-center justify-between rounded-lg border-2 border-black bg-[#f18d45] p-4"
+          className="flex-row items-center justify-between rounded-lg border-2 border-black bg-orange p-4"
         >
           <Text className="text-xl font-medium text-black">
             {item.name}
