@@ -9,12 +9,16 @@ interface SubjectsState {
   addSubject: (name: string) => Subject
   updateSubject: (id: string, name: string) => void
   deleteSubject: (id: string) => void
+  actualCareer: string
+  setActualCareer: (id: string) => void
 }
 
 export const useSubjectsStore = create<SubjectsState>()(
   persist(
     (set) => ({
       subjects: [],
+      actualCareer: "",
+      
       addSubject: (name) => {
         const newSubject: Subject = {
           id: `${Date.now()}`,
@@ -32,6 +36,8 @@ export const useSubjectsStore = create<SubjectsState>()(
       
       deleteSubject: (id) =>
         set((state) => ({ subjects: state.subjects.filter((s) => s.id !== id) })),
+
+      setActualCareer: (id) => set({ actualCareer: id, }),
     }),
     {
       name: "subjects-storage",
