@@ -14,7 +14,8 @@ import { useCareerStore } from "@/stores/careerStore"
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
-  useChangeActualCareer(useCareerStore().career.id)
+  const { career } = useCareerStore()
+  useChangeActualCareer(career.id)
   const subjects = useSubjectsByCareer()
 
   const addSubject = useSubjectsStore((s) => s.addSubject)
@@ -34,18 +35,27 @@ export default function Index() {
   return (
     <>
       <ScreenScroll>
-        <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
+        <View className="px-4 pt-6 mb-6 flex-row justify-between">
+          <Pressable className="flex-row items-center gap-4 flex-1 mr-4">
+            <View className="w-12 h-12 flex items-center justify-center rounded-full border-2 bg-blue" />
+            <Text
+              className="font-medium text-2xl flex-1 pr-6"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {career.name}
+            </Text>
+          </Pressable>
 
-        <View className="flex-row items-center justify-between px-4 pt-4">
-          <Text className="text-2xl opacity-70 font-bold text-black">Asignaturas</Text>
           <Pressable
             onPress={() => setModalVisible(true)}
-            className="p-2 rounded border-2 bg-green"
+            className="p-2 rounded border-2 bg-transparent opacity-95"
           >
             <icons.plus width={24} height={24} />
           </Pressable>
         </View>
 
+        <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
         <SubjectList subjects={subjects} onDelete={deleteSubject} />
       </ScreenScroll>
 
