@@ -2,21 +2,20 @@ import EvaluationList from "@/components/evaluation/evaluation-list"
 import SubjectList from "@/components/subject/SubjectList"
 import SubjectModal from "@/components/subject/SubjectModal"
 import ScreenScroll from "@/components/screen-scroll"
-import { useCareerStore } from "@/stores/careerStore"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { useShallow } from 'zustand/react/shallow'
 import { useState } from "react"
 import { Pressable, Text, View } from "react-native"
 import { icons } from "@/constants/icons"
+import { useSubjectsByCareer } from "@/hooks/useSubjectsByCareer"
+import { useChangeActualCareer } from "@/hooks/useChangeActualCareer"
+import { useCareerStore } from "@/stores/careerStore"
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
-  const career = useCareerStore((s) => s.career)
-
-  const subjects = useSubjectsStore(
-    useShallow((s) => s.subjects.filter((sub) => sub.careerId === career.id)),
-  )
+  useChangeActualCareer(useCareerStore().career.id)
+  const subjects = useSubjectsByCareer()
 
   const addSubject = useSubjectsStore((s) => s.addSubject)
   const deleteSubject = useSubjectsStore((s) => s.deleteSubject)
