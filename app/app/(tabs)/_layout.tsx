@@ -9,7 +9,6 @@ const tabs = [
     { name: "notes", title: "Notas", icon: icons.library },
     { name: "evaluation", title: "Evaluaciones", icon: icons.calendar_event },
 ]
-
 type TabIconProps = {
     focused: boolean;
     icon: React.FC<SvgProps>
@@ -19,14 +18,28 @@ const TabIcon = ({ focused, icon: Icon }: TabIconProps) => {
     return (
         <View className="tabs-icon">
             <View className={clsx('tabs-pill text-black', focused && 'tabs-active')}>
-                <Icon width={24} height={24} />
+                <Icon width={28} height={28} />
             </View>
         </View>
     );
 };
 
 const TabLayout = () => (
-    <Tabs screenOptions={{ headerShown: false, }}>
+    <Tabs
+        screenOptions={{
+            headerShown: false,
+            tabBarStyle: {
+                backgroundColor: "#c8dbd8",
+                borderTopWidth: 2,
+                borderColor: "#34313a",
+                paddingTop: 8,
+                paddingBottom: 8,
+            },
+            tabBarLabelStyle: {
+                fontSize: 10,
+            },
+        }}
+    >
         {tabs.map((tab) => (
             <Tabs.Screen
                 key={tab.name}
