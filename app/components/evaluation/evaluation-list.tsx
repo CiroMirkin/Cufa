@@ -1,5 +1,5 @@
 import { Evaluation } from "@/types/evaluation"
-import { FlatList, Text, View } from "react-native"
+import { Text, View } from "react-native"
 import EvaluationItem from "./evaluation-item"
 import { isWithinThisAndNextWeek } from "@/lib/isWithinThisAndNextWeek"
 import { icons } from "@/constants/icons"
@@ -17,7 +17,7 @@ export default function EvaluationList({ evaluations, onlyThisAndNextWeek }: Pro
   if (!filtered || filtered.length === 0) {
     if(onlyThisAndNextWeek) return;
     return (
-      <View className="flex-1 items-center justify-center opacity-50">
+      <View className="items-center justify-center px-4 py-10 opacity-50">
         <icons.calendar_event width={48} height={48} />
         <Text className="mt-2 text-lg font-semibold text-black">Por el momento no hay evaluaciones</Text>
       </View>
@@ -25,16 +25,13 @@ export default function EvaluationList({ evaluations, onlyThisAndNextWeek }: Pro
   }
 
   return (
-    <FlatList
-      data={filtered}
-      keyExtractor={(item) => item.id}
-      className="w-full"
-      contentContainerClassName="gap-2 px-4 pt-4 pb-8"
-      renderItem={({ item }) => (
+    <View className="w-full gap-2 px-4 pt-4">
+      {filtered.map((item) => (
         <EvaluationItem
+          key={item.id}
           item={item}
         />
-      )}
-    />
+      ))}
+    </View>
   )
 }

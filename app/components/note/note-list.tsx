@@ -1,6 +1,6 @@
 import { useNotesStore } from "@/stores/notesStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
-import { FlatList, Text, View } from "react-native"
+import { Text, View } from "react-native"
 import NoteItem from "./note-item"
 import { useShallow } from "zustand/react/shallow"
 import { icons } from "@/constants/icons"
@@ -20,7 +20,7 @@ export default function NoteList({ subjectId, withoutSubjectFirst = false }: Pro
 
   if (!notes || notes.length === 0) {
     return (
-      <View className="flex-1 items-center justify-center opacity-50">
+      <View className="items-center justify-center px-4 py-10 opacity-50">
         <icons.library width={48} height={48} />
         <Text className="mt-2 text-lg font-semibold text-black">Aun no tenés notas</Text>
       </View>
@@ -28,17 +28,14 @@ export default function NoteList({ subjectId, withoutSubjectFirst = false }: Pro
   }
 
   return (
-    <FlatList
-      data={notes}
-      keyExtractor={(_, index) => `${index}`}
-      className="w-full"
-      contentContainerClassName="gap-2 px-4 pt-4"
-      renderItem={({ item }) => (
+    <View className="w-full gap-2 px-4 pt-4">
+      {notes.map((item, index) => (
         <NoteItem
+          key={index}
           note={item}
           subjectName={subjects.find((s) => s.id === item.subjectId)?.name}
         />
-      )}
-    />
+      ))}
+    </View>
   )
 }
