@@ -5,13 +5,14 @@ import EvaluationList from "@/components/evaluation/evaluation-list"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { useShallow } from "zustand/react/shallow"
+import { icons } from "@/constants/icons"
 
 function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
     const subjects = useSubjectsStore((s) => s.subjects)
     const subject = subjects.find((s) => s.id === id)
     const evaluations = useEvaluationsStore(
-        useShallow((s) => 
+        useShallow((s) =>
             s.evaluations
                 .filter((e) => e.subjectId === id)
                 .filter((e) => new Date(e.date).getTime() >= Date.now())
@@ -20,35 +21,41 @@ function SubjectScreen() {
     )
 
     return (
-        <View className="flex-1 bg-white">
+        <View className="flex-1 bg-white px-4 pt-4">
             <Stack.Screen options={{ title: "Asignatura", headerShown: false }} />
 
-            <View className="flex-row justify-between gap-4">
-                <View className="py-4 text-lg">
-                    <Text>{subject?.name}</Text>
-                </View>
+            <View className="py-4 mb-8 bg-[#fdf28b] rounded-xl border-2">
+                <Text className="text-2xl text-center font-bold">{subject?.name}</Text>
+            </View>
 
-                <View className="flex-row px-4 pt-4 gap-3">
-                    <Link
-                        href={{ pathname: "/(evaluation)/new", params: { subjectId: id } }}
-                        className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
-                    >
-                        <Text className="font-semibold text-white text-center">Nueva Evaluacion</Text>
-                    </Link>
-                    <Link
-                        href={{ pathname: "/(note)/new", params: { subjectId: id } }}
-                        className="flex-1 items-center rounded-lg bg-neutral-800 py-3"
-                    >
-                        <Text className="font-semibold text-white text-center">Nueva nota</Text>
-                    </Link>
+            <View className="flex-1 items-stretch">
+                <View className="flex-1">
+                    <View className="flex-row justify-between">
+                        <Text className="pt-4 text-2xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
+                        <Link
+                            href={{ pathname: "/(evaluation)/new", params: { subjectId: id } }}
+                            className="text-lg rounded border-2 bg-green p-2 font-semibold text-black text-center"
+                        >
+                            <icons.plus width={24} height={24} />
+                        </Link>
+                    </View>
+                    <EvaluationList evaluations={evaluations} />
+                </View>
+                <View className="flex-1">
+                    <View className="pt-8 flex-row justify-between">
+                        <Text className="text-2xl text-black font-bold opacity-90">Notas</Text>
+                        <Link
+                            href={{ pathname: "/(note)/new", params: { subjectId: id } }}
+                            className="text-lg rounded border-2 bg-blue p-2 font-semibold text-black text-center"
+                        >
+                            <icons.plus width={24} height={24} />
+                        </Link>
+                    </View>
+                    <NoteList subjectId={id} />
                 </View>
             </View>
 
-            <Text className="px-4 pt-4 text-lg font-bold text-neutral-400">Próximas Evaluaciones</Text>
-            <EvaluationList evaluations={evaluations} />
 
-            <Text className="px-4 pt-4 text-lg font-bold text-neutral-400">Notas</Text>
-            <NoteList subjectId={id} />
         </View>
     )
 }

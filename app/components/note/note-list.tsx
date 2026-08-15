@@ -1,8 +1,9 @@
 import { useNotesStore } from "@/stores/notesStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
-import { FlatList, Text } from "react-native"
+import { FlatList, Text, View } from "react-native"
 import NoteItem from "./note-item"
 import { useShallow } from "zustand/react/shallow"
+import { icons } from "@/constants/icons"
 
 interface Props {
   subjectId: string | null
@@ -19,9 +20,10 @@ export default function NoteList({ subjectId, withoutSubjectFirst = false }: Pro
 
   if (!notes || notes.length === 0) {
     return (
-      <Text className="px-4 pt-4 text-sm text-neutral-400">
-        No hay notas todavia.
-      </Text>
+      <View className="flex-1 items-center justify-center opacity-50">
+        <icons.library width={48} height={48} />
+        <Text className="mt-2 text-lg font-semibold text-black">Aun no tenés notas</Text>
+      </View>
     )
   }
 
