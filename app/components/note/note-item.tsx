@@ -18,21 +18,23 @@ export default function NoteItem({ note, subjectName }: Props) {
                 pathname: "/(tabs)/(note)/[id]",
                 params: { id: note.id }
             }}
-            className="flex flex-col gap-2 rounded-lg border-2 bg-[#abdef1] p-2 px-3"
+            asChild
         >
-            <Text numberOfLines={1} className="text-base text-black">
-                {firstLine(note.content)}
-            </Text>
-
-            <View className="flex-row justify-between items-center">
-                {subjectName && (
-                    <Text className="px-2 py-1 self-end text-xs rounded-xl text-black font-semibold bg-green">
-                        {subjectName}
-                    </Text>
-                )}
-                <Text className="text-xs text-neutral-500">
-                    {new Date(note.createdAt).toLocaleString()}
+            <View className="flex-1 flex-col gap-2 rounded-lg border-2 bg-[#abdef1] p-2 px-3">
+                <Text numberOfLines={1} className="text-base text-black">
+                    {firstLine(note.content)}
                 </Text>
+
+                <View className="flex-row justify-between items-center">
+                    {subjectName && (
+                        <Text className="px-2 py-1 self-end text-xs rounded-xl text-black font-semibold bg-green">
+                            {subjectName}
+                        </Text>
+                    )}
+                    <Text className="text-xs text-neutral-500">
+                        {new Date(note.createdAt).toLocaleString()}
+                    </Text>
+                </View>
             </View>
         </Link>
     )
