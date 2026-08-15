@@ -46,7 +46,7 @@ function SubjectScreen() {
                 <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
                 <Link
                     href={{ pathname: "/(tabs)/note/new", params: { subjectId: id } }}
-                    className="text-lg rounded border-2 bg-blue p-2"
+                    className="text-lg rounded border-2 bg-green p-2"
                 >
                     <icons.plus width={24} height={24} />
                 </Link>

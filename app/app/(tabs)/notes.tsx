@@ -11,10 +11,10 @@ export default function Notes() {
   return (
     <ScreenScroll>
       <View className="flex-row items-center justify-between px-4 pt-4">
-        <Text className="text-2xl font-bold text-blue">Notas</Text>
+        <Text className="text-2xl font-bold text-black">Notas</Text>
         <Link
           href={{ pathname: "/(tabs)/note/new", params: { subjectId: null } }}
-          className="rounded border-2 bg-blue p-2"
+          className="rounded border-2 bg-green p-2"
         >
           <icons.plus width={24} height={24} />
         </Link>

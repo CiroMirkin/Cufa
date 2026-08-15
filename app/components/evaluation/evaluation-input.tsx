@@ -112,7 +112,7 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
     >
       {!isSubjectLocked && subjects && (
         <View className="gap-1">
-          <Text className="text-sm font-medium text-black">Asignatura *</Text>
+          <Text className="text-base font-medium text-black">Asignatura *</Text>
           <View className="flex-row flex-wrap gap-2">
             {subjects.map((s) => (
               <Pressable
@@ -124,7 +124,7 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
                 )}
               >
                 <Text className={clsx(
-                  "text-xs font-medium",
+                  "text-sm font-medium",
                   form.subjectId === s.id ? "text-white" : "text-black"
                   )}>{s.name}</Text>
               </Pressable>
@@ -134,21 +134,21 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
       )}
 
       <View className="gap-1">
-        <Text className="text-sm font-medium text-black">Nombre *</Text>
+        <Text className="text-base font-medium text-black">Nombre *</Text>
         <TextInput
           value={form.title}
           onChangeText={(text) => updateField("title", text)}
-          className="w-full rounded-lg border border-black bg-white p-3 text-sm text-black"
+          className="w-full rounded-lg border border-black bg-white p-3 text-base text-black"
         />
       </View>
 
       <View className="gap-1">
-        <Text className="text-sm font-medium text-black">Fecha y hora *</Text>
+        <Text className="text-base font-medium text-black">Fecha y hora *</Text>
         <Pressable
           onPress={openDatePicker}
           className="w-full rounded-lg border border-black bg-white p-3"
         >
-          <Text className="text-sm text-black">
+          <Text className="text-base text-black">
             {formatDateTimeLocal(form.date).replace("T", " ")}
           </Text>
         </Pressable>
@@ -164,7 +164,7 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
       </View>
 
       <View className="gap-1">
-        <Text className="text-sm font-medium text-black">Tipo</Text>
+        <Text className="text-base font-medium text-black">Tipo</Text>
         <View className="flex-row flex-wrap gap-2">
           {EVALUATION_TYPES.map((t) => (
             <Pressable
@@ -177,7 +177,7 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
             >
               <Text
                 className={clsx(
-                  "text-xs font-medium",
+                  "text-sm font-medium",
                   form.type === t.value ? "text-white" : "text-black"
                 )}
               >
@@ -189,7 +189,7 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
       </View>
 
       <View className="gap-1">
-        <Text className="text-sm font-medium text-black">Notas</Text>
+        <Text className="text-base font-medium text-black">Notas</Text>
         <TextInput
           value={form.note}
           onChangeText={(text) => updateField("note", text)}
@@ -197,39 +197,39 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
           numberOfLines={3}
           maxLength={5000}
           placeholder="Detalles adicionales..."
-          className="w-full rounded-lg border border-black bg-white p-3 text-sm text-black"
+          className="w-full rounded-lg border border-black bg-white p-3 text-base text-black"
         />
         <Text className="text-xs text-black">{form.note.length}/5000</Text>
       </View>
 
       <View className="gap-1">
-        <Text className="text-sm font-medium text-black">Enlace</Text>
+        <Text className="text-base font-medium text-black">Enlace</Text>
         <TextInput
           value={form.link}
           onChangeText={(text) => updateField("link", text)}
           placeholder="https://..."
-          className="w-full rounded-lg border border-black bg-white p-3 text-sm text-black"
+          className="w-full rounded-lg border border-black bg-white p-3 text-base text-black"
         />
       </View>
 
       <View className="gap-1">
-        <Text className="text-sm font-medium text-black">Temas a repasar</Text>
+        <Text className="text-base font-medium text-black">Temas a repasar</Text>
         <TextInput
           value={form.topicsRaw}
           onChangeText={(text) => updateField("topicsRaw", text)}
           placeholder="Separados por coma"
-          className="w-full rounded-lg border border-black bg-white p-3 text-sm text-black"
+          className="w-full rounded-lg border border-black bg-white p-3 text-base text-black"
         />
       </View>
 
       <View className="flex-row justify-end gap-2 py-2">
         {onCancel && (
           <Pressable onPress={onCancel} className="rounded-lg bg-black px-4 py-2">
-            <Text className="text-sm font-medium text-black">Cancelar</Text>
+            <Text className="text-base font-medium text-black">Cancelar</Text>
           </Pressable>
         )}
-        <Pressable onPress={handleSubmit} className="rounded-lg bg-blue border-2 px-4 py-2">
-          <Text className="text-sm font-medium text-black">Crear</Text>
+        <Pressable onPress={handleSubmit} className="rounded-lg bg-green border-2 px-4 py-2">
+          <Text className="text-base font-medium text-black">Crear</Text>
         </Pressable>
       </View>
     </ScrollView>

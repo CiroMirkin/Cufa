@@ -13,7 +13,7 @@ export default function NewNoteScreen() {
     )
 
     return (
-        <View className="flex-1 bg-white">
+        <View className="flex-1 bg-white pt-4 px-4">
             <Stack.Screen options={{ title: "Nueva evaluacion" }} />
             
             <EvaluationInput

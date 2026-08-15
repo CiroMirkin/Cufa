@@ -21,10 +21,10 @@ export default function EvaluationsTab() {
   return (
     <ScreenScroll>
       <View className="flex-row items-center justify-between px-4 pt-4">
-        <Text className="text-xl font-bold text-blue">Evaluaciones</Text>
+        <Text className="text-xl font-bold text-black">Evaluaciones</Text>
         <Link
           href={{ pathname: "/(tabs)/(evaluation)/new", params: { subjectId: null } }}
-          className="rounded border-2 bg-blue p-2"
+          className="rounded border-2 bg-green p-2"
         >
           <icons.plus width={24} height={24} />
         </Link>
