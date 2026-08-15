@@ -36,7 +36,7 @@ export default function Index() {
         <Text className="text-2xl opacity-70 font-bold text-black">Asignaturas</Text>
         <Pressable
           onPress={() => setModalVisible(true)}
-          className="h-9 w-9 items-center justify-center rounded border-2 bg-green"
+          className="p-2 rounded border-2 bg-green"
         >
           <icons.plus width={24} height={24} />
         </Pressable>

@@ -15,7 +15,7 @@ function StackWithInsets() {
   const insets = useSafeAreaInsets()
 
   return (
-    <View style={{ flex: 1, paddingTop: insets.top }}>
+    <View style={{ flex: 1, paddingTop: insets.top }} className="bg-white">
       <Stack screenOptions={{ headerShown: false }} />
     </View>
   )
