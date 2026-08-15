@@ -1,6 +1,7 @@
 import { Text, View } from "react-native"
 import { useState } from "react"
 import NoteList from "@/components/note/note-list"
+import ScreenScroll from "@/components/screen-scroll"
 import { icons } from "@/constants/icons"
 import { Link } from "expo-router"
 
@@ -8,7 +9,7 @@ export default function Notes() {
   const [notesInputVisible, setNotesInputVisible] = useState(false)
 
   return (
-    <View className="flex-1 px-4 pt-4 bg-white">
+    <ScreenScroll>
       <View className="flex-row items-center justify-between px-4 pt-4">
         <Text className="text-2xl font-bold text-blue">Notas</Text>
         <Link
@@ -20,6 +21,6 @@ export default function Notes() {
       </View>
 
       <NoteList subjectId={null} withoutSubjectFirst />
-    </View>
+    </ScreenScroll>
   )
 }

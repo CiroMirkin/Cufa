@@ -1,6 +1,7 @@
 import EvaluationList from "@/components/evaluation/evaluation-list"
 import SubjectList from "@/components/subject/SubjectList"
 import SubjectModal from "@/components/subject/SubjectModal"
+import ScreenScroll from "@/components/screen-scroll"
 import { useCareerStore } from "@/stores/careerStore"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
@@ -32,26 +33,28 @@ export default function Index() {
   )
 
   return (
-    <View className="flex-1 bg-white px-4 pt-4">
-      <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
+    <>
+      <ScreenScroll>
+        <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
 
-      <View className="flex-row items-center justify-between px-4 pt-4">
-        <Text className="text-2xl opacity-70 font-bold text-black">Asignaturas</Text>
-        <Pressable
-          onPress={() => setModalVisible(true)}
-          className="p-2 rounded border-2 bg-green"
-        >
-          <icons.plus width={24} height={24} />
-        </Pressable>
-      </View>
+        <View className="flex-row items-center justify-between px-4 pt-4">
+          <Text className="text-2xl opacity-70 font-bold text-black">Asignaturas</Text>
+          <Pressable
+            onPress={() => setModalVisible(true)}
+            className="p-2 rounded border-2 bg-green"
+          >
+            <icons.plus width={24} height={24} />
+          </Pressable>
+        </View>
 
-      <SubjectList subjects={subjects} onDelete={deleteSubject} />
+        <SubjectList subjects={subjects} onDelete={deleteSubject} />
+      </ScreenScroll>
 
       <SubjectModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onCreate={addSubject}
       />
-    </View>
+    </>
   )
 }
