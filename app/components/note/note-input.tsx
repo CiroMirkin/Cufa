@@ -6,6 +6,7 @@ import { useNotesStore } from "@/stores/notesStore"
 import { icons } from "@/constants/icons"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { Note } from "@/types/note"
+import { usePathname, useSegments } from "expo-router"
 
 interface Props {
   subjectId: string | null
@@ -22,6 +23,10 @@ export default function NoteInput({ subjectId, note, onDone }: Props) {
 
   const [content, setContent] = useState(note?.content ?? "")
   const [subject, setSubject] = useState(note?.subjectId ?? subjectId ?? "")
+
+  const segments = useSegments() as string[]
+  const isNoteRoute = segments.includes("note")
+  const showSubjectSelect = isNoteRoute || !subjectId
 
   useEffect(() => {
     if (note) {
@@ -58,7 +63,7 @@ export default function NoteInput({ subjectId, note, onDone }: Props) {
     <View className="flex-1 w-[90%] self-center gap-2 pt-4">
       <View className="flex-row gap-4 justify-between">
         <View className="flex-1 flex-row flex-wrap gap-2">
-          {subjects.map((s) => (
+          {showSubjectSelect && subjects.map((s) => (
             <Pressable
               key={s.id}
               onPress={() => setSubject((prev: string) => (prev === s.id ? "" : s.id))}
