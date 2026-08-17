@@ -55,8 +55,10 @@ export default function Index() {
           </Pressable>
         </View>
 
-        <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
-        <SubjectList subjects={subjects} onDelete={deleteSubject} />
+        <View className="px-4">
+          <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
+          <SubjectList subjects={subjects} onDelete={deleteSubject} />
+        </View>
       </ScreenScroll>
 
       <SubjectModal

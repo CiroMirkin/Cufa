@@ -30,9 +30,11 @@ export default function EvaluationsTab() {
         </Link>
       </View>
 
-      <EvaluationList
-        evaluations={evaluations}
-      />
+      <View className="px-4">
+        <EvaluationList
+          evaluations={evaluations}
+        />
+      </View>
     </ScreenScroll>
   )
 }
