@@ -18,7 +18,7 @@ export default function NoteList({ subjectId, withoutSubjectFirst = false, notes
   if(!notes || !notes.length) return;
 
   return (
-    <View className="w-full gap-2 px-4 pt-4">
+    <View className="w-full flex-col gap-2 pt-4">
       {notes.map((item, index) => (
         <NoteItem
           key={index}

@@ -24,8 +24,8 @@ export default function Notes() {
 
       <View className="px-4">
         {!notes || !notes.length && <EmptySpace icon="library" message="Aun no tenés notas" />}
+        <NoteList subjectId={null} withoutSubjectFirst notes={notes} />
       </View>
-      <NoteList subjectId={null} withoutSubjectFirst notes={notes} />
     </ScreenScroll>
   )
 }
