@@ -28,12 +28,16 @@ const TabLayout = () => (
     <Tabs
         screenOptions={{
             headerShown: false,
+            tabBarActiveTintColor: "#2a94e8",
             tabBarStyle: {
                 backgroundColor: "#c8dbd8",
                 borderTopWidth: 2,
                 borderColor: "#34313a",
-                paddingTop: 8,
-                paddingBottom: 8,
+                height: 110,
+            },
+            tabBarItemStyle: {
+                paddingTop: 4,
+                paddingBottom: 2,
             },
             tabBarLabelStyle: {
                 fontSize: 10,
