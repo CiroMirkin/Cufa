@@ -3,6 +3,7 @@ import { View, Text } from "react-native"
 import ScreenScroll from "@/components/screen-scroll"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import SubjectContent from "@/components/subject/subject-content"
+import AddMenu from "@/components/ui/add-menu"
 
 function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -16,9 +17,11 @@ function SubjectScreen() {
             <Stack.Screen options={{ title: "Asignatura", headerShown: false }} />
 
             <View className="px-4 pt-4">
-                <View className="py-4 mb-4 bg-[#fdf28b] rounded-xl border-2">
-                    <Text className="text-2xl text-center font-bold">{subject?.name}</Text>
+                <View className="flex-row items-center justify-between py-4 mb-4">
+                    <Text className="text-2xl text-left font-bold">{subject?.name}</Text>
+                    <AddMenu subjectId={subject.id} />
                 </View>
+                {/* <View className="py-4 mb-4 bg-[#fdf28b] rounded-xl border-2"></View> */}
 
                 <SubjectContent subject={subject} />
             </View>

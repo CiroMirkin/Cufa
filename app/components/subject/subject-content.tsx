@@ -33,33 +33,17 @@ function SubjectContent({ subject }: Props) {
     }
 
     return (
-        <View>
+        <View className="flex flex-col gap-6">
             {evaluations.length &&
                 <View>
-                    <View className="flex-row justify-between items-center">
-                        <Text className="text-xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
-                        <Link
-                            href={{ pathname: "/(tabs)/(evaluation)/new", params: { subjectId: subject.id } }}
-                            className="rounded border-2 bg-green p-2"
-                        >
-                            <icons.plus width={24} height={24} />
-                        </Link>
-                    </View>
+                    <Text className="text-xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
                     <EvaluationList evaluations={evaluations} />
                 </View>
             }
 
             {notes.length &&
                 <View>
-                    <View className="flex-row justify-between items-center pt-8">
-                        <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
-                        <Link
-                            href={{ pathname: "/(tabs)/note/new", params: { subjectId: subject.id } }}
-                            className="text-lg rounded border-2 bg-green p-2"
-                        >
-                            <icons.plus width={24} height={24} />
-                        </Link>
-                    </View>
+                    <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
                     <NoteList subjectId={subject.id} notes={notes} />
                 </View>
             }
