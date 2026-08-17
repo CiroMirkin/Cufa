@@ -4,9 +4,11 @@ import NoteList from "@/components/note/note-list"
 import ScreenScroll from "@/components/screen-scroll"
 import { icons } from "@/constants/icons"
 import { Link } from "expo-router"
+import { useNotesStore } from "@/stores/notesStore"
+import EmptySpace from "@/components/ui/empty-space"
 
 export default function Notes() {
-  const [notesInputVisible, setNotesInputVisible] = useState(false)
+  const { notes } = useNotesStore()
 
   return (
     <ScreenScroll>
@@ -20,7 +22,10 @@ export default function Notes() {
         </Link>
       </View>
 
-      <NoteList subjectId={null} withoutSubjectFirst />
+      <View className="px-4">
+        {!notes || !notes.length && <EmptySpace icon="library" message="Aun no tenés notas" />}
+        <NoteList subjectId={null} withoutSubjectFirst notes={notes} />
+      </View>
     </ScreenScroll>
   )
 }

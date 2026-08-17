@@ -1,4 +1,4 @@
-# GUS - Gestión Universitaria Simple
+# Cufa
 
 
 [📁app](./app/README.md)

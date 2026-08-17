@@ -5,6 +5,7 @@ import EvaluationEditItem from "./evaluation-edit-item"
 import { getProximityStyle } from "./getProximityStyle"
 import { formatDate } from "../../lib/formatDate"
 import { getDaysLeft } from "../../lib/getDaysLeft"
+import { evaluationToDate } from "@/lib/date"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import clsx from "clsx"
 import { icons } from "@/constants/icons"
@@ -22,8 +23,8 @@ export default function EvaluationItem({ item }: Props) {
     const updateEvaluation = useEvaluationsStore((s) => s.updateEvaluation)
     const deleteEvaluation = useEvaluationsStore((s) => s.deleteEvaluation)
 
-    const style = getProximityStyle(item.date)
-    const daysLeft = getDaysLeft(item.date)
+    const style = getProximityStyle(evaluationToDate(item))
+    const daysLeft = getDaysLeft(evaluationToDate(item))
     const isTextDaysLeft = typeof daysLeft === "string"
 
     const getSubjectName = (subjectId: string) =>
@@ -73,7 +74,7 @@ export default function EvaluationItem({ item }: Props) {
                         <Text className="font-semibold">{TYPE_LABELS[item.type]}</Text> · {getSubjectName(item.subjectId)}
                     </Text>
                     <Text className="text-xs font-medium text-black opacity-80">
-                        {formatDate(item.date)}
+                        {formatDate(item)}
                     </Text>
                 </View>
             </View>

@@ -11,6 +11,8 @@ import { icons } from "@/constants/icons"
 import { useSubjectsByCareer } from "@/hooks/useSubjectsByCareer"
 import { useChangeActualCareer } from "@/hooks/useChangeActualCareer"
 import { useCareerStore } from "@/stores/careerStore"
+import { evaluationToDate } from "@/lib/date"
+import EmptySpace from "@/components/ui/empty-space"
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
@@ -27,8 +29,8 @@ export default function Index() {
       startOfToday.setHours(0, 0, 0, 0)
 
       return s.evaluations
-        .filter((e) => new Date(e.date).getTime() >= startOfToday.getTime())
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .filter((e) => evaluationToDate(e).getTime() >= startOfToday.getTime())
+        .sort((a, b) => evaluationToDate(a).getTime() - evaluationToDate(b).getTime())
     }),
   )
 
@@ -55,8 +57,11 @@ export default function Index() {
           </Pressable>
         </View>
 
-        <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
-        <SubjectList subjects={subjects} onDelete={deleteSubject} />
+        <View className="px-4">
+          <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
+          {!subjects.length && <EmptySpace message="No hay asignaturas todavia."/>}
+          <SubjectList subjects={subjects} onDelete={deleteSubject} />
+        </View>
       </ScreenScroll>
 
       <SubjectDrawer

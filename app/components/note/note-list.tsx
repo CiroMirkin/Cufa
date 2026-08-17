@@ -4,31 +4,21 @@ import { Text, View } from "react-native"
 import NoteItem from "./note-item"
 import { useShallow } from "zustand/react/shallow"
 import { icons } from "@/constants/icons"
+import { Note } from "@/types/note"
 
 interface Props {
   subjectId: string | null
   withoutSubjectFirst?: boolean
+  notes: Note[]
 }
 
-export default function NoteList({ subjectId, withoutSubjectFirst = false }: Props) {
+export default function NoteList({ subjectId, withoutSubjectFirst = false, notes }: Props) {
   const subjects = useSubjectsStore((s) => s.subjects)
-  const notes = useNotesStore(
-    useShallow((s) =>
-      subjectId === null ? s.notes : s.notes.filter((n) => n.subjectId === subjectId),
-    )
-  )
-
-  if (!notes || notes.length === 0) {
-    return (
-      <View className="items-center justify-center px-4 py-10 opacity-50">
-        <icons.library width={48} height={48} />
-        <Text className="mt-2 text-lg font-semibold text-black">Aun no tenés notas</Text>
-      </View>
-    )
-  }
+  
+  if(!notes || !notes.length) return;
 
   return (
-    <View className="w-full gap-2 px-4 pt-4">
+    <View className="w-full flex-col gap-2 pt-4">
       {notes.map((item, index) => (
         <NoteItem
           key={index}

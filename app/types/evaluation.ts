@@ -10,6 +10,7 @@ export interface Evaluation {
   type: EvaluationType
 
   date: string
+  time?: string
   link?: string
   topics?: string[]
 }

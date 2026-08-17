@@ -4,7 +4,7 @@ import { Subject } from "@/types/subject"
 import { useState } from "react"
 import { Platform, Pressable, ScrollView, Text, TextInput, View } from "react-native"
 import clsx from "clsx"
-import { formatDateTimeLocal } from "@/lib/date"
+import { formatDateLocal, formatTimeLocal } from "@/lib/date"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { router } from "expo-router"
 
@@ -21,6 +21,7 @@ interface FormState {
   subjectId: string
   title: string
   date: Date
+  time: Date | null
   type: EvaluationType
   note: string
   link: string
@@ -40,6 +41,7 @@ function getInitialState(subjectId: string | null): FormState {
     subjectId: subjectId ?? "",
     title: "",
     date: new Date(),
+    time: null,
     type: "partial",
     note: "",
     link: "",
@@ -61,26 +63,16 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
     if (Platform.OS === "android") updateField("showPicker", false)
     if (selectedDate) {
-      setForm((prev) => {
-        const current = new Date(prev.date)
-        if (prev.pickerMode === "date") {
-          current.setFullYear(selectedDate.getFullYear())
-          current.setMonth(selectedDate.getMonth())
-          current.setDate(selectedDate.getDate())
-          if (Platform.OS === "android") {
-            return { ...prev, date: current, pickerMode: "time", showPicker: true }
-          }
-        } else {
-          current.setHours(selectedDate.getHours())
-          current.setMinutes(selectedDate.getMinutes())
-        }
-        return { ...prev, date: current }
-      })
+      if (form.pickerMode === "date") {
+        updateField("date", selectedDate)
+      } else {
+        updateField("time", selectedDate)
+      }
     }
   }
 
-  const openDatePicker = () => {
-    setForm((prev) => ({ ...prev, pickerMode: "date", showPicker: true }))
+  const openPicker = (mode: "date" | "time") => {
+    setForm((prev) => ({ ...prev, pickerMode: mode, showPicker: true }))
   }
 
   const handleSubmit = () => {
@@ -94,7 +86,8 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
     addEvaluation({
       subjectId: form.subjectId,
       title: form.title.trim(),
-      date: formatDateTimeLocal(form.date),
+      date: formatDateLocal(form.date),
+      time: form.time ? formatTimeLocal(form.time) : undefined,
       type: form.type,
       note: form.note.trim() || undefined,
       link: form.link.trim() || undefined,
@@ -143,18 +136,35 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
       </View>
 
       <View className="gap-1">
-        <Text className="text-base font-medium text-black">Fecha y hora *</Text>
+        <Text className="text-base font-medium text-black">Fecha *</Text>
         <Pressable
-          onPress={openDatePicker}
+          onPress={() => openPicker("date")}
           className="w-full rounded-lg border border-black bg-white p-3"
         >
           <Text className="text-base text-black">
-            {formatDateTimeLocal(form.date).replace("T", " ")}
+            {formatDateLocal(form.date)}
           </Text>
         </Pressable>
+      </View>
+
+      <View className="gap-1">
+        <Text className="text-base font-medium text-black">Hora (opcional)</Text>
+        <Pressable
+          onPress={() => openPicker("time")}
+          className="w-full rounded-lg border border-black bg-white p-3"
+        >
+          <Text className="text-base text-black">
+            {form.time ? formatTimeLocal(form.time) : "--:--"}
+          </Text>
+        </Pressable>
+        {form.time && (
+          <Pressable onPress={() => updateField("time", null)} className="self-end">
+            <Text className="text-sm text-red underline">Quitar hora</Text>
+          </Pressable>
+        )}
         {form.showPicker && (
           <DateTimePicker
-            value={form.date}
+            value={form.pickerMode === "date" ? form.date : form.time ?? form.date}
             mode={form.pickerMode}
             is24Hour={true}
             display={Platform.OS === "ios" ? "spinner" : "default"}

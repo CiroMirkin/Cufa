@@ -1,4 +1,4 @@
-# Welcome GUS App
+# Welcome Cufa App
 
 Generar `apk`:
 

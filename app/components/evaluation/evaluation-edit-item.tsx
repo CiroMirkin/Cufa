@@ -4,7 +4,7 @@ import { useState } from "react";
 import { View, Text, Pressable, TextInput, Platform } from "react-native";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
 import { TYPE_LABELS } from "@/types/evaluation";
-import { formatDateTimeLocal, parseDateTimeLocal } from "@/lib/date";
+import { formatDateLocal, formatTimeLocal, evaluationToDate } from "@/lib/date";
 
 function EvaluationEditItem({
   evaluation,
@@ -18,7 +18,8 @@ function EvaluationEditItem({
   onCancel: () => void
 }) {
   const [title, setTitle] = useState(evaluation.title)
-  const [date, setDate] = useState(() => parseDateTimeLocal(evaluation.date))
+  const [date, setDate] = useState(() => evaluationToDate(evaluation))
+  const [time, setTime] = useState<Date | null>(() => evaluation.time ? evaluationToDate({ date: "2020-01-01", time: evaluation.time }) : null)
   const [showPicker, setShowPicker] = useState(false)
   const [pickerMode, setPickerMode] = useState<"date" | "time">("date")
   const [type, setType] = useState<EvaluationType>(evaluation.type)
@@ -30,25 +31,16 @@ function EvaluationEditItem({
   const onChangeDate = (event: DateTimePickerEvent, selectedDate?: Date) => {
     if (Platform.OS === "android") setShowPicker(false)
     if (selectedDate) {
-      const current = new Date(date)
       if (pickerMode === "date") {
-        current.setFullYear(selectedDate.getFullYear())
-        current.setMonth(selectedDate.getMonth())
-        current.setDate(selectedDate.getDate())
-        if (Platform.OS === "android") {
-          setPickerMode("time")
-          setShowPicker(true)
-        }
+        setDate(selectedDate)
       } else {
-        current.setHours(selectedDate.getHours())
-        current.setMinutes(selectedDate.getMinutes())
+        setTime(selectedDate)
       }
-      setDate(current)
     }
   }
 
-  const openDatePicker = () => {
-    setPickerMode("date")
+  const openPicker = (mode: "date" | "time") => {
+    setPickerMode(mode)
     setShowPicker(true)
   }
 
@@ -61,7 +53,8 @@ function EvaluationEditItem({
     onSave({
       subjectId,
       title: title.trim(),
-      date: formatDateTimeLocal(date),
+      date: formatDateLocal(date),
+      time: time ? formatTimeLocal(time) : undefined,
       type,
       note: note.trim() || undefined,
       link: link.trim() || undefined,
@@ -101,16 +94,29 @@ function EvaluationEditItem({
       />
 
       <Pressable
-        onPress={openDatePicker}
+        onPress={() => openPicker("date")}
         className="rounded-lg border border-neutral-300 bg-white p-2"
       >
         <Text className="text-sm text-neutral-800">
-          {formatDateTimeLocal(date).replace("T", " ")}
+          {formatDateLocal(date)}
         </Text>
       </Pressable>
+      <Pressable
+        onPress={() => openPicker("time")}
+        className="rounded-lg border border-neutral-300 bg-white p-2"
+      >
+        <Text className="text-sm text-neutral-800">
+          {time ? formatTimeLocal(time) : "--:--"}
+        </Text>
+      </Pressable>
+      {time && (
+        <Pressable onPress={() => setTime(null)} className="self-end">
+          <Text className="text-xs text-neutral-500 underline">Quitar hora</Text>
+        </Pressable>
+      )}
       {showPicker && (
         <DateTimePicker
-          value={date}
+          value={pickerMode === "date" ? date : time ?? date}
           mode={pickerMode}
           is24Hour={true}
           display={Platform.OS === "ios" ? "spinner" : "default"}
