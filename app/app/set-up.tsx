@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Pressable, Text, TextInput, View } from "react-native"
+import { ActivityIndicator, Pressable, Text, TextInput, View } from "react-native"
 import { router } from "expo-router"
 import ScreenScroll from "@/components/screen-scroll"
 import { icons } from "@/constants/icons"
@@ -14,6 +14,7 @@ export default function SetUp() {
     Array.from({ length: DEFAULT_SUBJECTS_COUNT }, () => ""),
   )
   const [error, setError] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const createCareer = useCareerStore((s) => s.createCareer)
   const addSubject = useSubjectsStore((s) => s.addSubject)
@@ -22,7 +23,7 @@ export default function SetUp() {
   const handleChangeSubject = (index: number, value: string) =>
     setSubjects((prev) => prev.map((s, i) => (i === index ? value : s)))
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const name = careerName.trim()
 
     if (name.length <= 2) {
@@ -30,18 +31,26 @@ export default function SetUp() {
       return
     }
 
-    createCareer(name)
-    subjects.forEach((subject) => {
-      const subjectName = subject.trim()
-      if (subjectName) addSubject(subjectName)
-    })
-    router.replace("/")
+    setIsLoading(true)
+    try {
+      createCareer(name)
+      subjects.forEach((subject) => {
+        const subjectName = subject.trim()
+        if (subjectName) addSubject(subjectName)
+      })
+      router.replace("/")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
     <ScreenScroll contentContainerClassName="px-4 pt-6">
-      <Text className="text-2xl font-bold text-black">Establece tu maestria o carrera</Text>
+      <View className="pb-4 border-b-2">
+        <Text className="text-2xl font-bold text-black">Bienvenido</Text>
+      </View>
 
+      <Text className="mt-6 text-lg font-bold text-neutral-800">Maestría o carrera</Text>
       <TextInput
         value={careerName}
         onChangeText={setCareerName}
@@ -70,8 +79,16 @@ export default function SetUp() {
         ))}
       </View>
 
-      <Pressable onPress={handleConfirm} className="mt-6 rounded-lg bg-green border-2 p-4">
-        <Text className="text-center text-base font-medium text-black">Crear carrera</Text>
+      <Pressable
+        onPress={handleConfirm}
+        disabled={isLoading}
+        className="mt-6 rounded-lg bg-green border-2 p-4 disabled:opacity-60"
+      >
+        {isLoading ? (
+          <ActivityIndicator color="black" />
+        ) : (
+          <Text className="text-center text-base font-medium text-black">Comenzar</Text>
+        )}
       </Pressable>
     </ScreenScroll>
   )
