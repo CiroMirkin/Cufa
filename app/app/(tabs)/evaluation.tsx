@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 import { Text, View } from "react-native"
 import { Link } from "expo-router"
 import { icons } from "@/constants/icons"
+import EmptySpace from "@/components/ui/empty-space"
 
 export default function EvaluationsTab() {
   const evaluations = useEvaluationsStore(
@@ -31,6 +32,7 @@ export default function EvaluationsTab() {
       </View>
 
       <View className="px-4">
+        {!evaluations || evaluations.length === 0 && <EmptySpace icon="calendar_event" message="Por el momento no hay evaluaciones" />}
         <EvaluationList
           evaluations={evaluations}
         />

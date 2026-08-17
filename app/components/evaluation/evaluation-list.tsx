@@ -15,13 +15,7 @@ export default function EvaluationList({ evaluations, onlyThisAndNextWeek }: Pro
     : evaluations
 
   if (!filtered || filtered.length === 0) {
-    if(onlyThisAndNextWeek) return;
-    return (
-      <View className="items-center justify-center py-10 opacity-50">
-        <icons.calendar_event width={48} height={48} />
-        <Text className="mt-2 text-lg font-semibold text-black">Por el momento no hay evaluaciones</Text>
-      </View>
-    )
+    return;
   }
 
   return (
