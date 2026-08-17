@@ -1,15 +1,14 @@
+import { format } from "@formkit/tempo"
+import { evaluationToDate } from "./date"
 
-export function formatDate(dateStr: string) {
+export function formatDate(date: { date: string; time?: string }) {
   try {
-    return new Date(dateStr).toLocaleString("es-AR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
+    if (date.time) {
+      return format(evaluationToDate(date), { date: "short", time: "short" }, "es-AR")
+    }
+    return format(evaluationToDate(date), "short", "es-AR")
   }
   catch {
-    return dateStr
+    return date.date
   }
 }
