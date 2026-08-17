@@ -35,7 +35,7 @@ function SubjectContent({ subject }: Props) {
         <View className="flex flex-col gap-6">
             {evaluations.length &&
                 <View>
-                    <Text className="text-xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
+                    <Text className="text-xl text-black font-bold opacity-90">Próximamente</Text>
                     <EvaluationList evaluations={evaluations} />
                 </View>
             }
