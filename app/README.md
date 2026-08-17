@@ -1,5 +1,11 @@
 # Welcome GUS App
 
+Generar `apk`:
+
+```
+eas build --platform android --profile production-apk
+```
+
 ## Get started
 
 1. Install dependencies
