@@ -8,22 +8,16 @@ import { useSubjectsStore } from "@/stores/subjectsStore"
 import { useShallow } from "zustand/react/shallow"
 import { icons } from "@/constants/icons"
 import { useNotesStore } from "@/stores/notesStore"
+import SubjectContent from "@/components/subject/subject-content"
 
 function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
     const subjects = useSubjectsStore((s) => s.subjects)
     const subject = subjects.find((s) => s.id === id)
-    const evaluations = useEvaluationsStore(
-        useShallow((s) =>
-            s.evaluations
-                .filter((e) => e.subjectId === id)
-                .filter((e) => new Date(e.date).getTime() >= Date.now())
-                .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
-        ),
-    )
-    const notes = useNotesStore(
-        useShallow((s) => s.notes.filter((n) => n.subjectId === subject?.id))
-    )
+
+    if(!subject) {
+        return ;
+    }
 
     return (
         <ScreenScroll>
@@ -34,28 +28,8 @@ function SubjectScreen() {
                     <Text className="text-2xl text-center font-bold">{subject?.name}</Text>
                 </View>
 
-                <View className="flex-row justify-between items-center">
-                    <Text className="text-xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
-                    <Link
-                        href={{ pathname: "/(tabs)/(evaluation)/new", params: { subjectId: id } }}
-                        className="rounded border-2 bg-green p-2"
-                    >
-                        <icons.plus width={24} height={24} />
-                    </Link>
-                </View>
+                <SubjectContent subject={subject} />
             </View>
-            <EvaluationList evaluations={evaluations} />
-
-            <View className="flex-row justify-between items-center px-4 pt-8">
-                <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
-                <Link
-                    href={{ pathname: "/(tabs)/note/new", params: { subjectId: id } }}
-                    className="text-lg rounded border-2 bg-green p-2"
-                >
-                    <icons.plus width={24} height={24} />
-                </Link>
-            </View>
-            <NoteList subjectId={id} notes={notes} />
         </ScreenScroll>
     )
 }
