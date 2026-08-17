@@ -6,6 +6,7 @@ import { Text, View } from "react-native"
 import { Link } from "expo-router"
 import { icons } from "@/constants/icons"
 import EmptySpace from "@/components/ui/empty-space"
+import { evaluationToDate } from "@/lib/date"
 
 export default function EvaluationsTab() {
   const evaluations = useEvaluationsStore(
@@ -14,8 +15,8 @@ export default function EvaluationsTab() {
       startOfToday.setHours(0, 0, 0, 0)
 
       return s.evaluations
-        .filter((e) => new Date(e.date).getTime() >= startOfToday.getTime())
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .filter((e) => evaluationToDate(e).getTime() >= startOfToday.getTime())
+        .sort((a, b) => evaluationToDate(a).getTime() - evaluationToDate(b).getTime())
     }),
   )
 

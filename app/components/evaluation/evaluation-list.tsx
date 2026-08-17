@@ -1,8 +1,8 @@
 import { Evaluation } from "@/types/evaluation"
-import { Text, View } from "react-native"
+import { View } from "react-native"
 import EvaluationItem from "./evaluation-item"
 import { isWithinThisAndNextWeek } from "@/lib/isWithinThisAndNextWeek"
-import { icons } from "@/constants/icons"
+import { evaluationToDate } from "@/lib/date"
 
 interface Props {
   evaluations: Evaluation[]
@@ -11,7 +11,7 @@ interface Props {
 
 export default function EvaluationList({ evaluations, onlyThisAndNextWeek }: Props) {
   const filtered = onlyThisAndNextWeek
-    ? evaluations.filter((e) => isWithinThisAndNextWeek(e.date))
+    ? evaluations.filter((e) => isWithinThisAndNextWeek(evaluationToDate(e)))
     : evaluations
 
   if (!filtered || filtered.length === 0) {

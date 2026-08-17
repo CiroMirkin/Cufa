@@ -1,13 +1,12 @@
 import { Subject } from "@/types/subject"
-import { Link } from "expo-router"
 import { Text, View } from "react-native"
 import NoteList from "../note/note-list"
 import EvaluationList from "../evaluation/evaluation-list"
-import { icons } from "@/constants/icons"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useNotesStore } from "@/stores/notesStore"
 import { useShallow } from "zustand/react/shallow"
 import EmptySpace from "../ui/empty-space"
+import { evaluationToDate } from "@/lib/date"
 
 interface Props {
     subject: Subject
@@ -18,8 +17,8 @@ function SubjectContent({ subject }: Props) {
         useShallow((s) =>
             s.evaluations
                 .filter((e) => e.subjectId === subject.id)
-                .filter((e) => new Date(e.date).getTime() >= Date.now())
-                .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
+                .filter((e) => evaluationToDate(e).getTime() >= Date.now())
+                .sort((a, b) => evaluationToDate(a).getTime() - evaluationToDate(b).getTime()),
         ),
     )
     const notes = useNotesStore(
