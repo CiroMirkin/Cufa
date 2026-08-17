@@ -7,6 +7,7 @@ import { icons } from "@/constants/icons"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useNotesStore } from "@/stores/notesStore"
 import { useShallow } from "zustand/react/shallow"
+import EmptySpace from "../ui/empty-space"
 
 interface Props {
     subject: Subject
@@ -25,29 +26,43 @@ function SubjectContent({ subject }: Props) {
         useShallow((s) => s.notes.filter((n) => n.subjectId === subject?.id))
     )
 
+    if (!evaluations.length && !notes.length) {
+        return (
+            <EmptySpace icon="clock_plus" message="Esta asignatura aun no tiene contenido." />
+        )
+    }
+
     return (
         <View>
-            <View className="flex-row justify-between items-center">
-                <Text className="text-xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
-                <Link
-                    href={{ pathname: "/(tabs)/(evaluation)/new", params: { subjectId: subject.id } }}
-                    className="rounded border-2 bg-green p-2"
-                >
-                    <icons.plus width={24} height={24} />
-                </Link>
-            </View>
-            <EvaluationList evaluations={evaluations} />
+            {evaluations.length &&
+                <View>
+                    <View className="flex-row justify-between items-center">
+                        <Text className="text-xl text-black font-bold opacity-90">Próximas Evaluaciones</Text>
+                        <Link
+                            href={{ pathname: "/(tabs)/(evaluation)/new", params: { subjectId: subject.id } }}
+                            className="rounded border-2 bg-green p-2"
+                        >
+                            <icons.plus width={24} height={24} />
+                        </Link>
+                    </View>
+                    <EvaluationList evaluations={evaluations} />
+                </View>
+            }
 
-            <View className="flex-row justify-between items-center pt-8">
-                <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
-                <Link
-                    href={{ pathname: "/(tabs)/note/new", params: { subjectId: subject.id } }}
-                    className="text-lg rounded border-2 bg-green p-2"
-                >
-                    <icons.plus width={24} height={24} />
-                </Link>
-            </View>
-            <NoteList subjectId={subject.id} notes={notes} />
+            {notes.length &&
+                <View>
+                    <View className="flex-row justify-between items-center pt-8">
+                        <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
+                        <Link
+                            href={{ pathname: "/(tabs)/note/new", params: { subjectId: subject.id } }}
+                            className="text-lg rounded border-2 bg-green p-2"
+                        >
+                            <icons.plus width={24} height={24} />
+                        </Link>
+                    </View>
+                    <NoteList subjectId={subject.id} notes={notes} />
+                </View>
+            }
         </View>
     )
 }

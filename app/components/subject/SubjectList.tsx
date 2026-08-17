@@ -9,13 +9,7 @@ interface Props {
 }
 
 export default function SubjectList({ subjects, onDelete }: Props) {
-  if (subjects.length === 0) {
-    return (
-      <Text className="mt-4 px-4 text-sm text-neutral-400">
-        No hay asignaturas todavia.
-      </Text>
-    )
-  }
+  if (!subjects.length) return;
 
   return (
     <View className="w-full border-2 rounded-lg mt-4 overflow-hidden">

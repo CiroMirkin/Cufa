@@ -11,6 +11,7 @@ import { icons } from "@/constants/icons"
 import { useSubjectsByCareer } from "@/hooks/useSubjectsByCareer"
 import { useChangeActualCareer } from "@/hooks/useChangeActualCareer"
 import { useCareerStore } from "@/stores/careerStore"
+import EmptySpace from "@/components/ui/empty-space"
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
@@ -57,6 +58,7 @@ export default function Index() {
 
         <View className="px-4">
           <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
+          {!subjects.length && <EmptySpace message="No hay asignaturas todavia."/>}
           <SubjectList subjects={subjects} onDelete={deleteSubject} />
         </View>
       </ScreenScroll>

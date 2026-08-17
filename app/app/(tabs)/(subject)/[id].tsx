@@ -1,13 +1,7 @@
-import { Link, Stack, useLocalSearchParams } from "expo-router"
+import { Stack, useLocalSearchParams } from "expo-router"
 import { View, Text } from "react-native"
-import NoteList from "@/components/note/note-list"
-import EvaluationList from "@/components/evaluation/evaluation-list"
 import ScreenScroll from "@/components/screen-scroll"
-import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
-import { useShallow } from "zustand/react/shallow"
-import { icons } from "@/constants/icons"
-import { useNotesStore } from "@/stores/notesStore"
 import SubjectContent from "@/components/subject/subject-content"
 
 function SubjectScreen() {
@@ -15,9 +9,7 @@ function SubjectScreen() {
     const subjects = useSubjectsStore((s) => s.subjects)
     const subject = subjects.find((s) => s.id === id)
 
-    if(!subject) {
-        return ;
-    }
+    if(!subject) return ;
 
     return (
         <ScreenScroll>
