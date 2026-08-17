@@ -1,6 +1,6 @@
 import EvaluationList from "@/components/evaluation/evaluation-list"
 import SubjectList from "@/components/subject/SubjectList"
-import SubjectModal from "@/components/subject/SubjectModal"
+import SubjectDrawer from "@/components/subject/subject-drawer"
 import ScreenScroll from "@/components/screen-scroll"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
@@ -59,7 +59,7 @@ export default function Index() {
         <SubjectList subjects={subjects} onDelete={deleteSubject} />
       </ScreenScroll>
 
-      <SubjectModal
+      <SubjectDrawer
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onCreate={addSubject}
