@@ -4,9 +4,10 @@ import NoteList from "@/components/note/note-list"
 import ScreenScroll from "@/components/screen-scroll"
 import { icons } from "@/constants/icons"
 import { Link } from "expo-router"
+import { useNotesStore } from "@/stores/notesStore"
 
 export default function Notes() {
-  const [notesInputVisible, setNotesInputVisible] = useState(false)
+  const { notes } = useNotesStore()
 
   return (
     <ScreenScroll>
@@ -20,7 +21,7 @@ export default function Notes() {
         </Link>
       </View>
 
-      <NoteList subjectId={null} withoutSubjectFirst />
+      <NoteList subjectId={null} withoutSubjectFirst notes={notes} />
     </ScreenScroll>
   )
 }

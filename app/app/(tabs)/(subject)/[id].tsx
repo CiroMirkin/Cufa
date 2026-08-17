@@ -7,6 +7,7 @@ import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { useShallow } from "zustand/react/shallow"
 import { icons } from "@/constants/icons"
+import { useNotesStore } from "@/stores/notesStore"
 
 function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -19,6 +20,9 @@ function SubjectScreen() {
                 .filter((e) => new Date(e.date).getTime() >= Date.now())
                 .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()),
         ),
+    )
+    const notes = useNotesStore(
+        useShallow((s) => s.notes.filter((n) => n.subjectId === subject?.id))
     )
 
     return (
@@ -51,7 +55,7 @@ function SubjectScreen() {
                     <icons.plus width={24} height={24} />
                 </Link>
             </View>
-            <NoteList subjectId={id} />
+            <NoteList subjectId={id} notes={notes} />
         </ScreenScroll>
     )
 }
