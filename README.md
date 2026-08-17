@@ -4,7 +4,7 @@
 
 *Organizador académico para estudiantes universitarios*
 
-[Características](#características) • [Empezando](#empezando) • [Scripts](#scripts) • [Estructura del proyecto](#estructura-del-proyecto) • [Modelo de datos](#modelo-de-datos)
+[Características](#características) • [Empezando](#empezando) • [Scripts](#scripts) • [Release automática](#release-automática) • [Estructura del proyecto](#estructura-del-proyecto) • [Modelo de datos](#modelo-de-datos)
 
 </div>
 
@@ -74,11 +74,41 @@ npm run web
 
 ## Build de producción
 
-Para generar el APK de producción con [EAS Build](https://docs.expo.dev/build/introduction/):
+Para generar el APK de producción manualmente con [EAS Build](https://docs.expo.dev/build/introduction/):
 
 ```bash
 eas build --platform android --profile production-apk
 ```
+
+## Release automática
+
+El workflow [`.github/workflows/release.yml`](./.github/workflows/release.yml) automatiza la generación de builds y su publicación como release de GitHub.
+
+**Disparador:** se ejecuta al pushear un tag que empiece con `v` (por ejemplo `v1.0.0`):
+
+```bash
+npm version patch   # 1.0.0 -> 1.0.1
+npm version minor   # 1.0.0 -> 1.1.0
+npm version major   # 1.0.0 -> 2.0.0
+```
+
+```bash
+git push --follow-tags
+```
+
+**Qué hace:**
+
+1. Instala las dependencias del proyecto con `Node.js 20.19.5`.
+2. Autentica `eas-cli` contra Expo usando el secret `EXPO_TOKEN`.
+3. Genera un `.apk` con el perfil `production-apk` (para instalación directa en un dispositivo).
+4. Genera un `.aab` con el perfil `production` (el formato que requiere Play Store).
+5. Crea una release de GitHub para el tag pusheado, adjuntando ambos archivos (`cufa.apk` y `cufa.aab`).
+
+> [!IMPORTANT]
+> El workflow necesita el secret `EXPO_TOKEN` configurado en el repositorio (**Settings → Secrets and variables → Actions**). Se genera desde [expo.dev/settings/access-tokens](https://expo.dev/settings/access-tokens).
+
+> [!NOTE]
+> El `.aab` queda adjunto a la release, pero no se sube automáticamente a Play Store. Subirlo es un paso manual, o se puede automatizar más adelante agregando `eas submit` al workflow.
 
 ## Estructura del proyecto
 
