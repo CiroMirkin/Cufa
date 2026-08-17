@@ -1,4 +1,10 @@
-# Welcome GUS App
+# Welcome Cufa App
+
+Generar `apk`:
+
+```
+eas build --platform android --profile production-apk
+```
 
 ## Get started
 

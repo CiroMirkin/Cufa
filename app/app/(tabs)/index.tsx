@@ -1,22 +1,24 @@
 import EvaluationList from "@/components/evaluation/evaluation-list"
 import SubjectList from "@/components/subject/SubjectList"
-import SubjectModal from "@/components/subject/SubjectModal"
+import SubjectDrawer from "@/components/subject/subject-drawer"
 import ScreenScroll from "@/components/screen-scroll"
-import { useCareerStore } from "@/stores/careerStore"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { useShallow } from 'zustand/react/shallow'
 import { useState } from "react"
 import { Pressable, Text, View } from "react-native"
 import { icons } from "@/constants/icons"
+import { useSubjectsByCareer } from "@/hooks/useSubjectsByCareer"
+import { useChangeActualCareer } from "@/hooks/useChangeActualCareer"
+import { useCareerStore } from "@/stores/careerStore"
+import { evaluationToDate } from "@/lib/date"
+import EmptySpace from "@/components/ui/empty-space"
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
-  const career = useCareerStore((s) => s.career)
-
-  const subjects = useSubjectsStore(
-    useShallow((s) => s.subjects.filter((sub) => sub.careerId === career.id)),
-  )
+  const { career } = useCareerStore()
+  useChangeActualCareer(career.id)
+  const subjects = useSubjectsByCareer()
 
   const addSubject = useSubjectsStore((s) => s.addSubject)
   const deleteSubject = useSubjectsStore((s) => s.deleteSubject)
@@ -27,30 +29,42 @@ export default function Index() {
       startOfToday.setHours(0, 0, 0, 0)
 
       return s.evaluations
-        .filter((e) => new Date(e.date).getTime() >= startOfToday.getTime())
-        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+        .filter((e) => evaluationToDate(e).getTime() >= startOfToday.getTime())
+        .sort((a, b) => evaluationToDate(a).getTime() - evaluationToDate(b).getTime())
     }),
   )
 
   return (
     <>
       <ScreenScroll>
-        <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
+        <View className="px-4 pt-6 mb-6 flex-row justify-between">
+          <Pressable className="flex-row items-center gap-4 flex-1 mr-4">
+            <View className="w-12 h-12 flex items-center justify-center rounded-full border-2 bg-blue" />
+            <Text
+              className="font-medium text-2xl flex-1 pr-6"
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {career.name}
+            </Text>
+          </Pressable>
 
-        <View className="flex-row items-center justify-between px-4 pt-4">
-          <Text className="text-2xl opacity-70 font-bold text-black">Asignaturas</Text>
           <Pressable
             onPress={() => setModalVisible(true)}
-            className="p-2 rounded border-2 bg-green"
+            className="p-2 rounded border-2 bg-transparent opacity-95"
           >
             <icons.plus width={24} height={24} />
           </Pressable>
         </View>
 
-        <SubjectList subjects={subjects} onDelete={deleteSubject} />
+        <View className="px-4">
+          <EvaluationList evaluations={evaluations} onlyThisAndNextWeek />
+          {!subjects.length && <EmptySpace message="No hay asignaturas todavia."/>}
+          <SubjectList subjects={subjects} onDelete={deleteSubject} />
+        </View>
       </ScreenScroll>
 
-      <SubjectModal
+      <SubjectDrawer
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
         onCreate={addSubject}

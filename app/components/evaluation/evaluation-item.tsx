@@ -5,12 +5,12 @@ import EvaluationEditItem from "./evaluation-edit-item"
 import { getProximityStyle } from "./getProximityStyle"
 import { formatDate } from "../../lib/formatDate"
 import { getDaysLeft } from "../../lib/getDaysLeft"
-import { useCareerStore } from "@/stores/careerStore"
-import { useSubjectsStore } from "@/stores/subjectsStore"
+import { evaluationToDate } from "@/lib/date"
 import { useEvaluationsStore } from "@/stores/evaluationsStore"
-import { useShallow } from "zustand/react/shallow"
 import clsx from "clsx"
 import { icons } from "@/constants/icons"
+import { useSubjectsByCareer } from "@/hooks/useSubjectsByCareer"
+import { Linking } from "react-native"
 
 interface Props {
     item: Evaluation
@@ -19,17 +19,12 @@ interface Props {
 export default function EvaluationItem({ item }: Props) {
     const [isExpanded, setIsExpanded] = useState(false)
     const [isEditing, setIsEditing] = useState(false)
-    const career = useCareerStore((s) => s.career)
-    const subjects = useSubjectsStore(
-        useShallow((s) =>
-            s.subjects.filter((sub) => sub.careerId === career.id),
-        )
-    )
+    const subjects = useSubjectsByCareer()
     const updateEvaluation = useEvaluationsStore((s) => s.updateEvaluation)
     const deleteEvaluation = useEvaluationsStore((s) => s.deleteEvaluation)
 
-    const style = getProximityStyle(item.date)
-    const daysLeft = getDaysLeft(item.date)
+    const style = getProximityStyle(evaluationToDate(item))
+    const daysLeft = getDaysLeft(evaluationToDate(item))
     const isTextDaysLeft = typeof daysLeft === "string"
 
     const getSubjectName = (subjectId: string) =>
@@ -79,7 +74,7 @@ export default function EvaluationItem({ item }: Props) {
                         <Text className="font-semibold">{TYPE_LABELS[item.type]}</Text> · {getSubjectName(item.subjectId)}
                     </Text>
                     <Text className="text-xs font-medium text-black opacity-80">
-                        {formatDate(item.date)}
+                        {formatDate(item)}
                     </Text>
                 </View>
             </View>
@@ -90,7 +85,9 @@ export default function EvaluationItem({ item }: Props) {
                         <Text className="text-base text-black">{item.note}</Text>
                     ) : null}
                     {item.link ? (
-                        <Text className="text-base text-blue">{item.link}</Text>
+                        <Pressable onPress={() => Linking.openURL(item.link as string)}>
+                            <Text className="text-base text-blue underline">{item.link}</Text>
+                        </Pressable>
                     ) : null}
                     {item.topics && item.topics.length > 0 ? (
                         <View className="gap-1">
