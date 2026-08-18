@@ -6,7 +6,6 @@ import { useNotesStore } from "@/stores/notesStore"
 import { icons } from "@/constants/icons"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { Note } from "@/types/note"
-import { usePathname, useSegments } from "expo-router"
 
 interface Props {
   subjectId: string | null
@@ -24,10 +23,6 @@ export default function NoteInput({ subjectId, note, onDone }: Props) {
   const [content, setContent] = useState(note?.content ?? "")
   const [subject, setSubject] = useState(note?.subjectId ?? subjectId ?? "")
 
-  const segments = useSegments() as string[]
-  const isNoteRoute = segments.includes("note")
-  const showSubjectSelect = isNoteRoute || !subjectId
-
   useEffect(() => {
     if (note) {
       setContent(note.content)
@@ -40,7 +35,8 @@ export default function NoteInput({ subjectId, note, onDone }: Props) {
 
     if (note) {
       await updateNote(note.id, { subjectId: subject, content })
-    } else {
+    }
+    else {
       await addNote({ subjectId: subject, careerId: career.id, content })
       setContent("")
       setSubject("")
@@ -63,7 +59,7 @@ export default function NoteInput({ subjectId, note, onDone }: Props) {
     <View className="flex-1 w-[90%] self-center gap-2 pt-4">
       <View className="flex-row gap-4 justify-between">
         <View className="flex-1 flex-row flex-wrap gap-2">
-          {showSubjectSelect && subjects.map((s) => (
+          {!subjectId && subjects.map((s) => (
             <Pressable
               key={s.id}
               onPress={() => setSubject((prev: string) => (prev === s.id ? "" : s.id))}
@@ -82,6 +78,11 @@ export default function NoteInput({ subjectId, note, onDone }: Props) {
               </Text>
             </Pressable>
           ))}
+          {subjectId && 
+            <Text className="rounded-full px-3 py-1.5 bg-blue">
+              { subjects.find(s => s.id === subjectId)?.name ?? "" }
+            </Text>
+          }
         </View>
 
         <View className="flex-row gap-2 self-start">
