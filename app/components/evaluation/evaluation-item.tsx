@@ -85,8 +85,11 @@ export default function EvaluationItem({ item }: Props) {
                         <Text className="text-base text-black">{item.note}</Text>
                     ) : null}
                     {item.link ? (
-                        <Pressable onPress={() => Linking.openURL(item.link as string)}>
-                            <Text className="text-base text-blue underline">{item.link}</Text>
+                        <Pressable onPress={() => Linking.openURL(item.link as string)} className="flex-row items-center gap-2">
+                            <icons.link width={16} height={16} />
+                            <Text className="flex-1 text-base text-black underline" numberOfLines={1}>
+                                {item.link}
+                            </Text>
                         </Pressable>
                     ) : null}
                     {item.topics && item.topics.length > 0 ? (
@@ -107,7 +110,7 @@ export default function EvaluationItem({ item }: Props) {
                         </View>
                     ) : null}
 
-                    <View className="flex-row justify-end gap-2 pt-1">
+                    <View className="flex-row justify-end gap-2 pt-4">
                         <Pressable
                             onPress={() => setIsEditing(true)}
                             className="rounded-lg bg-blue border-2 p-2"

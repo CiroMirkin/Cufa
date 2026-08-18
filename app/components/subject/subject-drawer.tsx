@@ -21,7 +21,7 @@ export default function SubjectDrawer({ visible, onClose, onCreate }: Props) {
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View className="flex-1 justify-end bg-black/40">
         <Pressable className="flex-1" onPress={onClose} />
-        <View className="w-full rounded-t-2xl bg-white p-5 pb-8 border-2 border-b-0">
+        <View className="w-full rounded-t-2xl bg-white p-4 pb-30 border-2 border-b-0">
           <View className="mb-4 items-center">
             <View className="h-1.5 w-12 rounded-full bg-neutral-300" />
           </View>
