@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Subject } from "@/types/subject"
 import { useCareerStore } from "@/stores/careerStore"
+import { getId } from "@/lib/getId"
 
 interface SubjectsState {
   subjects: Subject[]
@@ -21,7 +22,7 @@ export const useSubjectsStore = create<SubjectsState>()(
       
       addSubject: (name) => {
         const newSubject: Subject = {
-          id: `${Date.now()}`,
+          id: getId(),
           name,
           careerId: useCareerStore.getState().career.id,
         }

@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { persist, createJSONStorage } from "zustand/middleware"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Note } from "@/types/note"
+import { getId } from "@/lib/getId"
 
 interface NotesState {
   notes: Note[]
@@ -17,7 +18,7 @@ export const useNotesStore = create<NotesState>()(
       addNote: (note) => {
         const newNote: Note = {
           ...note,
-          id: `${Date.now()}`,
+          id: getId(),
           createdAt: new Date().toISOString(),
         }
         set((state) => ({ notes: [...state.notes, newNote] }))

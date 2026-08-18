@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { persist, createJSONStorage } from "zustand/middleware"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Career } from "@/types/career"
+import { getId } from "@/lib/getId"
 
 interface CareerState {
   career: Career
@@ -15,7 +16,7 @@ export const useCareerStore = create<CareerState>()(
 
       createCareer: (name) => {
         const newCareer: Career = {
-          id: `${Date.now()}-${name}`,
+          id: getId(),
           name,
         }
         set({ career: newCareer })
