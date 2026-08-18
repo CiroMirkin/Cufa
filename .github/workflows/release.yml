@@ -32,10 +32,24 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Build APK
-        run: eas build --platform android --profile production-apk --non-interactive --wait --output ./cufa.apk
+        run: |
+          eas build --platform android --profile production-apk --non-interactive --wait --json > apk-build.json
+          cat apk-build.json
+
+      - name: Download APK
+        run: |
+          URL=$(node -p "require('./apk-build.json')[0].artifacts.buildUrl")
+          curl -L "$URL" -o cufa.apk
 
       - name: Build AAB
-        run: eas build --platform android --profile production --non-interactive --wait --output ./cufa.aab
+        run: |
+          eas build --platform android --profile production --non-interactive --wait --json > aab-build.json
+          cat aab-build.json
+
+      - name: Download AAB
+        run: |
+          URL=$(node -p "require('./aab-build.json')[0].artifacts.buildUrl")
+          curl -L "$URL" -o cufa.aab
 
       - name: Create release
         uses: softprops/action-gh-release@v2
