@@ -103,7 +103,7 @@ export default function EvaluationInput({ subjects, subjectId, onCancel }: Props
       className="w-full"
       contentContainerClassName="flex-col gap-3 px-4 py-2"
     >
-      {!isSubjectLocked && subjects && (
+      {!isSubjectLocked && subjects && !subjectId && (
         <View className="gap-1">
           <Text className="text-base font-medium text-black">Asignatura *</Text>
           <View className="flex-row flex-wrap gap-2">
