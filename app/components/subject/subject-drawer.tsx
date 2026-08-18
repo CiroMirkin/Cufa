@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Modal, Pressable, Text, TextInput, View } from "react-native"
+import { KeyboardAvoidingView, Modal, Platform, Pressable, Text, TextInput, View } from "react-native"
 
 interface Props {
   visible: boolean
@@ -19,7 +19,10 @@ export default function SubjectDrawer({ visible, onClose, onCreate }: Props) {
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View className="flex-1 justify-end bg-black/40">
+      <KeyboardAvoidingView
+        className="flex-1 justify-end bg-black/40"
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      >
         <Pressable className="flex-1" onPress={onClose} />
         <View className="w-full rounded-t-2xl bg-white p-4 pb-30 border-2 border-b-0">
           <View className="mb-4 items-center">
@@ -44,7 +47,7 @@ export default function SubjectDrawer({ visible, onClose, onCreate }: Props) {
             </Pressable>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   )
 }
