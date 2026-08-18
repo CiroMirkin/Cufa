@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useRouter } from "expo-router"
 import { Pressable, Text, View, Modal } from "react-native"
 import { icons } from "@/constants/icons"
+import ScheduleDrawer from "@/components/subject/schedule-drawer"
 
 interface Props {
   subjectId: string
@@ -9,6 +10,7 @@ interface Props {
 
 function AddMenu({ subjectId }: Props) {
   const [open, setOpen] = useState(false)
+  const [scheduleDrawerOpen, setScheduleDrawerOpen] = useState(false)
   const router = useRouter()
 
   const options = [
@@ -19,6 +21,10 @@ function AddMenu({ subjectId }: Props) {
     {
       label: "Nueva evaluación",
       onPress: () => router.push({ pathname: "/(tabs)/(evaluation)/new", params: { subjectId } }),
+    },
+    {
+      label: "Nuevo horario",
+      onPress: () => setScheduleDrawerOpen(true),
     },
   ]
 
@@ -52,6 +58,12 @@ function AddMenu({ subjectId }: Props) {
           </View>
         </Pressable>
       </Modal>
+
+      <ScheduleDrawer
+        visible={scheduleDrawerOpen}
+        onClose={() => setScheduleDrawerOpen(false)}
+        subjectId={subjectId}
+      />
     </View>
   )
 }
