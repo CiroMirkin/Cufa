@@ -5,6 +5,7 @@ import clsx from "clsx"
 import Drawer from "@/components/ui/drawer"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { formatTimeLocal } from "@/lib/date"
+import { ScheduleModality, MODALITY_LABELS } from "@/types/subject"
 
 interface Props {
   visible: boolean
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+const modalities: ScheduleModality[] = ["in_person", "virtual"]
 
 interface FormState {
   day: string
@@ -20,6 +22,7 @@ interface FormState {
   endTime: Date | null
   showPicker: boolean
   pickerMode: "start" | "end"
+  modality: ScheduleModality | undefined
 }
 
 function getInitialState(): FormState {
@@ -29,6 +32,7 @@ function getInitialState(): FormState {
     endTime: null,
     showPicker: false,
     pickerMode: "start",
+    modality: undefined,
   }
 }
 
@@ -61,6 +65,7 @@ export default function ScheduleDrawer({ visible, onClose, subjectId }: Props) {
       day: form.day,
       startTime: form.startTime ? formatTimeLocal(form.startTime) : undefined,
       endTime: form.endTime ? formatTimeLocal(form.endTime) : undefined,
+      modality: form.modality,
     })
     setForm(getInitialState())
     onClose()
@@ -96,6 +101,31 @@ export default function ScheduleDrawer({ visible, onClose, subjectId }: Props) {
                 )}
               >
                 {d}
+              </Text>
+            </Pressable>
+          ))}
+        </View>
+      </View>
+
+      <View className="mt-3 gap-1">
+        <Text className="text-base font-medium text-black">Modalidad</Text>
+        <View className="flex-row flex-wrap gap-2">
+          {modalities.map((m) => (
+            <Pressable
+              key={m}
+              onPress={() => updateField("modality", form.modality === m ? undefined : m)}
+              className={clsx(
+                "rounded-full px-3 py-1.5",
+                form.modality === m ? "bg-blue" : "bg-neutral-200"
+              )}
+            >
+              <Text
+                className={clsx(
+                  "text-sm font-medium",
+                  form.modality === m ? "text-white" : "text-black"
+                )}
+              >
+                {MODALITY_LABELS[m]}
               </Text>
             </Pressable>
           ))}

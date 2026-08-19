@@ -1,4 +1,4 @@
-import { Schedule as ScheduleType } from "@/types/subject"
+import { MODALITY_LABELS, ScheduleModality, Schedule as ScheduleType } from "@/types/subject"
 import { Text, View } from "react-native"
 import { useScheduleTimeInfo } from "@/hooks/useScheduleTimeInfo"
 import { formatMinutes, getMostProximateSchedule, sortSchedulesByDay } from "@/lib/schedule"
@@ -7,12 +7,23 @@ import clsx from "clsx"
 interface LabelProps {
     label: string
     time?: string
+    modality?: ScheduleModality
 }
 
-function ScheduleLabel({ label, time }: LabelProps) {
+function ScheduleLabel({ label, time, modality }: LabelProps) {
     return (
         <View className="flex-col gap-px items-start">
-            <Text className="text-xs font-semibold">{label}</Text>
+            <View className="flex-row gap-2 items-center">
+                <Text className="text-xs font-bold">{label}</Text>
+                {modality &&
+                <Text className={clsx(
+                    "text-xs font-semibold rounded p-px px-1",
+                    modality == "in_person" ? "bg-green/70" : "bg-blue/50",
+                )}>
+                    {MODALITY_LABELS[modality]}
+                </Text>
+                }
+            </View>
             <Text className="text-2xl font-semibold">
                 {time ? `${time}hs` : ""}
             </Text>
@@ -46,7 +57,7 @@ function ScheduleItem({ schedule, isLast, isProximate }: ItemProps) {
 
     return (
         <View className={clsx("px-2 pr-3", !isLast && "border-r-2", isDimmed && "opacity-70")}>
-            <ScheduleLabel label={label} time={time} />
+            <ScheduleLabel label={label} time={time} modality={schedule.modality} />
             {status === "before" && minutesUntilStart !== null && (
                 <Text className="text-xs font-semibold">Empieza en {formatMinutes(minutesUntilStart)}</Text>
             )}
