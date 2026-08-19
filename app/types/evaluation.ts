@@ -13,6 +13,7 @@ export interface Evaluation {
   time?: string
   link?: string
   topics?: string[]
+  notificationIds?: string[]
 }
 
 export const TYPE_LABELS: Record<EvaluationType, string> = {
