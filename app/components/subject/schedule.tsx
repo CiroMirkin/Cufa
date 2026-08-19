@@ -4,8 +4,20 @@ import { useScheduleTimeInfo } from "@/hooks/useScheduleTimeInfo"
 import { formatMinutes, getMostProximateSchedule, sortSchedulesByDay } from "@/lib/schedule"
 import clsx from "clsx"
 
-interface Props {
-    schedules?: ScheduleType[]
+interface LabelProps {
+    label: string
+    time?: string
+}
+
+function ScheduleLabel({ label, time }: LabelProps) {
+    return (
+        <View className="flex-col gap-px items-start">
+            <Text className="text-xs font-semibold">{label}</Text>
+            <Text className="text-2xl font-semibold">
+                {time ? `${time}hs` : ""}
+            </Text>
+        </View>
+    )
 }
 
 interface ItemProps {
@@ -19,27 +31,22 @@ const TODAY_STATUSES = ["before", "during", "after", "no-time"]
 function ScheduleItem({ schedule, isLast, isProximate }: ItemProps) {
     const { status, minutesUntilStart, minutesUntilEnd } = useScheduleTimeInfo(schedule)
     const itIsToday = TODAY_STATUSES.includes(status)
-    const dayLabel = itIsToday ? "Hoy" : schedule.day
     const isDimmed = !itIsToday && !isProximate
+
+    let label = schedule.day
+    let time = schedule.startTime
+
+    if (itIsToday) {
+        label = "Hoy"
+    }
+    else if (status === "tomorrow") {
+        label = schedule.startTime ? "Mañana" : ""
+        time = schedule.startTime ?? "Mañana"
+    }
 
     return (
         <View className={clsx("px-2 pr-3", !isLast && "border-r-2", isDimmed && "opacity-70")}>
-            {status !== "tomorrow" &&
-                <View className="flex-col gap-px items-start">
-                    <Text className="text-xs font-semibold">{dayLabel}</Text>
-                    <Text className="text-2xl font-semibold">
-                        {schedule.startTime ? `${schedule.startTime}hs` : ""}
-                    </Text>
-                </View>
-            }
-            {status === "tomorrow" && (
-                <View className="flex-col gap-px items-start">
-                    <Text className="text-xs font-semibold">{schedule.startTime && "Mañana"}</Text>
-                    <Text className="text-2xl font-semibold">
-                        {schedule.startTime ? `${schedule.startTime}hs` : "Mañana"}
-                    </Text>
-                </View>
-            )}
+            <ScheduleLabel label={label} time={time} />
             {status === "before" && minutesUntilStart !== null && (
                 <Text className="text-xs font-semibold">Empieza en {formatMinutes(minutesUntilStart)}</Text>
             )}
@@ -48,6 +55,10 @@ function ScheduleItem({ schedule, isLast, isProximate }: ItemProps) {
             )}
         </View>
     )
+}
+
+interface Props {
+    schedules?: ScheduleType[]
 }
 
 function Schedule({ schedules }: Props) {
