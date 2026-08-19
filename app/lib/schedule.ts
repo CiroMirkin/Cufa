@@ -100,15 +100,25 @@ const STATUS_RANK: Record<ScheduleStatus, number> = {
   "after": 5,
 }
 
+function getDaysUntil(schedule: Schedule, now: Date): number {
+  const scheduleDay = DAYS_MAP[schedule.day]
+  const todayIndex = now.getDay()
+  return (scheduleDay - todayIndex + 7) % 7
+}
+
 export function getMostProximateSchedule(schedules?: Schedule[], now: Date = new Date()): ProximateScheduleInfo | null {
   if (!schedules || schedules.length === 0) return null
 
   let best: ProximateScheduleInfo | null = null
+  let bestDaysUntil = Infinity
 
   for (const schedule of schedules) {
     const info = getScheduleTimeInfo(schedule, now)
+    const daysUntil = getDaysUntil(schedule, now)
+
     if (!best) {
       best = { schedule, ...info }
+      bestDaysUntil = daysUntil
       continue
     }
 
@@ -117,10 +127,19 @@ export function getMostProximateSchedule(schedules?: Schedule[], now: Date = new
 
     if (currentRank < bestRank) {
       best = { schedule, ...info }
+      bestDaysUntil = daysUntil
       continue
     }
 
     if (currentRank === bestRank) {
+      if (daysUntil !== bestDaysUntil) {
+        if (daysUntil < bestDaysUntil) {
+          best = { schedule, ...info }
+          bestDaysUntil = daysUntil
+        }
+        continue
+      }
+
       const currentMinutes = info.minutesUntilStart ?? info.minutesUntilEnd ?? Infinity
       const bestMinutes = best.minutesUntilStart ?? best.minutesUntilEnd ?? Infinity
       if (currentMinutes < bestMinutes) {
