@@ -3,7 +3,11 @@ import { Stack } from "expo-router"
 import { SafeAreaProvider, useSafeAreaInsets } from "react-native-safe-area-context"
 import { View } from "react-native"
 import { useCareerStore } from "@/stores/careerStore"
+import { setNotificationHandler } from "@/lib/notifications"
 import SetUp from "./set-up"
+import { useEvaluationsReminders } from "../hooks/useEvaluationsReminders"
+
+setNotificationHandler()
 
 export default function RootLayout() {
   return (
@@ -16,6 +20,7 @@ export default function RootLayout() {
 function StackWithInsets() {
   const insets = useSafeAreaInsets()
   const career = useCareerStore((s) => s.career)
+  useEvaluationsReminders()
 
   if (!career.id && !career.name) {
     return (
