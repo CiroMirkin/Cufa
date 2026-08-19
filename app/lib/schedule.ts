@@ -86,3 +86,65 @@ export function getUpcomingScheduleLabel(schedules?: Schedule[], now: Date = new
 
   return null
 }
+
+export interface ProximateScheduleInfo extends ScheduleTimeInfo {
+  schedule: Schedule
+}
+
+const STATUS_RANK: Record<ScheduleStatus, number> = {
+  "during": 0,
+  "before": 1,
+  "no-time": 2,
+  "tomorrow": 3,
+  "not-today": 4,
+  "after": 5,
+}
+
+export function getMostProximateSchedule(schedules?: Schedule[], now: Date = new Date()): ProximateScheduleInfo | null {
+  if (!schedules || schedules.length === 0) return null
+
+  let best: ProximateScheduleInfo | null = null
+
+  for (const schedule of schedules) {
+    const info = getScheduleTimeInfo(schedule, now)
+    if (!best) {
+      best = { schedule, ...info }
+      continue
+    }
+
+    const currentRank = STATUS_RANK[info.status]
+    const bestRank = STATUS_RANK[best.status]
+
+    if (currentRank < bestRank) {
+      best = { schedule, ...info }
+      continue
+    }
+
+    if (currentRank === bestRank) {
+      const currentMinutes = info.minutesUntilStart ?? info.minutesUntilEnd ?? Infinity
+      const bestMinutes = best.minutesUntilStart ?? best.minutesUntilEnd ?? Infinity
+      if (currentMinutes < bestMinutes) {
+        best = { schedule, ...info }
+      }
+    }
+  }
+
+  return best
+}
+
+function getStartMinutes(schedule: Schedule): number {
+  if (!schedule.startTime) return Infinity
+  const [hours, minutes] = schedule.startTime.split(":").map(Number)
+  return hours * 60 + minutes
+}
+
+export function sortSchedulesByDay(schedules: Schedule[]): Schedule[] {
+  return [...schedules].sort((a, b) => {
+    const dayA = DAYS_MAP[a.day]
+    const dayB = DAYS_MAP[b.day]
+
+    if (dayA !== dayB) return dayA - dayB
+
+    return getStartMinutes(a) - getStartMinutes(b)
+  })
+}
