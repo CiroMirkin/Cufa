@@ -29,3 +29,8 @@ export function evaluationToDate(evaluation: Pick<Evaluation, "date" | "time">):
   }
   return result
 }
+
+export function stringToLocalDate(dateStr: string): Date {
+  const [year, month, day] = dateStr.split("-").map(Number)
+  return new Date(year, month - 1, day)
+}

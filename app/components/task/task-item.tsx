@@ -4,8 +4,10 @@ import { Task } from "@/types/task"
 import clsx from "clsx"
 import { icons } from "@/constants/icons"
 import { useTasksStore } from "@/stores/tasksStore"
+import { useSubjectsStore } from "@/stores/subjectsStore"
 import { Linking } from "react-native"
 import { isTaskUrgent } from "@/lib/task"
+import TaskEditItem from "@/components/task/task-edit-item"
 
 interface Props {
     task: Task
@@ -15,9 +17,26 @@ interface Props {
 
 export default function TaskItem({ task, subjectName, showSubjectName = false }: Props) {
     const [expanded, setExpanded] = useState(false)
+    const [editing, setEditing] = useState(false)
     const toggleTask = useTasksStore((s) => s.toggleTask)
     const deleteTask = useTasksStore((s) => s.deleteTask)
+    const updateTask = useTasksStore((s) => s.updateTask)
+    const subjects = useSubjectsStore((s) => s.subjects)
     const urgent = isTaskUrgent(task)
+
+    if (editing) {
+        return (
+            <TaskEditItem
+                task={task}
+                subjects={subjects}
+                onSave={(updates) => {
+                    updateTask(task.id, updates)
+                    setEditing(false)
+                }}
+                onCancel={() => setEditing(false)}
+            />
+        )
+    }
 
     return (
         <Pressable
@@ -73,6 +92,13 @@ export default function TaskItem({ task, subjectName, showSubjectName = false }:
                             )}
                         >
                             <icons.check width={24} height={24} />
+                        </Pressable>
+
+                        <Pressable
+                            onPress={() => setEditing(true)}
+                            className="p-2 rounded border-2 items-center justify-center bg-blue"
+                        >
+                            <icons.pencil width={24} height={24} />
                         </Pressable>
 
                         <Pressable onPress={() => deleteTask(task.id)} className="p-2 bg-red border-2 rounded">
