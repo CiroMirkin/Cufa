@@ -14,6 +14,7 @@ import link from "@/assets/icons/link.svg"
 import user from "@/assets/icons/user.svg"
 import close from "@/assets/icons/x.svg"
 import settings from "@/assets/icons/settings.svg"
+import check from "@/assets/icons/check.svg"
 
 export const icons = {
     home,
@@ -32,6 +33,7 @@ export const icons = {
     settings,
     user,
     link,
+    check,
 } as const;
 
 export type IconKey = keyof typeof icons
