@@ -8,21 +8,23 @@ interface Props {
     showSubjectName?: boolean
 }
 
-function TaskList({ tasks, showSubjectName, }: Props) {
+function TaskList({ tasks, showSubjectName = false, }: Props) {
     const subjects = useSubjectsStore((s) => s.subjects)
 
     if (!tasks || tasks.length === 0) return null
 
     return (
         <View className="gap-2">
-            {tasks.map((task) => (
-                <TaskItem
-                    key={task.id}
-                    task={task}
-                    subjectName={subjects.find((s) => s.id === task.subjectId)?.name}
-                    showSubjectName={showSubjectName}
-                />
-            ))}
+            {tasks.map((task) => {
+                const subjectName = subjects.find((s) => s.id === task.subjectId)?.name
+                return (
+                    <TaskItem
+                        key={task.id}
+                        task={task}
+                        subjectName={showSubjectName ? subjectName : undefined}
+                    />
+                )
+            })}
         </View>
     )
 }

@@ -11,11 +11,10 @@ import TaskEditItem from "@/components/task/task-edit-item"
 
 interface Props {
     task: Task
-    showSubjectName?: boolean
     subjectName?: string
 }
 
-export default function TaskItem({ task, subjectName, showSubjectName = false }: Props) {
+export default function TaskItem({ task, subjectName }: Props) {
     const [expanded, setExpanded] = useState(false)
     const [editing, setEditing] = useState(false)
     const toggleTask = useTasksStore((s) => s.toggleTask)
@@ -45,13 +44,13 @@ export default function TaskItem({ task, subjectName, showSubjectName = false }:
         >
             <View className="flex-row items-center gap-2">
 
-            {(subjectName && showSubjectName) && (
+            {subjectName && 
                 <Text
                 className="px-2 py-1 self-end text-xs rounded-xl text-black font-semibold bg-blue/60"
                 >
                     {subjectName}
                 </Text>
-            )}
+            }
             <Text
                 className={clsx(
                     "text-lg font-medium",
