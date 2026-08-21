@@ -56,7 +56,7 @@ export default function PendingTab() {
         {empty && <EmptySpace icon="calendar_event" message="Por el momento no hay evaluaciones" />}
 
         <EvaluationList evaluations={evaluations} />
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks} showSubjectName />
       </View>
     </ScreenScroll>
   )

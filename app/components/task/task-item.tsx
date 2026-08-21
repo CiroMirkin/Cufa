@@ -8,9 +8,11 @@ import { Linking } from "react-native"
 
 interface Props {
     task: Task
+    showSubjectName?: boolean
+    subjectName?: string
 }
 
-export default function TaskItem({ task }: Props) {
+export default function TaskItem({ task, subjectName, showSubjectName = false }: Props) {
     const [expanded, setExpanded] = useState(false)
     const toggleTask = useTasksStore((s) => s.toggleTask)
     const deleteTask = useTasksStore((s) => s.deleteTask)
@@ -18,8 +20,17 @@ export default function TaskItem({ task }: Props) {
     return (
         <Pressable
             onPress={() => setExpanded((prev) => !prev)}
-            className="rounded-lg border-2 p-3 gap-2"
+            className="rounded-lg border-2 p-3"
         >
+            <View className="flex-row items-center gap-2">
+
+            {(subjectName && showSubjectName) && (
+                <Text
+                className="px-2 py-1 self-end text-xs rounded-xl text-black font-semibold bg-blue/60"
+                >
+                    {subjectName}
+                </Text>
+            )}
             <Text
                 className={clsx(
                     "text-lg font-medium",
@@ -27,14 +38,17 @@ export default function TaskItem({ task }: Props) {
                 )}
                 numberOfLines={expanded ? undefined : 1}
                 ellipsizeMode="tail"
-            >
+                >
                 {task.title}
             </Text>
+            </View>
 
             {expanded && (
-                <>
+                <View className="mt-2 flex-col gap-2">
                     {task.date && (
-                        <Text className="text-xs text-neutral-500">{task.date}</Text>
+                        <Text className="text-sm text-black font-bold">
+                            Fecha de entrega: {task.date}
+                        </Text>
                     )}
                     {task.note && (
                         <Text className="text-base text-neutral-700">{task.note}</Text>
@@ -48,7 +62,7 @@ export default function TaskItem({ task }: Props) {
                         </Pressable>
                     )}
 
-                    <View className="flex-row items-center justify-end gap-3 pt-1">
+                    <View className="flex-row items-center justify-end gap-3 pt-4 border-t-2">
                         <Pressable
                             onPress={() => toggleTask(task.id)}
                             className={clsx(
@@ -63,7 +77,7 @@ export default function TaskItem({ task }: Props) {
                             <icons.trash width={24} height={24} />
                         </Pressable>
                     </View>
-                </>
+                </View>
             )}
         </Pressable>
     )
