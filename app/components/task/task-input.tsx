@@ -6,6 +6,7 @@ import clsx from "clsx"
 import { formatDateLocal } from "@/lib/date"
 import { useTasksStore } from "@/stores/tasksStore"
 import { router } from "expo-router"
+import { useCareerStore } from "@/stores/careerStore"
 
 interface FormState {
   subjectId: string
@@ -35,6 +36,7 @@ function getInitialState(subjectId: string | null): FormState {
 
 export default function TaskInput({ subjects, subjectId, onCancel }: Props) {
   const [form, setForm] = useState<FormState>(() => getInitialState(subjectId))
+  const career = useCareerStore(s => s.career)
   const addTask = useTasksStore((s) => s.addTask)
   const isSubjectLocked = !!subjectId
 
@@ -57,6 +59,7 @@ export default function TaskInput({ subjects, subjectId, onCancel }: Props) {
     if (!form.title.trim()) return
 
     addTask({
+      careerId: career.id,
       subjectId: form.subjectId || undefined,
       title: form.title.trim(),
       date: form.date ? formatDateLocal(form.date) : undefined,

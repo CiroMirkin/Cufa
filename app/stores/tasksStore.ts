@@ -17,7 +17,7 @@ export const useTasksStore = create<TasksState>()(
     (set) => ({
       tasks: [],
       addTask: (task) => {
-        if(!task.title.trim) return null
+        if(!task.title.trim || !task.careerId) return null
 
         const newTask: Task = {
           ...task,
