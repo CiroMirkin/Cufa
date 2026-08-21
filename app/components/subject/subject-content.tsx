@@ -57,7 +57,7 @@ function SubjectContent({ subject }: Props) {
             {notes.length > 0 &&
                 <View>
                     <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
-                    <NoteList subjectId={subject.id} notes={notes} />
+                    <NoteList notes={notes} />
                 </View>
             }
         </View>
