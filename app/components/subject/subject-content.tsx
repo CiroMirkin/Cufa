@@ -7,6 +7,8 @@ import { useNotesStore } from "@/stores/notesStore"
 import { useShallow } from "zustand/react/shallow"
 import EmptySpace from "../ui/empty-space"
 import { evaluationToDate } from "@/lib/date"
+import { useTasksStore } from "@/stores/tasksStore"
+import TaskList from "../task/task-list"
 
 interface Props {
     subject: Subject
@@ -21,11 +23,16 @@ function SubjectContent({ subject }: Props) {
                 .sort((a, b) => evaluationToDate(a).getTime() - evaluationToDate(b).getTime()),
         ),
     )
+    
+    const tasks = useTasksStore(
+      useShallow((s) => s.tasks.filter((t) => !t.done && t.subjectId === subject.id))
+    )
+
     const notes = useNotesStore(
         useShallow((s) => s.notes.filter((n) => n.subjectId === subject?.id))
     )
 
-    if (!evaluations.length && !notes.length) {
+    if (!evaluations.length && !notes.length && !tasks.length) {
         return (
             <EmptySpace icon="clock_plus" message="Esta asignatura aun no tiene contenido." />
         )
@@ -33,14 +40,21 @@ function SubjectContent({ subject }: Props) {
 
     return (
         <View className="flex flex-col gap-6">
-            {evaluations.length &&
+            {evaluations.length > 0 &&
                 <View>
                     <Text className="text-xl text-black font-bold opacity-90">Próximamente</Text>
                     <EvaluationList evaluations={evaluations} />
                 </View>
             }
 
-            {notes.length &&
+            {tasks.length > 0 && 
+                <View>
+                    <Text className="text-xl text-black font-bold opacity-90 mb-4">Tareas pendientes</Text>
+                    <TaskList tasks={tasks} />
+                </View>
+            }
+
+            {notes.length > 0 &&
                 <View>
                     <Text className="text-xl text-black font-bold opacity-90">Notas</Text>
                     <NoteList subjectId={subject.id} notes={notes} />

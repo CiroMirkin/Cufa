@@ -33,6 +33,13 @@ function SubjectScreen() {
           }),
         },
         {
+          label: "Nueva tarea",
+          onPress: () => router.push({
+            pathname: "/(tabs)/task/new",
+            params: { subjectId: subject.id },
+          }),
+        },
+        {
           label: "Nuevo horario",
           onPress: () => setScheduleDrawerOpen(true),
         },
