@@ -5,6 +5,7 @@ import clsx from "clsx"
 import { icons } from "@/constants/icons"
 import { useTasksStore } from "@/stores/tasksStore"
 import { Linking } from "react-native"
+import { isTaskUrgent } from "@/lib/task"
 
 interface Props {
     task: Task
@@ -16,11 +17,12 @@ export default function TaskItem({ task, subjectName, showSubjectName = false }:
     const [expanded, setExpanded] = useState(false)
     const toggleTask = useTasksStore((s) => s.toggleTask)
     const deleteTask = useTasksStore((s) => s.deleteTask)
+    const urgent = isTaskUrgent(task)
 
     return (
         <Pressable
             onPress={() => setExpanded((prev) => !prev)}
-            className="rounded-lg border-2 p-3"
+            className={clsx("rounded-lg border-2 p-3", urgent && "bg-yellow")}
         >
             <View className="flex-row items-center gap-2">
 
