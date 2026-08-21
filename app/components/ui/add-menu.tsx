@@ -1,38 +1,24 @@
 import { useState } from "react"
-import { useRouter } from "expo-router"
 import { Pressable, Text, View, Modal } from "react-native"
 import { icons } from "@/constants/icons"
-import ScheduleDrawer from "@/components/subject/schedule-drawer"
 
-interface Props {
-  subjectId: string
+export interface Option {
+  label: string
+  onPress: () => void
 }
 
-function AddMenu({ subjectId }: Props) {
-  const [open, setOpen] = useState(false)
-  const [scheduleDrawerOpen, setScheduleDrawerOpen] = useState(false)
-  const router = useRouter()
+interface Props {
+  options: Option[]
+}
 
-  const options = [
-    {
-      label: "Nueva nota",
-      onPress: () => router.push({ pathname: "/(tabs)/note/new", params: { subjectId } }),
-    },
-    {
-      label: "Nueva evaluación",
-      onPress: () => router.push({ pathname: "/(tabs)/(evaluation)/new", params: { subjectId } }),
-    },
-    {
-      label: "Nuevo horario",
-      onPress: () => setScheduleDrawerOpen(true),
-    },
-  ]
+function AddMenu({ options }: Props) {
+  const [open, setOpen] = useState(false)
 
   return (
     <View>
       <Pressable
         onPress={() => setOpen(true)}
-        className="rounded border-2 bg-green p-2"
+        className="rounded border-2 bg-green p-2 h-11 w-11"
       >
         <icons.plus width={24} height={24} />
       </Pressable>
@@ -58,12 +44,6 @@ function AddMenu({ subjectId }: Props) {
           </View>
         </Pressable>
       </Modal>
-
-      <ScheduleDrawer
-        visible={scheduleDrawerOpen}
-        onClose={() => setScheduleDrawerOpen(false)}
-        subjectId={subjectId}
-      />
     </View>
   )
 }

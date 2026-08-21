@@ -1,17 +1,42 @@
-import { Stack, useLocalSearchParams } from "expo-router"
+import { Stack, useLocalSearchParams, useRouter } from "expo-router"
 import { View, Text } from "react-native"
 import ScreenScroll from "@/components/screen-scroll"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import SubjectContent from "@/components/subject/subject-content"
 import AddMenu from "@/components/ui/add-menu"
 import Schedule from "@/components/subject/schedule"
+import { useState } from "react"
+import ScheduleDrawer from "@/components/subject/schedule-drawer"
 
 function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
     const subjects = useSubjectsStore((s) => s.subjects)
     const subject = subjects.find((s) => s.id === id)
+    const [scheduleDrawerOpen, setScheduleDrawerOpen] = useState(false)
+    const router = useRouter()
 
-    if(!subject) return ;
+    if (!subject) return null
+
+    const options = [
+        {
+          label: "Nueva nota",
+          onPress: () => router.push({
+            pathname: "/(tabs)/note/new",
+            params: { subjectId: subject.id },
+          }),
+        },
+        {
+          label: "Nueva evaluación",
+          onPress: () => router.push({
+            pathname: "/(tabs)/(evaluation)/new",
+            params: { subjectId: subject.id },
+          }),
+        },
+        {
+          label: "Nuevo horario",
+          onPress: () => setScheduleDrawerOpen(true),
+        },
+    ]
 
     return (
         <ScreenScroll>
@@ -19,13 +44,19 @@ function SubjectScreen() {
 
             <View className="px-4 pt-4">
                 <View className="flex-row items-center justify-between py-4 mb-4">
-                    <Text className="text-2xl text-left font-bold">{subject?.name}</Text>
-                    <AddMenu subjectId={subject.id} />
+                    <Text className="text-2xl text-left font-bold">{subject.name}</Text>
+                    <AddMenu options={options} />
                 </View>
-                <Schedule schedules={subject?.schedules} />
+                <Schedule schedules={subject.schedules} />
 
                 <SubjectContent subject={subject} />
             </View>
+
+            <ScheduleDrawer
+                visible={scheduleDrawerOpen}
+                onClose={() => setScheduleDrawerOpen(false)}
+                subjectId={subject.id}
+            />
         </ScreenScroll>
     )
 }
