@@ -1,5 +1,6 @@
 import { useState } from "react"
-import { Modal, Pressable, Text, TextInput, View } from "react-native"
+import { Pressable, Text, TextInput, View } from "react-native"
+import Drawer from "@/components/ui/drawer"
 
 interface Props {
   visible: boolean
@@ -18,33 +19,25 @@ export default function SubjectDrawer({ visible, onClose, onCreate }: Props) {
   }
 
   return (
-    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View className="flex-1 justify-end bg-black/40">
-        <Pressable className="flex-1" onPress={onClose} />
-        <View className="w-full rounded-t-2xl bg-white p-4 pb-30 border-2 border-b-0">
-          <View className="mb-4 items-center">
-            <View className="h-1.5 w-12 rounded-full bg-neutral-300" />
-          </View>
-          <Text className="mb-3 text-lg font-bold text-neutral-800">
-            Nueva asignatura
-          </Text>
-          <TextInput
-            value={name}
-            onChangeText={setName}
-            placeholder="Nombre de la asignatura"
-            autoFocus
-            className="rounded-lg border-2 p-3 text-base text-neutral-800"
-          />
-          <View className="mt-4 flex-row justify-end gap-3">
-            <Pressable onPress={onClose} className="px-4 py-2 bg-neutral-100 border-2 border-neutral-300 rounded-lg">
-              <Text className="text-sm text-neutral-500">Cancelar</Text>
-            </Pressable>
-            <Pressable onPress={handleCreate} className="rounded-lg bg-green border-2 px-4 py-2">
-              <Text className="text-sm font-medium text-black ">Crear</Text>
-            </Pressable>
-          </View>
-        </View>
+    <Drawer visible={visible} onClose={onClose}>
+      <Text className="mb-3 text-lg font-bold text-neutral-800">
+        Nueva asignatura
+      </Text>
+      <TextInput
+        value={name}
+        onChangeText={setName}
+        placeholder="Nombre de la asignatura"
+        autoFocus
+        className="rounded-lg border-2 p-3 text-base text-neutral-800"
+      />
+      <View className="mt-4 flex-row justify-end gap-3">
+        <Pressable onPress={onClose} className="px-4 py-2 bg-neutral-100 border-2 border-neutral-300 rounded-lg">
+          <Text className="text-sm text-neutral-500">Cancelar</Text>
+        </Pressable>
+        <Pressable onPress={handleCreate} className="rounded-lg bg-green border-2 px-4 py-2">
+          <Text className="text-sm font-medium text-black ">Crear</Text>
+        </Pressable>
       </View>
-    </Modal>
+    </Drawer>
   )
 }

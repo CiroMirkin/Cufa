@@ -2,6 +2,7 @@ import { create } from "zustand"
 import { persist, createJSONStorage } from "zustand/middleware"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { Evaluation } from "@/types/evaluation"
+import { getId } from "@/lib/getId"
 
 interface EvaluationsState {
   evaluations: Evaluation[]
@@ -17,7 +18,7 @@ export const useEvaluationsStore = create<EvaluationsState>()(
       addEvaluation: (evaluation) => {
         const newEvaluation: Evaluation = {
           ...evaluation,
-          id: `${Date.now()}`,
+          id: getId(),
         }
         set((state) => ({ evaluations: [...state.evaluations, newEvaluation] }))
         return newEvaluation

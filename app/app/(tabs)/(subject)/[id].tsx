@@ -4,6 +4,7 @@ import ScreenScroll from "@/components/screen-scroll"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import SubjectContent from "@/components/subject/subject-content"
 import AddMenu from "@/components/ui/add-menu"
+import Schedule from "@/components/subject/schedule"
 
 function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -21,7 +22,7 @@ function SubjectScreen() {
                     <Text className="text-2xl text-left font-bold">{subject?.name}</Text>
                     <AddMenu subjectId={subject.id} />
                 </View>
-                {/* <View className="py-4 mb-4 bg-[#fdf28b] rounded-xl border-2"></View> */}
+                <Schedule schedules={subject?.schedules} />
 
                 <SubjectContent subject={subject} />
             </View>
