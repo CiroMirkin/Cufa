@@ -18,7 +18,7 @@ function AddMenu({ options }: Props) {
     <View>
       <Pressable
         onPress={() => setOpen(true)}
-        className="rounded border-2 bg-green p-2 h-11 w-11"
+        className="rounded border-2 bg-green p-2 h-12 w-12"
       >
         <icons.plus width={24} height={24} />
       </Pressable>

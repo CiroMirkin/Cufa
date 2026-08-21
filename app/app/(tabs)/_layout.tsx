@@ -7,7 +7,7 @@ import { SvgProps } from "react-native-svg";
 const tabs = [
     { name: "index", title: "Inicio", icon: icons.home },
     { name: "notes", title: "Notas", icon: icons.library },
-    { name: "evaluation", title: "Evaluaciones", icon: icons.calendar_event },
+    { name: "pending", title: "Pendientes", icon: icons.calendar_event },
 ]
 type TabIconProps = {
     focused: boolean;
@@ -61,6 +61,8 @@ const TabLayout = () => (
         <Tabs.Screen name="note/new" options={{ href: null }} />
         <Tabs.Screen name="note/[id]" options={{ href: null }} />
         <Tabs.Screen name="(evaluation)/new" options={{ href: null }} />
+        
+        <Tabs.Screen name="task/new" options={{ href: null }} />
     </Tabs>
 )
 
