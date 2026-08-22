@@ -1,4 +1,5 @@
 import { Schedule } from "@/types/subject"
+import { parse } from "@formkit/tempo"
 
 const DAYS_MAP: Record<string, number> = {
   "Domingo": 0,
@@ -61,7 +62,9 @@ export function getScheduleTimeInfo(schedule: Schedule, now: Date = new Date()):
 export function formatMinutes(minutes: number): string {
   const hours = Math.floor(minutes / 60)
   const mins = minutes % 60
-  if (hours > 0) return `${hours}h ${mins}min`
+
+  if (hours > 0 && mins > 0) return `${hours}h ${mins}min`
+  if (hours > 0) return `${hours}h`
   return `${mins}min`
 }
 
@@ -166,4 +169,22 @@ export function sortSchedulesByDay(schedules: Schedule[]): Schedule[] {
 
     return getStartMinutes(a) - getStartMinutes(b)
   })
+}
+
+export function getScheduleDuration(schedule: Schedule): string | null {
+  if (!schedule.startTime || !schedule.endTime) {
+    return null
+  }
+
+  const now = new Date()
+  const start = parseTimeToday(schedule.startTime, now)
+  const end = parseTimeToday(schedule.endTime, now)
+
+  let diffMs = end.getTime() - start.getTime()
+  if (diffMs < 0) {
+    diffMs += 24 * 60 * 60 * 1000 // cruza medianoche
+  }
+
+  const diffMinutes = Math.round(diffMs / 60000)
+  return formatMinutes(diffMinutes)
 }

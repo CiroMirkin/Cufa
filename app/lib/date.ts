@@ -34,3 +34,10 @@ export function stringToLocalDate(dateStr: string): Date {
   const [year, month, day] = dateStr.split("-").map(Number)
   return new Date(year, month - 1, day)
 }
+
+export function parseTimeLocal(time: string): Date {
+  const [hours, minutes] = time.split(":").map(Number)
+  const date = new Date()
+  date.setHours(hours, minutes, 0, 0)
+  return date
+}
