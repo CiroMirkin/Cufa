@@ -36,7 +36,7 @@ function getInitialState(): FormState {
   }
 }
 
-export default function ScheduleDrawer({ visible, onClose, subjectId }: Props) {
+export default function NewScheduleDrawer({ visible, onClose, subjectId }: Props) {
   const addSchedule = useSubjectsStore((s) => s.addSchedule)
   const [form, setForm] = useState<FormState>(getInitialState)
 

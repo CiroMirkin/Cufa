@@ -6,7 +6,7 @@ import SubjectContent from "@/components/subject/subject-content"
 import AddMenu from "@/components/ui/add-menu"
 import Schedule from "@/components/subject/schedule"
 import { useState } from "react"
-import ScheduleDrawer from "@/components/subject/schedule-drawer"
+import NewScheduleDrawer from "@/components/subject/new-schedule-drawer"
 
 function SubjectScreen() {
     const { id } = useLocalSearchParams<{ id: string }>()
@@ -59,7 +59,7 @@ function SubjectScreen() {
                 <SubjectContent subject={subject} />
             </View>
 
-            <ScheduleDrawer
+            <NewScheduleDrawer
                 visible={scheduleDrawerOpen}
                 onClose={() => setScheduleDrawerOpen(false)}
                 subjectId={subject.id}
