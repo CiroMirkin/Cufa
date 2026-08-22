@@ -1,16 +1,17 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Platform, Pressable, Text, View } from "react-native"
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker"
 import clsx from "clsx"
 import Drawer from "@/components/ui/drawer"
 import { useSubjectsStore } from "@/stores/subjectsStore"
-import { formatTimeLocal } from "@/lib/date"
-import { ScheduleModality, MODALITY_LABELS } from "@/types/subject"
+import { formatTimeLocal, parseTimeLocal } from "@/lib/date"
+import { ScheduleModality, MODALITY_LABELS, Schedule as ScheduleType } from "@/types/subject"
 
 interface Props {
   visible: boolean
   onClose: () => void
   subjectId: string
+  schedule?: ScheduleType
 }
 
 const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
@@ -25,7 +26,17 @@ interface FormState {
   modality: ScheduleModality | undefined
 }
 
-function getInitialState(): FormState {
+function getInitialState(schedule?: ScheduleType): FormState {
+  if (schedule) {
+    return {
+      day: schedule.day,
+      startTime: schedule.startTime ? parseTimeLocal(schedule.startTime) : null,
+      endTime: schedule.endTime ? parseTimeLocal(schedule.endTime) : null,
+      showPicker: false,
+      pickerMode: "start",
+      modality: schedule.modality,
+    }
+  }
   return {
     day: days[0],
     startTime: null,
@@ -36,9 +47,16 @@ function getInitialState(): FormState {
   }
 }
 
-export default function NewScheduleDrawer({ visible, onClose, subjectId }: Props) {
+export default function NewScheduleDrawer({ visible, onClose, subjectId, schedule }: Props) {
   const addSchedule = useSubjectsStore((s) => s.addSchedule)
-  const [form, setForm] = useState<FormState>(getInitialState)
+  const updateSchedule = useSubjectsStore((s) => s.updateSchedule)
+  const [form, setForm] = useState<FormState>(() => getInitialState(schedule))
+
+  useEffect(() => {
+    if (visible) {
+      setForm(getInitialState(schedule))
+    }
+  }, [visible, schedule])
 
   const updateField = <K extends keyof FormState>(field: K, value: FormState[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }))
@@ -60,13 +78,20 @@ export default function NewScheduleDrawer({ visible, onClose, subjectId }: Props
     }
   }
 
-  const handleCreate = () => {
-    addSchedule(subjectId, {
+  const handleSubmit = () => {
+    const payload = {
       day: form.day,
       startTime: form.startTime ? formatTimeLocal(form.startTime) : undefined,
       endTime: form.endTime ? formatTimeLocal(form.endTime) : undefined,
       modality: form.modality,
-    })
+    }
+    console.log(schedule, payload)
+    if (schedule) {
+      updateSchedule(subjectId, schedule.id, payload)
+    }
+    else {
+      addSchedule(subjectId, payload)
+    }
     setForm(getInitialState())
     onClose()
   }
@@ -79,7 +104,7 @@ export default function NewScheduleDrawer({ visible, onClose, subjectId }: Props
   return (
     <Drawer visible={visible} onClose={handleCancel}>
       <Text className="mb-3 text-lg font-bold text-neutral-800">
-        Nuevo horario
+        {schedule ? "Editar horario" : "Nuevo horario"}
       </Text>
 
       <View className="gap-1">
@@ -181,8 +206,8 @@ export default function NewScheduleDrawer({ visible, onClose, subjectId }: Props
         <Pressable onPress={handleCancel} className="px-4 py-2 bg-neutral-100 border-2 border-neutral-300 rounded-lg">
           <Text className="text-sm text-neutral-500">Cancelar</Text>
         </Pressable>
-        <Pressable onPress={handleCreate} className="rounded-lg bg-green border-2 px-4 py-2">
-          <Text className="text-sm font-medium text-black">Crear</Text>
+        <Pressable onPress={handleSubmit} className="rounded-lg bg-green border-2 px-4 py-2">
+          <Text className="text-sm font-medium text-black">{schedule ? "Guardar" : "Crear"}</Text>
         </Pressable>
       </View>
     </Drawer>
