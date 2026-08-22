@@ -49,8 +49,8 @@ function SubjectScreen() {
         <ScreenScroll>
             <Stack.Screen options={{ title: "Asignatura", headerShown: false }} />
 
-            <View className="px-4 pt-4">
-                <View className="flex-row items-center justify-between py-4 mb-4">
+            <View className="px-4 pt-6">
+                <View className="flex-row items-center justify-between pb-4 mb-4">
                     <Text className="text-2xl text-left font-bold">{subject.name}</Text>
                     <AddMenu options={options} />
                 </View>

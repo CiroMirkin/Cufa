@@ -23,7 +23,7 @@ function AddMenu({ options }: Props) {
           className="flex-1 bg-black/30"
           onPress={() => setOpen(false)}
         >
-          <View className="absolute right-4 top-24 w-48 overflow-hidden rounded-lg border-2 bg-white">
+          <View className="absolute right-4 top-20 w-48 overflow-hidden rounded-lg border-2 bg-white">
             {options.map((option, index) => (
               <Pressable
                 key={option.label}

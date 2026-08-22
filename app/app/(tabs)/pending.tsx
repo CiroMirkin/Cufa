@@ -47,8 +47,8 @@ export default function PendingTab() {
 
   return (
     <ScreenScroll>
-      <View className="flex-row items-center justify-between px-4 py-4">
-        <Text className="text-xl font-bold text-black">Pendientes</Text>
+      <View className="flex-row items-center justify-between px-4 pt-6 pb-4">
+        <Text className="text-2xl font-bold text-black">Pendientes</Text>
         <AddMenu options={options} />
       </View>
 
