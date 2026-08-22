@@ -54,7 +54,7 @@ function SubjectScreen() {
                     <Text className="text-2xl text-left font-bold">{subject.name}</Text>
                     <AddMenu options={options} />
                 </View>
-                <Schedule schedules={subject.schedules} />
+                <Schedule schedules={subject.schedules} subjectId={subject.id} />
 
                 <SubjectContent subject={subject} />
             </View>

@@ -1,5 +1,5 @@
 import { MODALITY_LABELS, ScheduleModality, Schedule as ScheduleType } from "@/types/subject"
-import { Pressable, Text, View } from "react-native"
+import { Text, View } from "react-native"
 import { useScheduleTimeInfo } from "@/hooks/useScheduleTimeInfo"
 import { formatMinutes } from "@/lib/schedule"
 import cn from "@/lib/cn"
@@ -56,9 +56,7 @@ function ScheduleItem({ schedule, isLast, isProximate }: ItemProps) {
     }
 
     return (
-        <Pressable
-            className={cn("px-2 pr-3", !isLast && "border-r-2", isDimmed && "opacity-70")}
-        >
+        <View className={cn("px-2 pr-3", !isLast && "border-r-2", isDimmed && "opacity-70")}>
             <ScheduleLabel label={label} time={time} modality={schedule.modality} />
             {status === "before" && minutesUntilStart !== null && (
                 <Text className="text-xs font-semibold">Empieza en {formatMinutes(minutesUntilStart)}</Text>
@@ -66,7 +64,7 @@ function ScheduleItem({ schedule, isLast, isProximate }: ItemProps) {
             {status === "during" && minutesUntilEnd !== null && (
                 <Text className="text-xs font-semibold">Termina en {formatMinutes(minutesUntilEnd)}</Text>
             )}
-        </Pressable>
+        </View>
     )
 }
 
