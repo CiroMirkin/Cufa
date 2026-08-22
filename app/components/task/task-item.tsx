@@ -68,7 +68,7 @@ export default function TaskItem({ task, subjectName }: Props) {
                 <View className="mt-2 flex-col gap-2">
                     {task.date && (
                         <Text className="text-sm text-black font-bold">
-                            Fecha de entrega: {task.date}
+                            Fecha limite: {task.date}
                         </Text>
                     )}
                     {task.note && (

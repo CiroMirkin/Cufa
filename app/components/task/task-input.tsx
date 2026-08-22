@@ -109,7 +109,7 @@ export default function TaskInput({ subjects, subjectId, onCancel }: Props) {
       </View>
 
       <View className="gap-1">
-        <Text className="text-base font-medium text-black">Fecha (opcional)</Text>
+        <Text className="text-base font-medium text-black">Fecha limite (opcional)</Text>
         <Pressable
           onPress={openPicker}
           className="w-full rounded-lg border border-black bg-white p-3"
