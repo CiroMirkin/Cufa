@@ -14,12 +14,11 @@ export default function Notes() {
     <ScreenScroll>
       <View className="flex-row items-center justify-between px-4 pt-6">
         <Text className="text-2xl font-bold text-black">Notas</Text>
-        <Link
-          href={{ pathname: "/(tabs)/note/new", params: { subjectId: null } }}
-          className="rounded border-2 bg-white p-2 h-12 w-12"
-        >
-          <icons.plus width={24} height={24} />
-        </Link>
+        <Link href="/(tabs)/note/new" className="h-12 w-12 rounded border-2 bg-white">
+          <View className="h-full w-full items-center justify-center">
+            <icons.plus width={24} height={24} />
+          </View>
+      </Link>
       </View>
 
       <View className="px-4">
