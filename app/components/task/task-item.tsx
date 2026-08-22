@@ -8,6 +8,7 @@ import { useSubjectsStore } from "@/stores/subjectsStore"
 import { Linking } from "react-native"
 import { isTaskUrgent } from "@/lib/task"
 import TaskEditItem from "@/components/task/task-edit-item"
+import ButtonIcon from "../ui/button-icon"
 
 interface Props {
     task: Task
@@ -83,26 +84,9 @@ export default function TaskItem({ task, subjectName }: Props) {
                     )}
 
                     <View className="flex-row items-center justify-end gap-3 pt-4 border-t-2">
-                        <Pressable
-                            onPress={() => toggleTask(task.id)}
-                            className={clsx(
-                                "p-2 rounded border-2 items-center justify-center",
-                                task.done ? "bg-green" : "bg-white"
-                            )}
-                        >
-                            <icons.check width={24} height={24} />
-                        </Pressable>
-
-                        <Pressable
-                            onPress={() => setEditing(true)}
-                            className="p-2 rounded border-2 items-center justify-center bg-blue"
-                        >
-                            <icons.pencil width={24} height={24} />
-                        </Pressable>
-
-                        <Pressable onPress={() => deleteTask(task.id)} className="p-2 bg-red border-2 rounded">
-                            <icons.trash width={24} height={24} />
-                        </Pressable>
+                        <ButtonIcon icon="check" onPress={() => toggleTask(task.id)} className={task.done ? "bg-green" : "bg-white"} />
+                        <ButtonIcon icon="pencil" onPress={() => setEditing(true)} className="bg-blue" />
+                        <ButtonIcon icon="trash" onPress={() => deleteTask(task.id)} className="bg-red" />
                     </View>
                 </View>
             )}

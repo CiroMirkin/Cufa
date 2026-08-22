@@ -6,6 +6,7 @@ import { useNotesStore } from "@/stores/notesStore"
 import { icons } from "@/constants/icons"
 import { useSubjectsStore } from "@/stores/subjectsStore"
 import { Note } from "@/types/note"
+import ButtonIcon from "../ui/button-icon"
 
 interface Props {
   subjectId: string | null
@@ -86,20 +87,10 @@ export default function NoteInput({ subjectId, note, onDone }: Props) {
         </View>
 
         <View className="flex-row gap-2 self-start">
-          <TouchableOpacity
-            className="rounded border-2 bg-green p-2"
-            onPress={handleSubmit}
-          >
-            <icons.save width={24} height={24} />
-          </TouchableOpacity>
+          <ButtonIcon icon="save" onPress={handleSubmit} className="bg-green"/>
 
           {note ? (
-            <TouchableOpacity
-              className="rounded border-2 bg-red p-2"
-              onPress={handleDelete}
-            >
-              <icons.trash width={24} height={24} />
-            </TouchableOpacity>
+            <ButtonIcon icon="trash" onPress={handleDelete} className="bg-red" />
           ) : (
             <TouchableOpacity
               className="rounded border-2 bg-neutral-200 p-2"

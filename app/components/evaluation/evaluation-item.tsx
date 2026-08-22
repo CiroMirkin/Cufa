@@ -11,6 +11,7 @@ import clsx from "clsx"
 import { icons } from "@/constants/icons"
 import { useSubjectsByCareer } from "@/hooks/useSubjectsByCareer"
 import { Linking } from "react-native"
+import ButtonIcon from "../ui/button-icon"
 
 interface Props {
     item: Evaluation
@@ -111,18 +112,8 @@ export default function EvaluationItem({ item }: Props) {
                     ) : null}
 
                     <View className="flex-row justify-end gap-2 pt-4">
-                        <Pressable
-                            onPress={() => setIsEditing(true)}
-                            className="rounded-lg bg-blue border-2 p-2"
-                        >
-                            <icons.pencil width={24} height={24} />
-                        </Pressable>
-                        <Pressable
-                            onPress={() => deleteEvaluation(item.id)}
-                            className="rounded-lg bg-red border-2 p-2"
-                        >
-                            <icons.trash width={24} height={24} />
-                        </Pressable>
+                        <ButtonIcon icon="pencil" onPress={() => setIsEditing(true)} className="bg-blue" />
+                        <ButtonIcon icon="trash" onPress={() => deleteEvaluation(item.id)} className="bg-red" />
                     </View>
                 </View>
             )}

@@ -13,6 +13,7 @@ import { useChangeActualCareer } from "@/hooks/useChangeActualCareer"
 import { useCareerStore } from "@/stores/careerStore"
 import { evaluationToDate } from "@/lib/date"
 import EmptySpace from "@/components/ui/empty-space"
+import ButtonIcon from "@/components/ui/button-icon"
 
 export default function Index() {
   const [modalVisible, setModalVisible] = useState(false)
@@ -37,7 +38,7 @@ export default function Index() {
   return (
     <>
       <ScreenScroll>
-        <View className="px-4 pt-6 mb-6 flex-row justify-between">
+        <View className="px-4 pt-6 mb-6 flex-row items-center justify-between">
           <Pressable className="flex-row items-center gap-4 flex-1 mr-4">
             <View className="w-12 h-12 flex items-center justify-center rounded-full border-2 bg-blue" />
             <Text
@@ -48,13 +49,8 @@ export default function Index() {
               {career.name}
             </Text>
           </Pressable>
-
-          <Pressable
-            onPress={() => setModalVisible(true)}
-            className="p-2 rounded border-2 bg-transparent opacity-95"
-          >
-            <icons.plus width={24} height={24} />
-          </Pressable>
+          
+          <ButtonIcon icon="plus" onPress={() => setModalVisible(true)} className="opacity-95" />
         </View>
 
         <View className="px-4">

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Pressable, Text, View, Modal } from "react-native"
-import { icons } from "@/constants/icons"
+import ButtonIcon from "./button-icon"
 
 export interface Option {
   label: string
@@ -16,12 +16,7 @@ function AddMenu({ options }: Props) {
 
   return (
     <View>
-      <Pressable
-        onPress={() => setOpen(true)}
-        className="rounded border-2 bg-green p-2 h-12 w-12"
-      >
-        <icons.plus width={24} height={24} />
-      </Pressable>
+      <ButtonIcon icon="plus" onPress={() => setOpen(true)} />
 
       <Modal visible={open} transparent animationType="fade" onRequestClose={() => setOpen(false)}>
         <Pressable

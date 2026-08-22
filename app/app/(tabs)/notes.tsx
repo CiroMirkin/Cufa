@@ -16,7 +16,7 @@ export default function Notes() {
         <Text className="text-2xl font-bold text-black">Notas</Text>
         <Link
           href={{ pathname: "/(tabs)/note/new", params: { subjectId: null } }}
-          className="rounded border-2 bg-green p-2"
+          className="rounded border-2 bg-white p-2 h-12 w-12"
         >
           <icons.plus width={24} height={24} />
         </Link>

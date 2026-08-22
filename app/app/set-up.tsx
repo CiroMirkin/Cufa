@@ -5,6 +5,7 @@ import ScreenScroll from "@/components/screen-scroll"
 import { icons } from "@/constants/icons"
 import { useCareerStore } from "@/stores/careerStore"
 import { useSubjectsStore } from "@/stores/subjectsStore"
+import ButtonIcon from "@/components/ui/button-icon"
 
 const DEFAULT_SUBJECTS_COUNT = 3
 
@@ -62,9 +63,7 @@ export default function SetUp() {
 
       <View className="mt-6 flex-row items-center justify-between">
         <Text className="text-lg font-bold text-neutral-800">Asignaturas</Text>
-        <Pressable onPress={handleAddSubject} className="rounded border-2 bg-transparent p-2">
-          <icons.plus width={24} height={24} />
-        </Pressable>
+        <ButtonIcon icon="plus" onPress={handleAddSubject} />
       </View>
 
       <View className="mt-3 gap-3">
