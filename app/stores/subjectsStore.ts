@@ -22,9 +22,10 @@ export const useSubjectsStore = create<SubjectsState>()(
       actualCareer: "",
       
       addSubject: (name) => {
+        const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1)
         const newSubject: Subject = {
           id: getId(),
-          name,
+          name: capitalizedName,
           careerId: useCareerStore.getState().career.id,
         }
         set((state) => ({ subjects: [...state.subjects, newSubject] }))

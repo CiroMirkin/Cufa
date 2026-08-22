@@ -15,9 +15,10 @@ export const useCareerStore = create<CareerState>()(
       career: { id: "", name: "" },
 
       createCareer: (name) => {
+        const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1)
         const newCareer: Career = {
           id: getId(),
-          name,
+          name: capitalizedName,
         }
         set({ career: newCareer })
         return newCareer
