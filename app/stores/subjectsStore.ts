@@ -10,7 +10,9 @@ interface SubjectsState {
   addSubject: (name: string) => Subject
   updateSubject: (id: string, name: string) => void
   deleteSubject: (id: string) => void
-  addSchedule: (subjectId: string, schedule: Schedule) => void
+  addSchedule: (subjectId: string, schedule: Omit<Schedule, "id">) => void
+  updateSchedule: (subjectId: string, scheduleId: string, schedule: Omit<Schedule, "id">) => void
+  deleteSchedule: (subjectId: string, scheduleId: string) => void
   actualCareer: string
   setActualCareer: (id: string) => void
 }
@@ -36,7 +38,7 @@ export const useSubjectsStore = create<SubjectsState>()(
         set((state) => ({
           subjects: state.subjects.map((s) => (s.id === id ? { ...s, name } : s)),
         })),
-      
+
       deleteSubject: (id) =>
         set((state) => ({ subjects: state.subjects.filter((s) => s.id !== id) })),
 
@@ -44,7 +46,30 @@ export const useSubjectsStore = create<SubjectsState>()(
         set((state) => ({
           subjects: state.subjects.map((s) =>
             s.id === subjectId
-              ? { ...s, schedules: [...(s.schedules ?? []), schedule] }
+              ? { ...s, schedules: [...(s.schedules ?? []), { ...schedule, id: getId() }] }
+              : s
+          ),
+        })),
+
+      updateSchedule: (subjectId, scheduleId, schedule) =>
+        set((state) => ({
+          subjects: state.subjects.map((s) =>
+            s.id === subjectId
+              ? {
+                  ...s,
+                  schedules: (s.schedules ?? []).map((sc) =>
+                    sc.id === scheduleId ? { ...sc, ...schedule } : sc
+                  ),
+                }
+              : s
+          ),
+        })),
+
+      deleteSchedule: (subjectId, scheduleId) =>
+        set((state) => ({
+          subjects: state.subjects.map((s) =>
+            s.id === subjectId
+              ? { ...s, schedules: (s.schedules ?? []).filter((sc) => sc.id !== scheduleId) }
               : s
           ),
         })),
