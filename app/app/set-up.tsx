@@ -46,7 +46,11 @@ export default function SetUp() {
   }
 
   return (
-    <ScreenScroll contentContainerClassName="px-4 pt-6">
+    <ScreenScroll
+      contentContainerClassName="px-4 pt-6"
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
+    >
       <View className="pb-4 border-b-2">
         <Text className="text-2xl font-bold text-black">Bienvenido</Text>
       </View>

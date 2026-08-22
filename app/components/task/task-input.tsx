@@ -75,6 +75,8 @@ export default function TaskInput({ subjects, subjectId, onCancel }: Props) {
     <ScrollView
       className="w-full"
       contentContainerClassName="flex-col gap-3 px-4 py-2"
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
     >
       {!isSubjectLocked && subjects && (
         <View className="gap-1">
